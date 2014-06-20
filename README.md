@@ -1,4 +1,4 @@
 devtrac-distro
 ==============
 
-Testing devtrac distrobution
+Testing devtrac distribution
