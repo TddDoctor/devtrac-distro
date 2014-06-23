@@ -1,55 +1,28 @@
 language: php
 
 php:
-  - 5.3
-  - 5.4
   - 5.5
-
-matrix:
-  allow-failures:
-    - php: 5.5
-
-  env:
-    global:
-      - DATABASE='devtrac_distro'
-      - DB_USERNAME='travis'
-      - DB_ENCODE='utf8'
-      - MODULE_PATH='build/sites/all/modules'
-      - ES_REQUIRE='no-dev'
-  matrix:
-
-mysql:
-  database: $DATABASE
-  username: $DB_USERNAME
-  encoding: $DB_ENCODE
+  - 5.4
+  - 5.3
 
 before_install:
-  - composer self-update
-  - pear channel-discover pear.drush.org
   - "sudo apt-get update"
   - "export DISPLAY=:99.0"
   - "sh -e /etc/init.d/xvfb start"
   - sleep 3
-install:
-  - pear install drush/drush
-  - phpenv rehash
-  
+
 before_script:
-  # Apache webserver configuration  
+  # Apache webserver configuration
   - sudo apt-get install -y --force-yes apache2 libapache2-mod-php5 php5-mysql php5-curl
   - sudo sed -i -e "s,/var/www,$(pwd)/docroot,g" /etc/apache2/sites-available/default
   - sudo a2enmod rewrite
   - sudo a2enmod actions
-   # MySQL database configuration
-  - mysql -e 'CREATE DATABASE devtrac_distro;'
   - sudo service apache2 restart
- 
+  # MySQL database configuration
+  - mysql -e 'CREATE DATABASE devtrac_distro;'
   # Ant build tool configuration
- - cp build.properties.dist build.properties
- - sed -i -e "s,username:password@host/db,travis@127.0.0.1/devtrac_distro,g" build.properties
+  - cp build.properties.dist build.properties
+  - sed -i -e "s,username:password@host/db,travis@127.0.0.1/devtrac_distro,g" build.properties
 
-  - drush --yes site-install minimal --db-url="mysql://$DB_USERNAME@127.0.0.1/$DATABASE"
-  
-  - drush --yes en simpletest
 script:
-  # - ant run-tests
+   - ant run-tests
