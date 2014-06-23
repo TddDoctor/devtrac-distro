@@ -6,8 +6,8 @@ php:
   - 5.3
   env:
     global:
-      - DATABASE='ddistro'
-      - DB_USERNAME='ddistro'
+      - DATABASE='devtrac_distro'
+      - DB_USERNAME='travis'
       - DB_ENCODE='utf8'
       - MODULE_PATH='build/sites/all/modules'
       - ES_REQUIRE='no-dev'
@@ -40,10 +40,10 @@ before_script:
   - sudo service apache2 restart
  
   # Ant build tool configuration
- #  - cp build.properties.dist build.properties
-  # - sed -i -e "s,username:password@host/db,travis@127.0.0.1/devtrac_distro,g" build.properties
+ - cp build.properties.dist build.properties
+ - sed -i -e "s,username:password@host/db,travis@127.0.0.1/devtrac_distro,g" build.properties
 
-  - drush --yes site-install minimal --db-url="mysql://$DB_USERNAME:$DB_USERNAME@127.0.0.1/$DATABASE"
+  - drush --yes site-install minimal --db-url="mysql://$DB_USERNAME@127.0.0.1/$DATABASE"
   
   - drush --yes en simpletest
 script:
