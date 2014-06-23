@@ -32,6 +32,9 @@ before_script:
   # Ant build tool configuration
   - cp build.properties.dist build.properties
   - sed -i -e "s,username:password@host/db,travis@127.0.0.1/devtrac_distro,g" build.properties
+  - drush --yes make tests/includes/build-devtrac_distro.make build
+  - cd build
+  - drush --yes site-install minimal --db-url="mysql://travis@127.0.0.1/devtrac_distro"
   - drush --yes en simpletest  
 
 script:
