@@ -38,4 +38,5 @@ before_script:
   - drush --yes en simpletest  
 
 script:
-   - ant run-tests
+  - drush test-run 'profile' --debug
+  # - ant run-tests
