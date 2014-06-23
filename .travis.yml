@@ -4,7 +4,10 @@ php:
   - 5.5
   - 5.4
   - 5.3
-
+matrix:
+  allow-failures:
+    - php: 5.5
+    
 before_install:
   - "sudo apt-get update"
   - "export DISPLAY=:99.0"
