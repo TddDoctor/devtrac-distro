@@ -32,6 +32,7 @@ before_script:
   # Ant build tool configuration
   - cp build.properties.dist build.properties
   - sed -i -e "s,username:password@host/db,travis@127.0.0.1/devtrac_distro,g" build.properties
+  - drush --yes en simpletest  
 
 script:
    - ant run-tests
