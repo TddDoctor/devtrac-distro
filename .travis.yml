@@ -1,10 +1,14 @@
 language: php
 
 php:
-  - 5.5
-  - 5.4
   - 5.3
+  - 5.4
+  - 5.5
+
 matrix:
+  allow-failures:
+    - php: 5.5
+
   env:
     global:
       - DATABASE='devtrac_distro'
@@ -12,12 +16,12 @@ matrix:
       - DB_ENCODE='utf8'
       - MODULE_PATH='build/sites/all/modules'
       - ES_REQUIRE='no-dev'
- 
-   mysql:
-     database: $DATABASE
-     username: $DB_USERNAME
-     encoding: $DB_ENCODE
-      
+  matrix:
+
+mysql:
+  database: $DATABASE
+  username: $DB_USERNAME
+  encoding: $DB_ENCODE
 
 before_install:
   - composer self-update
