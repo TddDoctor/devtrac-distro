@@ -7,12 +7,18 @@ php:
 matrix:
   allow-failures:
     - php: 5.5
-    
+
 before_install:
+  - composer self-update
+  - pear channel-discover pear.drush.org
   - "sudo apt-get update"
   - "export DISPLAY=:99.0"
   - "sh -e /etc/init.d/xvfb start"
   - sleep 3
+
+install:
+  - pear install drush/drush
+  - phpenv rehash
 
 before_script:
   # Apache webserver configuration
