@@ -4,23 +4,14 @@ php:
   - 5.5
   - 5.4
   - 5.3
-
   env:
     global:
-      - ES_VER=1.0.1
-      - ES_MAPPER_ATTACHMENTS_VER=2.0.0.RC1
-      - ES_TRANSPORT_THRIFT_VER=2.0.0.RC1
-      - ES_GEOCLUSTER_FACET_VER=0.0.10
-      - ES_WAIT_ON_MAPPING_CHANGE=true
       - DATABASE='ddistro'
       - DB_USERNAME='ddistro'
       - DB_ENCODE='utf8'
       - MODULE_PATH='build/sites/all/modules'
       - ES_REQUIRE='no-dev'
-    matrix:
-      - DRUPAL_3RD_PARTY='composer_manager'
-      - DRUPAL_3RD_PARTY='libraries'
-      
+ 
    mysql:
      database: $DATABASE
      username: $DB_USERNAME
@@ -44,15 +35,16 @@ before_script:
   - sudo sed -i -e "s,/var/www,$(pwd)/docroot,g" /etc/apache2/sites-available/default
   - sudo a2enmod rewrite
   - sudo a2enmod actions
-  - sudo service apache2 restart
-  # MySQL database configuration
+   # MySQL database configuration
   - mysql -e 'CREATE DATABASE devtrac_distro;'
+  - sudo service apache2 restart
+ 
   # Ant build tool configuration
-  - cp build.properties.dist build.properties
-  - sed -i -e "s,username:password@host/db,travis@127.0.0.1/devtrac_distro,g" build.properties
+ #  - cp build.properties.dist build.properties
+  # - sed -i -e "s,username:password@host/db,travis@127.0.0.1/devtrac_distro,g" build.properties
 
   - drush --yes site-install minimal --db-url="mysql://$DB_USERNAME:$DB_USERNAME@127.0.0.1/$DATABASE"
   
   - drush --yes en simpletest
 script:
-  - ant run-tests
+  # - ant run-tests
