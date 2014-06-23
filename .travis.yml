@@ -40,3 +40,6 @@ before_script:
 script:
   - drush test-run 'profile' --debug --verbose
   # - ant run-tests
+notifications:
+  irc:
+    - "chat.freenode.net#mountbatten"
