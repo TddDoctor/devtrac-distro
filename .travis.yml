@@ -32,9 +32,9 @@ before_script:
   # Ant build tool configuration
   - cp build.properties.dist build.properties
   - sed -i -e "s,username:password@host/db,travis@127.0.0.1/devtrac_distro,g" build.properties
-  - cp -R profiles/devtrac-distro/solrtest/ sites/default/modules/
   - drush --yes make build-devtrac_distro.make build
   - cd build
+  - cp -R profiles/devtrac-distro/solrtest/ sites/default/modules/
   - drush --yes site-install minimal --db-url="mysql://travis@127.0.0.1/devtrac_distro"
   - drush --yes dl search_api_solr
   - drush --yes en search_api_solr
