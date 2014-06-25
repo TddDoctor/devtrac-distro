@@ -1,0 +1,5 @@
+name = sorltest
+description = This is intended to test the solr connectivity and configurations
+files[] = solrtest.test
+files[] = solrtest.module
+core = 7.x
