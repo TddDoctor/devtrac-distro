@@ -38,15 +38,15 @@ before_script:
   - drush --yes dl search_api_solr
   - drush --yes en search_api_solr
   - sudo echo " " >> sites/default/settings.php
-  - sudo echo "\$conf['search_api_solr_overrides'] = array(" >> sites/default/settings.php
-  - sudo echo "  'devtrac_solr_server' => array(" >> sites/default/settings.php
-  - sudo echo "    'options' => array(" >> sites/default/settings.php
-  - sudo echo "      'host' => 'jenkinsge.mountbatten.net'," >> sites/default/settings.php
-  - sudo echo "      'path' => '/solr/devtractest'," >> sites/default/settings.php
-  - sudo echo "      'port' =>'8081'," >> sites/default/settings.php
-  - sudo echo "    )," >> sites/default/settings.php
-  - sudo echo "  )," >> sites/default/settings.php
-  - sudo echo ");" >> sites/default/settings.php
+  - echo "\$conf['search_api_solr_overrides'] = array(" >> sites/default/settings.php
+  - echo "  'devtrac_solr_server' => array(" >> sites/default/settings.php
+  - echo "    'options' => array(" >> sites/default/settings.php
+  - echo "      'host' => 'jenkinsge.mountbatten.net'," >> sites/default/settings.php
+  - echo "      'path' => '/solr/devtractest'," >> sites/default/settings.php
+  - echo "      'port' =>'8081'," >> sites/default/settings.php
+  - echo "    )," >> sites/default/settings.php
+  - echo "  )," >> sites/default/settings.php
+  - echo ");" >> sites/default/settings.php
   
   - drush --yes en simpletest  
 
