@@ -35,6 +35,8 @@ before_script:
   - drush --yes make build-devtrac_distro.make build
   - cd build
   - drush --yes site-install minimal --db-url="mysql://travis@127.0.0.1/devtrac_distro"
+  - drush --yes dl search_api_solr
+  - drush --yes en search_api_solr
   - drush --yes en simpletest  
 
 script:
