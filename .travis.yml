@@ -54,8 +54,9 @@ before_script:
   - drush --yes en simpletest  
 
 script:
-  - drush test-run 'sorl'--verbose
+  - drush test-run 'sorlz'--verbose
   # - ant run-tests
 notifications:
   irc:
     - "chat.freenode.net#mountbatten"
+    - "chat.freenode.net#devtrac"
