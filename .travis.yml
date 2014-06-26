@@ -59,5 +59,4 @@ script:
   # - ant run-tests
 notifications:
   irc:
-    - "chat.freenode.net#mountbatten"
     - "chat.freenode.net#devtrac"
