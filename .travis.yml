@@ -34,8 +34,8 @@ before_script:
   - sed -i -e "s,username:password@host/db,travis@127.0.0.1/devtrac_distro,g" build.properties
   - drush --yes make build-devtrac_distro.make build
   - cd build
-  - cp -R build/solrtest/ sites/default/modules/
   - drush --yes site-install minimal --db-url="mysql://travis@127.0.0.1/devtrac_distro"
+   - cp -R test/solrtest/ sites/default/modules/
   - drush --yes dl search_api_solr
   - drush --yes en search_api_solr
   - sudo chmod 777 sites/default/settings.php 
