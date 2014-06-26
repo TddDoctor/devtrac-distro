@@ -20,7 +20,7 @@ function setUp() {
 }
 
 public function testsolrConnecting() {
-  $this->drupalGet('admin/config/search/search_api/server/devtrac_solr_server/edit');
+  $this->drupalGet('admin/config/search/search_api/server/edit');
   $this->assertResponse(200, 'resource found');
 
 }
