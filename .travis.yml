@@ -54,7 +54,7 @@ before_script:
   - drush --yes en simpletest  
 
 script:
-  - drush test-run 'profile', 'user' --debug --verbose
+  - drush test-run 'sorl'--verbose
   # - ant run-tests
 notifications:
   irc:
