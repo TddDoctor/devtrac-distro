@@ -1,6 +1,6 @@
 <?php
 
-class solrConfigTest extends SimpleTestCloneTestCase {
+class solrConfigTest extends DrupalWebTestCase {
   protected $admin_user;
    
   public static function getInfo() {
