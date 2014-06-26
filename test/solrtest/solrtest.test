@@ -1,0 +1,37 @@
+<?php
+
+class solrConfigTest extends SimpleTestCloneTestCase {
+  protected $admin_user;
+   
+  public static function getInfo() {
+    return array(
+      'name' => 'solr configurations',
+      'description' => 'meant to test solr configurations',
+      'group' => 'sorl',
+    );
+  }
+
+function setUp() {
+    parent::setUp();
+
+ $this->admin_user = $this->drupalCreateUser(array(
+      'administer blocks',
+      'access administration pages','administer users', 
+      'administer permissions', 'access user profiles',
+      'administer site configuration', 'administer modules',
+    ));
+    $this->drupalLogin($this->admin_user);
+}
+
+public function testsolrConnecting() {
+$this->drupalGet('admin/config/search/search_api/server/devtrac_solr_server/edit');
+$this->assertResponse(200, 'resource found');
+
+
+}
+
+
+
+
+}
+
