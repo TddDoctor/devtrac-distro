@@ -14,7 +14,7 @@ class solrConfigTest extends DrupalWebTestCase {
 function setUp() {
   parent::setUp();
 
-   $this->admin_user = $this->drupalCreateUser(array('administer blocks', 'create blog content', 'administer nodes'));
+   $this->admin_user = $this->drupalCreateUser(array('administer blocks', 'create blog content', 'administer nodes', 'administer users', 'administer site configuration', 'administer modules'));
   $this->drupalLogin($this->admin_user);
 }
 
