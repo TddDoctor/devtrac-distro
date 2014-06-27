@@ -19,8 +19,8 @@ function setUp() {
 }
 
 public function testsolrConnecting() {
-  //$this->drupalGet('Administration/Configuration/Search and metadata');
-  //$this->assertResponse(404, 'resource found');
+  $this->drupalGet('Administration/Configuration/Search and metadata');
+  $this->assertResponse(404, 'resource found');
 
 }
 
