@@ -14,14 +14,13 @@ class solrConfigTest extends DrupalWebTestCase {
 function setUp() {
   parent::setUp();
 
-   $this->admin_user = $this->drupalCreateUser(array('administer blocks', 'access administration pages', 'administer users', 'administer permissions', 'access user profiles',
-      'administer site configuration', 'administer modules'));
+   $this->admin_user = $this->drupalCreateUser(array('administer blocks', 'create blog content', 'administer nodes'));
   $this->drupalLogin($this->admin_user);
 }
 
 public function testsolrConnecting() {
   $this->drupalGet('admin/config');
-  $this->assertResponse(404, 'resource found');
+  $this->assertResponse(200, 'resource found');
 
 }
 
