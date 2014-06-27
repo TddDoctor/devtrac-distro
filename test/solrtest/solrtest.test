@@ -20,7 +20,7 @@ function setUp() {
 }
 
 public function testsolrConnecting() {
-  $this->drupalGet('admin/config/search/search_api');
+  $this->drupalGet('admin/config');
   $this->assertResponse(404, 'resource found');
 
 }
