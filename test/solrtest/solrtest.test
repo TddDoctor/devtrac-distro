@@ -19,7 +19,7 @@ function setUp() {
 }
 
 public function testsolrConnecting() {
-  $this->drupalGet('user/'.$this->admin_user->nid);
+  $this->drupalGet('user/');
   $this->assertResponse(200, 'resource found');
 
 }
