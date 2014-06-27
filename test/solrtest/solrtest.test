@@ -19,7 +19,7 @@ function setUp() {
 }
 
 public function testsolrConnecting() {
-  $this->drupalGet('Administration/Configuration/Search and metadata');
+  $this->drupalGet('user/'.$this->admin_user->nid);
   $this->assertResponse(200, 'resource found');
 
 }
