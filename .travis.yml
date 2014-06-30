@@ -59,8 +59,7 @@ before_script:
   - drush --yes en simpletest  
   - sudo find / -name "default" -type d -print
 script:
-  - drush test-run --verbose "solrConfigTest" --uri=localhost/devtrac_distro  
-  # - ant run-tests
+  - drush test-run --verbose "solrConfigTest" --uri=/home/travis/build/TddDoctor/devtrac-distro/build/
 notifications:
   irc:
     - "chat.freenode.net#devtrac"
