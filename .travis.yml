@@ -23,7 +23,7 @@ install:
 before_script:
   # Apache webserver configuration
   - curl https://raw.githubusercontent.com/moliware/travis-solr/master/travis-solr.sh | SOLR_VERSION=4.4.0 bash
-  - sudo find / -name "solr4.4.0" -type d -print
+  - sudo find / -name "solr-4.4.0" -type d -print
   - sudo apt-get install -y --force-yes apache2 libapache2-mod-php5 php5-mysql php5-curl
   - sudo sed -i -e "s,/var/www,$(pwd)/docroot,g" /etc/apache2/sites-available/default
   - sudo a2enmod rewrite
@@ -43,7 +43,7 @@ before_script:
   - drush --yes en search_api
   - drush --yes en search_api_solr
   - drush --yes en solrtest
-  - cp sites/all/modules/search_api_solr/solr-conf/4.x/* ~/.travis/solr-4.4.0/example/solr/collection1/conf/
+  - cp sites/all/modules/search_api_solr/solr-conf/4.x/* build/.travis/solr4.4.0/example/solr/collection1/conf/
   - sudo chmod 777 sites/default/settings.php 
   - sudo echo " " >> sites/default/settings.php
   - echo "\$conf['search_api_solr_overrides'] = array(" >> sites/default/settings.php
