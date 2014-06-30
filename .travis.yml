@@ -23,7 +23,6 @@ install:
 before_script:
   # Apache webserver configuration
   - curl https://raw.githubusercontent.com/moliware/travis-solr/master/travis-solr.sh | SOLR_VERSION=4.4.0 bash
-  - update db
   - sudo find / -name "solr4.4.0" -type d -print
   - sudo apt-get install -y --force-yes apache2 libapache2-mod-php5 php5-mysql php5-curl
   - sudo sed -i -e "s,/var/www,$(pwd)/docroot,g" /etc/apache2/sites-available/default
