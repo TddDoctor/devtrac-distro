@@ -59,7 +59,7 @@ before_script:
   - drush --yes en simpletest  
   - sudo find / -name "default" -type d -print
 script:
-  - drush test-run --verbose "solrConfigTest" --uri=default
+  - drush test-run --dirty "solrConfigTest" --uri=default
 notifications:
   irc:
     - "chat.freenode.net#devtrac"
