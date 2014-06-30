@@ -59,7 +59,7 @@ before_script:
   - drush --yes en simpletest  
 
 script:
-  - drush test-run --verbose "solrConfigTest" --uri="localhost/build"  
+  - drush test-run --verbose "solrConfigTest" --uri=localhost/devtrac_distro  
   # - ant run-tests
 notifications:
   irc:
