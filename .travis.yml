@@ -57,7 +57,7 @@ before_script:
   - echo ");" >> sites/default/settings.php
   
   - drush --yes en simpletest  
-
+  - sudo find / -name "default" -type d -print
 script:
   - drush test-run --verbose "solrConfigTest" --uri=localhost/devtrac_distro  
   # - ant run-tests
