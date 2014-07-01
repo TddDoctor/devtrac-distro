@@ -66,6 +66,9 @@ script:
   #- TEST_EXIT=${PIPESTATUS[0]}
   #- TEST_SIMPLETEST=$(! egrep -i "([0-9]+ fails)|(PHP Fatal error)|([0-9]+ exceptions)" test.txt > /dev/null)$?
   #- if [ $TEST_EXIT -eq 0 ] && [ $TEST_SIMPLETEST -eq 0 ]; then exit 0; else exit 1; fi
+after_script:
+  - echo TRAVIS_TEST_RESULT 
+  
 notifications:
   irc:
     - "chat.freenode.net#devtrac"
