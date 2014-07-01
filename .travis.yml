@@ -57,7 +57,7 @@ before_script:
   - echo ");" >> sites/default/settings.php
   
   - drush --yes en simpletest  
-  - drush cr
+  - drush cache-clear
   - sudo find / -name "default" -type d -print
 script:
   - drush test-run --dirty --verbose --color --url http://localhost/devtrac_distro  "solrConfigTest" | tee /tmp/test.txt
