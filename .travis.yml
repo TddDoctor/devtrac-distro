@@ -63,8 +63,8 @@ script:
   - drush test-run solrConfigTest  --dirty --verbose --uri=localhost/devtrac_distro  --xml=/home/travis/build/TddDoctor/devtrac-distro/test/solrtest
   #- value=`cat test.txt`
   #- echo "$value"
-  #- TEST_EXIT=${PIPESTATUS[0]}
-  #- TEST_SIMPLETEST=$(! egrep -i "([0-9]+ fails)|(PHP Fatal error)|([0-9]+ exceptions)" test.txt > /dev/null)$?
+  - TEST_EXIT=${PIPESTATUS[0]}
+  - TRAVIS_TEST_RESULT=$(! egrep -i "([0-9]+ fails)|(PHP Fatal error)|([0-9]+ exceptions)" test.txt > /dev/null)$?
   #- if [ $TEST_EXIT -eq 0 ] && [ $TEST_SIMPLETEST -eq 0 ]; then exit 0; else exit 1; fi
 after_script:
   - echo TRAVIS_TEST_RESULT 
