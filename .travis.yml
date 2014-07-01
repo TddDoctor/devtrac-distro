@@ -61,7 +61,7 @@ before_script:
   - sudo find / -name "default" -type d -print
 script:
   - drush test-run --dirty --verbose --uri http://localhost/devtrac_distro  "solrConfigTest" | tee /tmp/test.txt
-  - value=$(<test.txt)
+  - value=`cat /temp/test.txt`
   - echo "$value"
   - TEST_EXIT=${PIPESTATUS[0]}
   - TEST_SIMPLETEST=$(! egrep -i "([0-9]+ fails)|(PHP Fatal error)|([0-9]+ exceptions)" /tmp/test.txt > /dev/null)$?
