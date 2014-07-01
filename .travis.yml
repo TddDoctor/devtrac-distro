@@ -60,7 +60,7 @@ before_script:
   - drush cache-clear all
   - sudo find / -name "default" -type d -print
 script:
-  - drush test-run solrConfigTest  --dirty --verbose --uri=localhost/devtrac_distro  --xml=build/sites/default/test.xml
+  - drush test-run solrConfigTest  --dirty --verbose --uri=localhost/devtrac_distro  --xml=build/sites/default/
   #- value=`cat test.txt`
   #- echo "$value"
   #- TEST_EXIT=${PIPESTATUS[0]}
