@@ -19,7 +19,7 @@ function setUp() {
 }
 
 public function testsolrConnecting() {
-  $this->drupalGet('?q=user');
+  $this->drupalGet('user');
   $this->assertResponse(200, 'resource found');
 
 }
