@@ -1,0 +1,8 @@
+name = CKAN Packages
+description = Provides end points for CKAN API Package/Resource metadata
+dependencies[] = services
+
+core = 7.x
+package = CKAN
+
+files[] = ckan_packages.inc

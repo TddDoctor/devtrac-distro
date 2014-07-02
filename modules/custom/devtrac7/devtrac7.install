@@ -1,0 +1,283 @@
+<?php
+
+function devtrac7_update_7001() {
+  variable_set('install_profile', 'devtrac');
+}
+
+function devtrac7_update_7002() {
+  if($context = context_load("devtrac_solr_map_views_front")) {
+    context_delete($context);
+  }
+  if ($context = context_load("devtrac_solr_map_views")) {
+    context_delete($context);
+  }
+  if ($context = context_load("devtrac_solr_sitevisits_map")) {
+    context_delete($context);
+  }
+}
+
+// Function to set the visibility of management, navigation and user menu
+function devtrac7_update_7003() {
+ // Conditions ie where ...
+ $condition = db_or();// AND
+ $and = db_and(); //OR
+ $condition->condition('delta', 'navigation','=');
+ $condition->condition('delta', 'management','=');
+ $condition->condition('delta', 'user-menu','=');
+ $and->condition('theme','seven','=')->condition($condition)->condition('module','system');
+ // The query, well.. according to drupal
+ db_update('block')
+ ->fields(array(
+ 'status' => '0',
+ 'region' => '-1',
+ ))
+ ->condition($and)
+ ->execute();
+}
+
+/**
+ * Delete views, context and openlayers things that are not needed anymore
+ */
+function devtrac7_update_7024() {
+  // Delete obsolete context.
+  if ($context = context_load("places")) {
+    context_delete($context);
+  }
+  if ($context = context_load("devtrac_solr_not_map_views")) {
+    context_delete($context);
+  }
+  if ($context = context_load("devtrac_solr_list_and_graph_views")) {
+    context_delete($context);
+  }
+  if ($context = context_load("node-view-field_trip_anonymous")) {
+    context_delete($context);
+  }
+  if ($context = context_load("devtrac_solr_find_locations")) {
+    context_delete($context);
+  }
+
+
+  // Delete obsolete maps.
+  if ($map = openlayers_map_load("places")) {
+    openlayers_object_delete($map, "map");
+  }
+
+  // Delete obsolete layers.
+  if ($layer = openlayers_layer_load("findplaces_districts_getfeatureinfo_page")) {
+    openlayers_object_delete($layer, "layer");
+  }
+  if ($layer = openlayers_layer_load("findplaces_districts_openlayers_1")) {
+    openlayers_object_delete($layer, "layer");
+  }
+  if ($layer = openlayers_layer_load("findplaces_districts_zoom_district_find")) {
+    openlayers_object_delete($layer, "layer");
+  }
+  if ($layer = openlayers_layer_load("findplaces_districts_openlayers_2")) {
+    openlayers_object_delete($layer, "layer");
+  }
+  if ($layer = openlayers_layer_load("findplaces_places_existing_places")) {
+    openlayers_object_delete($layer, "layer");
+  }
+  if ($layer = openlayers_layer_load("findplaces_places_openlayers_1")) {
+    openlayers_object_delete($layer, "layer");
+  }
+
+  if ($layer = openlayers_style_load("health")) {
+    openlayers_object_delete($layer, "style");
+  }
+  if ($layer = openlayers_style_load("placetype")) {
+    openlayers_object_delete($layer, "style");
+  }
+  if ($layer = openlayers_style_load("placetype_bw")) {
+    openlayers_object_delete($layer, "style");
+  }
+  if ($layer = openlayers_style_load("school")) {
+    openlayers_object_delete($layer, "style");
+  }
+  if ($layer = openlayers_style_load("wash")) {
+    openlayers_object_delete($layer, "style");
+  }
+  if ($layer = openlayers_style_load("government office")) {
+    openlayers_object_delete($layer, "style");
+  }
+
+  // Delete obsolete views.
+  if ($view = views_get_view("findplaces_places")) {
+    views_delete_view($view);
+  }
+  if ($view = views_get_view("findplaces_districts")) {
+    views_delete_view($view);
+  }
+  if ($view = views_get_view("devtrac_solr_find_locations")) {
+    views_delete_view($view);
+  }
+}
+
+/**
+ * Upgrade to make sure the current searches show on the right page
+ */
+function devtrac7_update_7023() {
+  // One day, far far away, we will be able to remove this code, as we will have fixed the
+  // cause of this issue https://drupal.org/node/1469002
+  $block_searcher = array(
+    'devtrac7_actionitems_standard' => 'search_api@devtrac_solr_action_items_index',
+    'devtrac7_actionitem_activefacets' => 'search_api@devtrac_solr_action_items_index',
+    'devtrac7_activities_activefacets' => 'search_api@devtrac_solr_activity_index',
+    'devtrac7_activities_standard' => 'search_api@devtrac_solr_activity_index',
+    'devtrac7_answers_activefacets' => 'search_api@answers',
+    'devtrac7_answers_mainpage' => 'search_api@answers',
+    'devtrac7_answers_standard' => 'search_api@answers',
+    'devtrac7_districts_activefacets' => 'search_api@devtrac_solr_district_index',
+    'devtrac7_districts_standard' => 'search_api@devtrac_solr_district_index',
+    'devtrac7_fieldtrips_activefacets' => 'search_api@devtrac_solr_field_trip_index',
+    'devtrac7_fieldtrips_standard' => 'search_api@devtrac_solr_field_trip_index',
+    'devtrac7_images_activefacets' => 'search_api@devtrac_solr_image_index',
+    'devtrac7_images_standard' => 'search_api@devtrac_solr_image_index',
+    'devtrac7_locations_activefacets' => 'search_api@devtrac_solr_locations_index',
+    'devtrac7_locations_standard' => 'search_api@devtrac_solr_locations_index',
+    'devtrac7_organisations_standard' => 'search_api@devtrac_solr_organisation_index',
+    'devtrac7_organisati_activefacets' => 'search_api@devtrac_solr_organisation_index',
+    'devtrac7_questions_activefacets' => 'search_api@questions',
+    'devtrac7_questions_standard' => 'search_api@questions',
+    'devtrac7_sitevisits_activefacets' => 'search_api@devtrac_solr_site_visits_index',
+    'devtrac7_sitevisits_standard' => 'search_api@devtrac_solr_site_visits_index',
+    'devtrac7_users_activefacets' => 'search_api@devtrac7_user_index',
+    'devtrac7_users_standard' => 'search_api@devtrac7_user_index',
+  );
+  foreach ($block_searcher as $block => $searcher) {
+    current_search_set_block_searcher($block, $searcher);
+  }
+}
+
+/**
+ * remove the taxonomy_vocabulary_2 field from the location and the database
+ */
+function devtrac7_update_7021() {
+  if ($instance = field_info_instance('node', 'taxonomy_vocabulary_2', 'place')) {
+    field_delete_instance($instance);
+  }
+  taxonomy_vocabulary_delete(2);
+}
+
+/**
+ * remove the funny field_add_to_fieldtrip field from the location and the database
+ */
+function devtrac7_update_7022() {
+  if ($instance = field_info_instance('node', 'field_add_to_fieldtrip', 'place')) {
+    field_delete_instance($instance);
+  }
+}
+
+/**
+ * Add new taxonomy access rules for unicef users so they will not be denied
+ * access to organisations and activities that are tagged with them.
+ */
+function devtrac7_update_7025() {
+  // Save the current user.
+  $original_user = $GLOBALS['user'];
+  // Login the site admin (uid = 1) to ensure consistent
+  // permissions on the terms during the update.
+  $GLOBALS['user'] = user_load(1);
+
+  // Reset the weights of ALIVE, LEARNING AND SAFE
+  // to make them show up at the top of the list.
+  $alive = taxonomy_term_load(214);
+  $alive->weight = -1;
+  taxonomy_term_save($alive);
+  $learning = taxonomy_term_load(215);
+  $learning->weight = -1;
+  taxonomy_term_save($learning);
+  $safe = taxonomy_term_load(216);
+  $safe->weight = -1;
+  taxonomy_term_save($safe);
+
+  // Initialize access rules.
+	$listall= array(
+    'view' => 0,
+    'update' => 0,
+    'delete' => 0,
+    'create' => 0,
+    'list' => 1,
+  );
+  $createall= array(
+    'view' => 0,
+    'update' => 0,
+    'delete' => 0,
+    'create' => 1,
+    'list' => 1,
+  );
+
+  // Set the default to list (view tags).
+  $rows = array();
+  $rows[] = _taxonomy_access_format_grant_record(8, 5, $listall, TRUE);
+  taxonomy_access_set_default_grants($rows);
+
+  // Initialize grants for role unicef.
+  $grants = array();
+  // Initialize grants for role anonymous.
+  $grants_ano = array();
+
+  // Get all terms in vocabulary_8 (OECD Codes).
+  $tids = taxonomy_get_tree(8, 0, NULL, TRUE);
+  // print ("Going into the loop \n");
+  foreach($tids as $tid) {
+    if (strtoupper($tid->name) == "OECD") {
+      // Do nothing, settings are already okay.
+      continue;
+    }
+    if ((strtoupper($tid->name) == "UNICEF") || (strtoupper($tid->name) == "ALIVE") || (strtoupper($tid->name) == "SAFE") || (strtoupper($tid->name) == "LEARNING")) {
+      // Do nothing, settings are already okay.
+      continue;
+    }
+    if (strtoupper($tid->name) == "WATER AND SANITATION") {
+      // Allow role anonymous list access to category "WATER AND SANITATION".
+      $grants_ano[$tid->tid] = _taxonomy_access_format_grant_record($tid->tid, 1, $listall, FALSE);
+      continue;
+    }
+
+   	// We changed the default grants, so first delete all existing term grants.
+    taxonomy_access_delete_term_grants($tid->tid, 5);
+
+    // If any of the code's ancestors is one of ALIVE, SAFE, LEARNING or WATER AND SANITATION
+    // and it has no children, then grant it create and list (view tags) permissions.
+    $ancestors = taxonomy_get_parents_all($tid->tid);
+    if (empty($ancestors)) {
+    	continue;
+    }
+    $children = taxonomy_get_children($tid->tid);
+    if (!empty($children)) {
+    	continue;
+    }
+    foreach ($ancestors as $ancestor) {
+    	if (in_array(strtoupper($ancestor->name), array('ALIVE', 'SAFE', 'LEARNING', 'WATER AND SANITATION'))) {
+        // Only if one of the ancestors is one of ALIVE, SAFE, LEARNING or
+        // WATER AND SANITATION and the code does not have any children
+        // assign new access rules by adding both create and list grants.
+    		$grants[$tid->tid] = _taxonomy_access_format_grant_record($tid->tid, 5, $createall, FALSE);
+    	}
+    }
+  }
+  // print ("Going to save the grants.\n");
+  // Remove the keys from the array, they were used to prevent duplicate terms.
+  taxonomy_access_set_term_grants(array_values($grants), FALSE);
+  // print ("Going to save the grants for anonymous.\n");
+  // Remove the keys from the array, they were used to prevent duplicate terms.
+  taxonomy_access_set_term_grants(array_values($grants_ano), FALSE);
+
+  // Restore the user.
+  $GLOBALS['user'] = $original_user;
+}
+
+/**
+ * Remove menu items that are not used anymore from the database.
+ */
+function devtrac7_update_7026() {
+  db_delete('menu_links')
+    ->condition('menu_name', 'menu-my-profile')
+    ->condition('router_path', 'user/%')
+    ->execute();
+  db_delete('menu_links')
+    ->condition('menu_name', 'menu-my-profile')
+    ->condition('router_path', 'user/%/edit')
+    ->execute();
+}

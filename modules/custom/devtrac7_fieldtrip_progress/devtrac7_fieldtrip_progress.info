@@ -1,0 +1,6 @@
+name = "Devtrac Fieldtrip Progress Module"
+description = "Shows different forms of progress on a fieldtrip"
+core = "7.x"
+package = "Devtrac"
+
+files[] = devtrac7_fieldtrip_progress.module

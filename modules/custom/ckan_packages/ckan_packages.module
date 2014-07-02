@@ -1,0 +1,99 @@
+<?php
+
+/**
+ * @file
+ * Handles routing to list and retrieve package metadata.
+ */
+
+/**
+ * Implements hook_services_resources 
+ */
+function ckan_packages_services_resources() {
+  return array(
+    'dataset' => array(
+      'retrieve' => array(
+        'help' => 'Retrieves a package',
+        'file' => array('file' => 'inc', 'module' => 'ckan_packages'),
+        'callback' => 'ckan_packages_retrieve',
+        'access callback' => '_ckan_packages_access',
+        'access arguments' => array('view'),
+        'access arguments append' => TRUE,
+        'args' => array(
+          array(
+            'name' => 'id',
+            'type' => 'string',
+            'description' => 'The id of the resource to get',
+            'source' => array('path' => '0'),
+            'optional' => FALSE,
+          ),
+        ),
+      ),
+      'index' => array(
+        'help' => 'Packages list',
+        'file' => array('file' => 'inc', 'module' => 'ckan_packages'),
+        'callback' => 'ckan_packages_list',
+        'access callback' => '_ckan_packages_access',
+        'access arguments' => array('list'),
+        'access arguments append' => FALSE,
+      ),
+    ),
+  );
+}
+
+/**
+ * Implements hook_ctools_plugin_api().
+ */
+function ckan_packages_ctools_plugin_api($owner, $api) {
+  if ($owner == 'services' && $api == 'services') {
+    return array(
+      'version' => 3,
+      'file' => 'ckan_packages.inc',
+      'path' => drupal_get_path('module', 'ckan_packages'),
+    );
+  }
+}
+
+/**
+ * Implements hook_ctools_plugin_type().
+ */
+function ckan_packages_ctools_plugin_type() {
+  return array(
+    'packages' => array(
+      'classes' => array('handler'),
+      'use hooks' => TRUE,
+    ),
+  );
+}
+
+/**
+ * Access callback.
+ */
+function _ckan_packages_access($op, $args = array()) {
+  // @todo
+  return TRUE;
+}
+
+/**
+ * Internal function to rerieve lists, or individual plugins.
+ */
+function _ckan_packages_get_plugin($name, $id) {
+  static $cache = array();
+
+  if (!$id || !isset($cache[$name][$id])) {
+    ctools_include('plugins');
+    $plugins = ctools_get_plugins('ckan_packages', $name);
+    foreach ($plugins as $key => $plugin) {
+      if (empty($plugin['hidden'])) {
+        $handler = ctools_plugin_get_class($plugin, 'handler');
+        $cache[$name][$key] = new $handler();
+      }
+    }
+  }
+
+  if ($id) {
+    return isset($cache[$name][$id]) ? $cache[$name][$id] : NULL;
+  }
+  else {
+    return isset($cache[$name]) ? $cache[$name] : NULL;
+  }
+}

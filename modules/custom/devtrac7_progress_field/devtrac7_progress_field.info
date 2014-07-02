@@ -1,0 +1,10 @@
+name = "Devtrac Progress Field Module"
+description = "Shows a list of tasks in a field that is rendered as a Ctools button."
+core = "7.x"
+package = "Devtrac"
+
+files[] = devtrac7_progress_field.module
+
+scripts[] = js/devtrac7_progress_field.js
+
+stylesheets[all][] = css/devtracd7_progress_field.css

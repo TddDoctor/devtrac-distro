@@ -1,0 +1,14 @@
+name = Devtrac7 Admin Feature
+description = Devtrac7 Admin Feature
+core = 7.x
+package = Devtrac
+version = 7.x-1.0-beta
+project = devtrac7_admin_feature
+dependencies[] = ds
+dependencies[] = views_infinite_scroll
+features[ctools][] = context:context:3
+features[ctools][] = views:views_default:3.0
+features[features_api][] = api:2
+features[views_view][] = admin_taxonomy_view
+features[views_view][] = district_check
+features_exclude[dependencies][views] = views

@@ -1,0 +1,6 @@
+name = "Devtrac Realms"
+description = "Custom FacetAPI Realms to show graphs and stuff."
+core = "7.x"
+package = "Devtrac"
+
+files[] = devtrac7_realms.module

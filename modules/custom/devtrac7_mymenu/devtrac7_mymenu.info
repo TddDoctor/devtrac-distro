@@ -1,0 +1,6 @@
+name = "My Items Menu"
+description = "Implements a nicemenu that shows your my items (my team, district, subject)."
+core = "7.x"
+package = "Devtrac"
+
+files[] = devtrac7_mymenu.module

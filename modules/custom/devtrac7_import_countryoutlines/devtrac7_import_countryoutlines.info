@@ -1,0 +1,10 @@
+name = Devtrac7 Import Country Outlines
+description = import the country outlines
+core = 7.x
+Package = OpenAidMap
+
+dependancies[] = migrate
+
+files[] = devtrac7_import_countryoutlines.module
+files[] = includes/devtrac7_import_countryoutlines.inc
+

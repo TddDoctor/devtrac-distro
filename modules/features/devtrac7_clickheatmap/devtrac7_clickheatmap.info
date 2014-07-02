@@ -1,0 +1,14 @@
+name = DevTrac7_Clickheatmap
+description = Contains configuration for the heatmap functionality
+core = 7.x
+package = Features
+dependencies[] = click_heatmap
+dependencies[] = strongarm
+features[ctools][] = strongarm:strongarm:1
+features[features_api][] = api:1
+features[variable][] = click_heatmap_admin_password
+features[variable][] = click_heatmap_admin_username
+features[variable][] = click_heatmap_change_login
+features[variable][] = click_heatmap_pages
+features[variable][] = click_heatmap_scope
+features[variable][] = click_heatmap_visibility

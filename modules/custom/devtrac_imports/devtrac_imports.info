@@ -1,0 +1,15 @@
+name = devtrac imports
+description="Module will impor thte different taxonmies that are required by devtrac"
+core = "7.x"
+package = "Devtrac"
+
+
+dependencies[] = migrate
+files[] = includes/devtrac_imports_csv_base.inc
+files[] = includes/devtrac_imports_purpose.inc
+files[] = includes/devtrac_imports_function.inc
+files[] = includes/devtrac_imports_department.inc
+files[] = includes/devtrac_imports_sectors0.inc
+files[] = includes/devtrac_imports_sectors1.inc
+files[] = includes/devtrac_imports_sector_icons.inc
+files[] = includes/devtrac_imports_placetype_icons.inc

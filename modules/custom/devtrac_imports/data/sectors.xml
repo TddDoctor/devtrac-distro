@@ -1,0 +1,29 @@
+<sectors>
+<sector code="110">
+<name>Edurcation</name>
+	<sector code="111">
+	<name>Primary school</name>
+	</sector>
+</sector>
+<sector code="112">
+<name>Health</name>
+	<sector code="113">
+	<name>Hospital</name>
+	</sector>
+  <sector code="114">
+  <name>Clinic</name>
+  </sector>	
+  <sector code="115">
+  <name>Pharmacy</name>
+  </sector>   
+</sector>
+<sector code="116">
+<name>Agriculture</name>
+	<sector code="117">
+	<name>Coffee</name>
+	</sector>
+	<sector code="118">
+	<name>Cotton</name>
+	</sector>
+</sector>
+</sectors>

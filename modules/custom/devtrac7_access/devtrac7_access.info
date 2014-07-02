@@ -1,0 +1,4 @@
+name = DevTrac7 Access
+description = Module that takes care of all content/entity access in DevTrac.
+package = Devtrac
+core = 7.x
