@@ -59,6 +59,7 @@ before_script:
   - drush --yes en simpletest  
   - drush cache-clear all
   - sudo find / -name "default" -type d -print
+  - cd ../
 script:
    - ant run-tests
   #- drush test-run Profile  --debug --verbose --uri=localhost/devtrac_distro  --xml=/home/travis/build/TddDoctor/devtrac-distro/test/solrtest
