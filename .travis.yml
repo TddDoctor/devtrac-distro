@@ -60,14 +60,14 @@ before_script:
   - drush cache-clear all
   - sudo find / -name "default" -type d -print
 script:
-  - drush test-run Profile  --debug --verbose --uri=localhost/devtrac_distro  --xml=/home/travis/build/TddDoctor/devtrac-distro/test/solrtest
+  #- drush test-run Profile  --debug --verbose --uri=localhost/devtrac_distro  --xml=/home/travis/build/TddDoctor/devtrac-distro/test/solrtest
   #- value=`cat test.txt`
   #- echo "$value"
-  - TEST_EXIT=${PIPESTATUS[0]}
-  - TRAVIS_TEST_RESULT=$(! egrep -i "([0-9]+ fails)|(PHP Fatal error)|([0-9]+ exceptions)" /home/travis/build/TddDoctor/devtrac-distro/test/solrtest/testsuite-1.xml> /dev/null)$?
+  #- TEST_EXIT=${PIPESTATUS[0]}
+  #- TRAVIS_TEST_RESULT=$(! egrep -i "([0-9]+ fails)|(PHP Fatal error)|([0-9]+ exceptions)" /home/travis/build/TddDoctor/devtrac-distro/test/solrtest/testsuite-1.xml> /dev/null)$?
   #- if [ $TEST_EXIT -eq 0 ] && [ $TEST_SIMPLETEST -eq 0 ]; then exit 0; else exit 1; fi
 after_script:
-  - echo TRAVIS_TEST_RESULT 
+  #- echo TRAVIS_TEST_RESULT 
   
 notifications:
   irc:
