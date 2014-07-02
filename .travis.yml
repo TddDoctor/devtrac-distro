@@ -59,7 +59,10 @@ before_script:
   - drush --yes en simpletest  
   - drush cache-clear all
   - sudo find / -name "default" -type d -print
+  - chmod -R 777 /home/travis/build/TddDoctor/devtrac-distro/test/solrtest/
+  - chmod 777 /home/travis/build/TddDoctor/devtrac-distro/test/solrtest/testsuite-1.xml
   - cd ../
+  
 script:
    - ant run-tests
   #- drush test-run Profile  --debug --verbose --uri=localhost/devtrac_distro  --xml=/home/travis/build/TddDoctor/devtrac-distro/test/solrtest
@@ -68,8 +71,7 @@ script:
   #- TEST_EXIT=${PIPESTATUS[0]}
   #- TRAVIS_TEST_RESULT=$(! egrep -i "([0-9]+ fails)|(PHP Fatal error)|([0-9]+ exceptions)" /home/travis/build/TddDoctor/devtrac-distro/test/solrtest/testsuite-1.xml> /dev/null)$?
   #- if [ $TEST_EXIT -eq 0 ] && [ $TEST_SIMPLETEST -eq 0 ]; then exit 0; else exit 1; fi
-  - chmod -R 777 /home/travis/build/TddDoctor/devtrac-distro/test/solrtest/
-  - chmod 777 /home/travis/build/TddDoctor/devtrac-distro/test/solrtest/testsuite-1.xml
+
 after_script:
   #- echo TRAVIS_TEST_RESULT 
   
