@@ -68,6 +68,8 @@ script:
   #- TEST_EXIT=${PIPESTATUS[0]}
   #- TRAVIS_TEST_RESULT=$(! egrep -i "([0-9]+ fails)|(PHP Fatal error)|([0-9]+ exceptions)" /home/travis/build/TddDoctor/devtrac-distro/test/solrtest/testsuite-1.xml> /dev/null)$?
   #- if [ $TEST_EXIT -eq 0 ] && [ $TEST_SIMPLETEST -eq 0 ]; then exit 0; else exit 1; fi
+  - chmod -R 777 /home/travis/build/TddDoctor/devtrac-distro/test/solrtest/
+  - chmod 777 /home/travis/build/TddDoctor/devtrac-distro/test/solrtest/testsuite-1.xml
 after_script:
   #- echo TRAVIS_TEST_RESULT 
   
