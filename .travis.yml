@@ -45,6 +45,7 @@ before_script:
   - drush --yes en search_api_solr
   - drush --yes en solrtest
   - cp sites/all/modules/search_api_solr/solr-conf/4.x/* /home/travis/build/TddDoctor/devtrac-distro/solr-4.4.0/example/solr/collection1/conf/
+  - sudo chmod 777 sites/default/
   - cp -R /home/travis/build/TddDoctor/devtrac-distro/modules/ sites/default/
   - sudo chmod 777 sites/default/settings.php 
   - sudo echo " " >> sites/default/settings.php
