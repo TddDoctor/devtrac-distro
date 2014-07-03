@@ -1,8 +1,7 @@
 <?php
-
 /**
  * @file
- * Install, update and uninstall functions for the devtrac_distro installation profile.
+ * Install, update and uninstall functions for the devtrac installation profile.
  */
 
 /**
@@ -12,7 +11,7 @@
  *
  * @see system_install()
  */
-function devtrac_distro_install() {
+function devtrac_install() {
   // Add text formats.
   $filtered_html_format = array(
     'format' => 'filtered_html',
@@ -68,8 +67,8 @@ function devtrac_distro_install() {
   );
   $full_html_format = (object) $full_html_format;
   filter_format_save($full_html_format);
-
-  // Enable some standard blocks.
+/*
+  // Enable some devtrac blocks.
   $default_theme = variable_get('theme_default', 'bartik');
   $admin_theme = 'seven';
   $blocks = array(
@@ -199,7 +198,7 @@ function devtrac_distro_install() {
     $query->values($block);
   }
   $query->execute();
-
+*/
   // Insert default pre-defined node types into the database. For a complete
   // list of available node type attributes, refer to the node type API
   // documentation at: http://api.drupal.org/api/HEAD/function/hook_node_info.
@@ -228,34 +227,6 @@ function devtrac_distro_install() {
     $type = node_type_set_defaults($type);
     node_type_save($type);
     node_add_body_field($type);
-  }
-
-  // Insert default pre-defined RDF mapping into the database.
-  $rdf_mappings = array(
-    array(
-      'type' => 'node',
-      'bundle' => 'page',
-      'mapping' => array(
-        'rdftype' => array('foaf:Document'),
-      ),
-    ),
-    array(
-      'type' => 'node',
-      'bundle' => 'article',
-      'mapping' => array(
-        'field_image' => array(
-          'predicates' => array('og:image', 'rdfs:seeAlso'),
-          'type' => 'rel',
-        ),
-        'field_tags' => array(
-          'predicates' => array('dc:subject'),
-          'type' => 'rel',
-        ),
-      ),
-    ),
-  );
-  foreach ($rdf_mappings as $rdf_mapping) {
-    rdf_mapping_save($rdf_mapping);
   }
 
   // Default "Basic page" to not be promoted and have comments disabled.
@@ -325,11 +296,9 @@ function devtrac_distro_install() {
   );
   field_create_instance($instance);
 
-
   // Create an image field named "Image", enabled for the 'article' content type.
   // Many of the following values will be defaulted, they're included here as an illustrative examples.
   // See http://api.drupal.org/api/function/field_create_field/7
-
   $field = array(
     'field_name' => 'field_image',
     'type' => 'image',
@@ -357,7 +326,6 @@ function devtrac_distro_install() {
     'bundle' => 'article',
     'description' => st('Upload an image to go with this article.'),
     'required' => FALSE,
-
     'settings' => array(
       'file_directory' => 'field/image',
       'file_extensions' => 'png gif jpg jpeg',
@@ -367,7 +335,6 @@ function devtrac_distro_install() {
       'alt_field' => TRUE,
       'title_field' => '',
     ),
-
     'widget' => array(
       'type' => 'image_image',
       'settings' => array(
@@ -376,7 +343,6 @@ function devtrac_distro_install() {
       ),
       'weight' => -1,
     ),
-
     'display' => array(
       'default' => array(
         'label' => 'hidden',
@@ -413,23 +379,209 @@ function devtrac_distro_install() {
     ->fields(array('uid' => 1, 'rid' => $admin_role->rid))
     ->execute();
 
-  // Create a Home link in the main menu.
-  $item = array(
-    'link_title' => st('Home'),
-    'link_path' => '<front>',
-    'menu_name' => 'main-menu',
-  );
-  menu_link_save($item);
-
-  // Update the menu router information.
-  menu_rebuild();
-
-  // Enable the admin theme.
-  db_update('system')
-    ->fields(array('status' => 1))
-    ->condition('type', 'theme')
-    ->condition('name', 'seven')
-    ->execute();
-  variable_set('admin_theme', 'seven');
+  // Enable the administration theme.
+  $admin_theme = 'seven';
+  theme_enable(array($admin_theme));
+  variable_set('admin_theme', $admin_theme);
   variable_set('node_admin_theme', '1');
+
+  // Set the default theme.
+  $default_theme = 'devtrac7_theme';
+  theme_enable(array($default_theme));
+  variable_set('theme_default', $default_theme);
+}
+
+/**
+ * Implements hook_install_tasks().
+ */
+function devtrac_install_tasks(&$install_state) {
+  if (!variable_get('install_profile', FALSE) && $install_state['database_tables_exist']) {
+	  $profile = drupal_get_profile();
+  	if (isset($profile) && !empty($profile)) {
+  	  variable_set('install_profile', $profile);
+    }
+  }
+
+  // Increase maximum function nesting level to prevent install errors.
+  // $max_nesting_level = ini_get('xdebug.max_nesting_level');
+  // if ($max_nesting_level > 0 && $max_nesting_level <= '200') {
+  //   ini_set('xdebug.max_nesting_level', 200);
+  // }
+
+  // Remove any status messages that might have been set. They are unneeded.
+//  drupal_get_messages('status', TRUE);
+
+  $tasks = array();
+  $current_task = variable_get('install_task', 'done');
+  
+  $tasks['devtrac_import_codelists'] = array(
+    'display_name' => st('Import CodeLists'),
+    'type' => 'batch',
+  );  
+  $tasks['devtrac_install_additional_modules'] = array(
+    'display_name' => st('Install additional functionality'),
+    'type' => 'batch',
+  );
+  return $tasks;
+}
+
+/**
+ * Implements hook_install_tasks_alter().
+ */
+function devtrac_install_tasks_alter(&$tasks, $install_state) {
+  // The Solr congiguration screen needs to come after the database
+  // setup, enabling the system module and after the full bootstrap.
+  $solr_task['devtrac_solr_configure_form'] = array(
+    'display_name' => st('Configure Solr search'),
+    'type' => 'form',
+  );
+  $old_tasks = $tasks;
+  $tasks = array_slice($old_tasks, 0, 8) + $solr_task + array_slice($old_tasks, 8);
+}
+
+/**
+ * Task callback: uses Batch API to import modules based on user selection.
+ * Installs all demo store modules if requested, or any modules providing
+ * additional functionality to the base install.
+ *
+ * Any modules providing custom blocks should be enabled here, and not before
+ * (as an install profile dependency), because the themes are setup during
+ * commerce_kickstart_install(), which means region assignment can only happen
+ * after that.
+ */
+function devtrac_install_additional_modules(&$install_state) {
+  $modules = array(
+    'devtrac7_field_permissions_feature',
+  );
+
+  // Resolve the dependencies now, so that module_enable() doesn't need
+  // to do it later for each individual module (which kills performance).
+  $files = system_rebuild_module_data();
+  $modules_sorted = array();
+  foreach ($modules as $module) {
+    if ($files[$module]->requires) {
+      // Create a list of dependencies that haven't been installed yet.
+      $dependencies = array_keys($files[$module]->requires);
+      $dependencies = array_filter($dependencies, '_devtrac_filter_dependencies');
+      // Add them to the module list.
+      $modules = array_merge($modules, $dependencies);
+    }
+  }
+  $modules = array_unique($modules);
+  foreach ($modules as $module) {
+    $modules_sorted[$module] = $files[$module]->sort;
+  }
+  arsort($modules_sorted);
+
+  $operations = array();
+  // Enable and set as default the correct theme.
+  $theme = 'devtrac7_theme';
+  $operations[] = array('_devtrac_enable_theme', array($theme));
+  // Enable the selected modules.
+  foreach ($modules_sorted as $module => $weight) {
+    $operations[] = array('_devtrac_enable_module', array($module, $files[$module]->info['name']));
+  }
+  $operations[] = array('_devtrac_flush_caches', array(t('Flushed caches.')));
+
+  $batch = array(
+    // 'title' => $install_demo_store ? t('Installing Demo Data') : t('Installing additional functionality'),
+    'operations' => $operations,
+    'file' => drupal_get_path('profile', 'devtrac') . '/devtrac.install_callbacks.inc',
+  );
+
+  return $batch;
+}
+
+/**
+ * Import codelists using module devtrac_imports.
+ */
+function devtrac_import_codelists() {
+	$batch = devtrac_imports_batch() ;
+	return $batch;
+}
+/**
+ * array_filter() callback used to filter out already installed dependencies.
+ */
+function _devtrac_filter_dependencies($dependency) {
+	return !module_exists($dependency);
+}
+
+/**
+ * Inplements devtrac_solr_configure_form()
+ */
+function devtrac_solr_configure_form() {
+  include_once DRUPAL_ROOT . '/includes/iso.inc';
+
+  drupal_set_title(st('Configure Solr Settings'));
+
+  $form['solr'] = array(
+    '#type' => 'fieldset',
+    '#title' => st('Solr Settings'),
+  );
+  $form['solr']['host'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Host'),
+    '#default_value' => 'solro2.mountbatten.net',
+    '#maxlength' => 64,
+    '#description' => t('Add hostname or IP address of ur solr server', array('@overview' => url('admin/structure/block'))),
+    '#required' => FALSE,
+    '#weight' => -20,
+  );
+  $form['solr']['port'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Port'),
+    '#default_value' => '8080',
+    '#maxlength' => 64,
+    '#description' => t('Port Number'),
+    '#required' => FALSE,
+    '#weight' => -19,
+  );
+  $form['solr']['path'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Path'),
+    '#default_value' => 'solr4/devtracd7',
+    '#maxlength' => 64,
+    '#description' => t('Path to your solr Instance', array('@overview' => url('admin/structure/block'))),
+    '#required' => FALSE,
+    '#weight' => -18,
+  );
+
+  $form['actions'] = array('#type' => 'actions');
+  $form['actions']['submit'] = array(
+    '#type' => 'submit',
+    '#value' => st('Create and Continue'),
+    '#weight' => 15,
+  );
+  return $form;
+}
+
+function devtrac_solr_configure_form_submit($form, &$form_state) {
+
+  global $conf, $databases, $drupal_hash_salt;
+
+  $settings=array();
+  $settings['databases']=array( 'value' => $databases);
+  $settings['drupal_hash_salt']=array('value' => $drupal_hash_salt);
+  $settings['conf[\'' .'search_api_solr_overrides' . '\']'] =  array (
+    'value'=> array(
+      'localhost' => array(
+        'name' => st('Devtrac Solr Server (Overridden)'),
+        'options' => array(
+          'host' => $form_state['values']['host'],
+          'port' => $form_state['values']['port'],
+          'path' => $form_state['values']['path'],
+          'http_user' => '',
+          'http_pass' => '',
+          'excerpt' => 0,
+          'retrieve_data' => 0,
+          'highlight_data' => 0,
+          'http_method' => 'POST',
+        )
+      )
+    ),
+    'required' => TRUE
+  );
+  //Do the actual write to settings.php.
+  drupal_rewrite_settings($settings);
+
 }

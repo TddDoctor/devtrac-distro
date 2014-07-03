@@ -12,21 +12,15 @@ class solrConfigTest extends DrupalWebTestCase {
   }
 
 function setUp() {
-    parent::setUp();
+  parent::setUp();
 
- $this->admin_user = $this->drupalCreateUser(array(
-      'administer blocks',
-      'access administration pages','administer users', 
-      'administer permissions', 'access user profiles',
-      'administer site configuration', 'administer modules',
-    ));
-    $this->drupalLogin($this->admin_user);
+   $this->admin_user = $this->drupalCreateUser(array('administer blocks', 'create blog content', 'administer nodes', 'administer users'));
+  $this->drupalLogin($this->admin_user);
 }
 
 public function testsolrConnecting() {
-$this->drupalGet('admin/config/search/search_api/server/devtrac_solr_server/edit');
-$this->assertResponse(200, 'resource found');
-
+  $this->drupalGet('user');
+  $this->assertResponse(200, 'resource found');
 
 }
 
