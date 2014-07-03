@@ -37,7 +37,7 @@ before_script:
   - drush --yes make build-devtrac_distro.make build
   # removed the testing module
   #- chmod 777 -R test/solrtest/
-  #- cp -R test/solrtest/ build/sites/default/modules/
+  - cp -R /home/travis/build/TddDoctor/devtrac-distro/modules/* build/sites/default/modules/
   - cd build
   - drush --yes site-install minimal --db-url="mysql://travis@127.0.0.1/devtrac_distro"
   - drush --yes dl search_api_solr
