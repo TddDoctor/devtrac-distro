@@ -14,7 +14,7 @@
 function devtrac_install() {
   // Add text formats.
   $filtered_html_format = array(
-    'format' => 'filtered_html',
+    'format' => '1',
     'name' => 'Filtered HTML',
     'weight' => 0,
     'filters' => array(
@@ -44,7 +44,7 @@ function devtrac_install() {
   filter_format_save($filtered_html_format);
 
   $full_html_format = array(
-    'format' => 'full_html',
+    'format' => '2',
     'name' => 'Full HTML',
     'weight' => 1,
     'filters' => array(
@@ -380,10 +380,10 @@ function devtrac_install() {
     ->execute();
 
   // Enable the administration theme.
-  $admin_theme = 'seven';
+  $admin_theme = 'shiny';
   theme_enable(array($admin_theme));
   variable_set('admin_theme', $admin_theme);
-  variable_set('node_admin_theme', '1');
+  variable_set('node_admin_theme', '0');
 
   // Set the default theme.
   $default_theme = 'devtrac7_theme';
@@ -396,9 +396,9 @@ function devtrac_install() {
  */
 function devtrac_install_tasks(&$install_state) {
   if (!variable_get('install_profile', FALSE) && $install_state['database_tables_exist']) {
-	  $profile = drupal_get_profile();
-  	if (isset($profile) && !empty($profile)) {
-  	  variable_set('install_profile', $profile);
+    $profile = drupal_get_profile();
+    if (isset($profile) && !empty($profile)) {
+      variable_set('install_profile', $profile);
     }
   }
 
@@ -409,18 +409,44 @@ function devtrac_install_tasks(&$install_state) {
   // }
 
   // Remove any status messages that might have been set. They are unneeded.
-//  drupal_get_messages('status', TRUE);
+  //  drupal_get_messages('status', TRUE);
 
   $tasks = array();
   $current_task = variable_get('install_task', 'done');
-  
-  $tasks['devtrac_import_codelists'] = array(
-    'display_name' => st('Import CodeLists'),
-    'type' => 'batch',
-  );  
+
+  $statistics_is_piwik = !empty($install_state['parameters']['stats']) && $install_state['parameters']['stats'] == 'piwik';
+  $statistics_is_googleanalytics = !empty($install_state['parameters']['stats']) && $install_state['parameters']['stats'] == 'googleanalytics';
+  $tasks['devtrac_install_statistics_select_form'] = array(
+    'display_name' => st('Enable site statistics'),
+    'type' => 'form',
+  );
+  $tasks['devtrac_install_statistics_config_form'] = array(
+    'display_name' => st('Configure site statistics'),
+    'type' => 'form',
+    'display' => $statistics_is_piwik || $statistics_is_googleanalytics,
+    'run' => $statistics_is_piwik || $statistics_is_googleanalytics ? INSTALL_TASK_RUN_IF_NOT_COMPLETED : INSTALL_TASK_SKIP,
+    'function' => $statistics_is_piwik ? 'devtrac_install_statistics_config_piwik_form' : 'devtrac_install_statistics_config_google_analytics_form',
+  );
   $tasks['devtrac_install_additional_modules'] = array(
     'display_name' => st('Install additional functionality'),
     'type' => 'batch',
+  );
+  $tasks['devtrac_import_codelists'] = array(
+    'display_name' => st('Import CodeLists'),
+    'type' => 'batch',
+  );
+  $tasks['devtrac_initialize_taxonomy_access'] = array(
+    'display_name' => st('Initialize taxonomy access'),
+    'display' => FALSE,
+    'type' => 'normal',
+  );
+  $tasks['devtrac_date_format_form'] = array(
+    'display_name' => st('Configure Date Format'),
+    'type' => 'form',
+  );
+  $tasks['devtrac_username_geonames_form'] = array(
+    'display_name' => st('Configure Geonames Data'),
+    'type' => 'form',
   );
   return $tasks;
 }
@@ -440,20 +466,152 @@ function devtrac_install_tasks_alter(&$tasks, $install_state) {
 }
 
 /**
+ * Task callback: uses Form API.
+ */
+function devtrac_install_statistics_select_form() {
+  drupal_set_title(st('Enable site statistics'));
+
+  $options = array(
+    'none' => 'None',
+    'piwik' => t('Piwik'),
+    'googleanalytics' => t('Google Analytics'),
+  );
+  $form['module'] = array(
+    '#type' => 'radios',
+    '#title' => t('Site statistics module to use'),
+    '#default_value' => 'none',
+    '#options' => $options,
+    '#description' => t("The module to use to track your site's usage statistics."),
+  );
+
+  $form['actions'] = array('#type' => 'actions');
+  $form['actions']['submit'] = array(
+    '#type' => 'submit',
+    '#value' => st('Continue'),
+    '#weight' => 15,
+  );
+  return $form;
+}
+
+/**
+ * Implements submit handler for devtrac_install_statistics_select_form.
+ */
+function devtrac_install_statistics_select_form_submit($form, &$form_state) {
+  global $install_state;
+  if (isset($form_state['values']['module']) && ($form_state['values']['module'] != 'none')) {
+    $install_state['parameters']['stats'] = $form_state['values']['module'];
+  }
+}
+
+/**
+ * Task callback: uses Form API.
+ */
+function devtrac_install_statistics_config_piwik_form() {
+  drupal_set_title(st('Configure Piwik'));
+
+  $form['piwik_info'] = array(
+    '#title' => t('Information'),
+    '#prefix' => '<div>',
+    '#markup' => '<a href="www.piwik.org">Piwik - Web analytics</a> is an open source (GPL license) web analytics software. It gives interesting reports on your website visitors, your popular pages, the search engines keywords they used, the language they speak... and so much more. Piwik aims to be an open source alternative to Google Analytics.<br /><br />Please fill out the general settings. Piwik has many more settings. During this installation the defaults will be used. After the installation you can go to <a href="admin/config/system/piwik">admin/config/system/piwik</a> to change any of these settings.',
+    '#suffix' => '</div>',
+  );
+  $form['piwik_site_id'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Piwik site ID'),
+    '#default_value' => '',
+    '#required' => TRUE,
+    '#description' => t('The user account number is unique to the websites domain. Click the <strong>Settings</strong> link in your Piwik account, then the <strong>Websites</strong> tab and enter the appropriate site <strong>ID</strong> into this field.'),
+  );
+  $form['piwik_url_http'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Piwik HTTP URL'),
+    '#default_value' => '',
+    '#required' => TRUE,
+    '#description' => t('The URL to your Piwik base directory. Example: "http://www.example.com/piwik/".'),
+  );
+  $form['piwik_url_https'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Piwik HTTPS URL'),
+    '#default_value' => '',
+    '#description' => t('The URL to your Piwik base directory with SSL certificate installed. Required if you track a SSL enabled website. Example: "https://www.example.com/piwik/".'),
+  );
+
+  $form['actions'] = array('#type' => 'actions');
+  $form['actions']['submit'] = array(
+    '#type' => 'submit',
+    '#value' => st('Continue'),
+    '#weight' => 15,
+  );
+  return $form;
+}
+
+/**
+ * Implements submit handler for devtrac_install_statistics_config_piwik_form.
+ */
+function devtrac_install_statistics_config_piwik_form_submit($form, &$form_state) {
+  global $install_state;
+  $install_state['statistics']['piwik']['piwik_site_id'] = $form_state['values']['piwik_site_id'];
+  variable_set('piwik_site_id', $form_state['values']['piwik_site_id']);
+  $install_state['statistics']['piwik']['piwik_url_http'] = $form_state['values']['piwik_url_http'];
+  variable_set('piwik_url_http', $form_state['values']['piwik_url_http']);
+  if (isset($form_state['values']['piwik_url_https'])) {
+    $install_state['statistics']['piwik']['piwik_url_https'] = $form_state['values']['piwik_url_https'];
+    variable_set('piwik_url_https', $form_state['values']['piwik_url_https']);
+  }
+}
+
+/**
+ * Task callback: uses Form API.
+ */
+function devtrac_install_statistics_config_google_analytics_form() {
+  drupal_set_title(st('Configure Google Analytics'));
+
+  $form['googleanalytics_info'] = array(
+    '#title' => t('Information'),
+    '#prefix' => '<div>',
+    '#markup' => '<a href="www.google.com/analytics">Google Analytics</a> is a free (registration required) website traffic and marketing effectiveness service.<br /><br />Please fill out the general settings. Google Analytics has many more settings. During this installation the defaults will be used. After the installation you can go to <a href="admin/config/system/googleanalytics">admin/config/system/googleanalytics</a> to change any of these settings.',
+    '#suffix' => '</div>',
+  );
+  $form['googleanalytics_account'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Web Property ID'),
+    '#default_value' => 'UA-',
+    '#required' => TRUE,
+    '#description' => t('This ID is unique to each site you want to track separately, and is in the form of UA-xxxxxxx-yy. To get a Web Property ID, <a href="www.google.com/analytics">register your site with Google Analytics</a>, or if you already have registered your site, go to your Google Analytics Settings page to see the ID next to every site profile. <a href="https://developers.google.com/analytics/resources/concepts/gaConceptsAccounts#webProperty">Find more information in the documentation</a>.'),
+  );
+
+  $form['actions'] = array('#type' => 'actions');
+  $form['actions']['submit'] = array(
+    '#type' => 'submit',
+    '#value' => st('Continue'),
+    '#weight' => 15,
+  );
+  return $form;
+}
+
+/**
+ * Implements submit handler for devtrac_install_statistics_config_google_analytics_form.
+ */
+function devtrac_install_statistics_config_google_analytics_form_submit($form, &$form_state) {
+  global $install_state;
+  $install_state['statistics']['googleanalytics']['googleanalytics_account'] = $form_state['values']['googleanalytics_account'];
+  variable_set('googleanalytics_account', $form_state['values']['googleanalytics_account']);
+}
+
+/**
  * Task callback: uses Batch API to import modules based on user selection.
- * Installs all demo store modules if requested, or any modules providing
+ * Installs a site statistics module if requested, or any modules providing
  * additional functionality to the base install.
- *
- * Any modules providing custom blocks should be enabled here, and not before
- * (as an install profile dependency), because the themes are setup during
- * commerce_kickstart_install(), which means region assignment can only happen
- * after that.
  */
 function devtrac_install_additional_modules(&$install_state) {
   $modules = array(
+    'devtrac7_profile_menu',
     'devtrac7_field_permissions_feature',
   );
-
+  if (isset($install_state['parameters']['stats'])) {
+    $modules[] = $install_state['parameters']['stats'];
+  }
+  
   // Resolve the dependencies now, so that module_enable() doesn't need
   // to do it later for each individual module (which kills performance).
   $files = system_rebuild_module_data();
@@ -484,7 +642,6 @@ function devtrac_install_additional_modules(&$install_state) {
   $operations[] = array('_devtrac_flush_caches', array(t('Flushed caches.')));
 
   $batch = array(
-    // 'title' => $install_demo_store ? t('Installing Demo Data') : t('Installing additional functionality'),
     'operations' => $operations,
     'file' => drupal_get_path('profile', 'devtrac') . '/devtrac.install_callbacks.inc',
   );
@@ -496,22 +653,169 @@ function devtrac_install_additional_modules(&$install_state) {
  * Import codelists using module devtrac_imports.
  */
 function devtrac_import_codelists() {
-	$batch = devtrac_imports_batch() ;
-	return $batch;
+  $batch = devtrac_imports_batch();
+  // Remove any status messages that might have been set.
+  drupal_get_messages('status', TRUE);
+  return $batch;
 }
+
+/**
+ * Initialize taxonomy access settings.
+ */
+function devtrac_initialize_taxonomy_access() {
+  // Initialize some default settings.
+  $deny = array(
+    'view' => 0,
+    'update' => 0,
+    'delete' => 0,
+    'create' => 0,
+    'list' => 0,
+  );
+  $list = array(
+    'view' => 0,
+    'update' => 0,
+    'delete' => 0,
+    'create' => 0,
+    'list' => 1,
+  );
+  $view_and_list = array(
+    'view' => 1,
+    'update' => 0,
+    'delete' => 0,
+    'create' => 0,
+    'list' => 1,
+  );
+  $create_and_list = array(
+    'view' => 0,
+    'update' => 0,
+    'delete' => 0,
+    'create' => 1,
+    'list' => 1,
+  );
+
+  // Get the array of all role names, indexed by rid.
+  $roles = _taxonomy_access_user_roles();
+  // Get the array of all vocabulary objects, indexed by vid.
+  $vocabularies = taxonomy_get_vocabularies();
+
+  // Initialize global settings for different roles.
+  foreach ($roles as $rid => $role_name) {
+    switch ($role_name) {
+      case 'anonymous user':
+        $anonymous_global_defaults[0] = _taxonomy_access_format_grant_record(0, $rid, $view_and_list, TRUE);
+        break;
+      case 'authenticated user':
+        $authenticated_global_defaults[0] = _taxonomy_access_format_grant_record(0, $rid, $view_and_list, TRUE);
+        break;
+      case 'editor':
+        $editor_global_defaults[0] = _taxonomy_access_format_grant_record(0, $rid, $list, TRUE);
+        break;
+      case 'field worker':
+        $worker_global_defaults[0] = _taxonomy_access_format_grant_record(0, $rid, $list, TRUE);
+        break;
+      default:
+    }
+  }
+
+  // Initialize vocabulary settings for different roles.
+  foreach ($roles as $rid => $role_name) {
+    foreach ($vocabularies as $vid => $vocabulary) {
+      switch ($role_name) {
+        case 'anonymous user':
+          $anonymous_vocabulary_defaults[$vid] = _taxonomy_access_format_grant_record($vid, $rid, $list, TRUE);
+          break;
+        case 'authenticated user':
+          $authenticated_vocabulary_defaults[$vid] = _taxonomy_access_format_grant_record($vid, $rid, $deny, TRUE);
+          break;
+        case 'editor':
+          $editor_vocabulary_defaults[$vid] = _taxonomy_access_format_grant_record($vid, $rid, $create_and_list, TRUE);
+          break;
+        case 'field worker':
+          $worker_vocabulary_defaults[$vid] = _taxonomy_access_format_grant_record($vid, $rid, $create_and_list, TRUE);
+          break;
+        default:
+      }
+    }
+  }
+
+  // Initialize term settings for different roles.
+  foreach ($roles as $rid => $role_name) {
+    foreach ($vocabularies as $vid => $vocabulary) {
+      $terms = taxonomy_get_tree($vid, 0, NULL, TRUE);
+      foreach ($terms as $term) {
+        switch ($role_name) {
+          case 'editor':
+            $children = taxonomy_get_children($term->tid);
+            if (empty($children)) {
+              // $editor_term_defaults[$term->tid] = _taxonomy_access_format_grant_record($term->tid, $rid, $create_and_list);
+            }
+            else {
+              $editor_term_defaults[$term->tid] = _taxonomy_access_format_grant_record($term->tid, $rid, $list);
+            }
+            break;
+          case 'field worker':
+            $children = taxonomy_get_children($term->tid);
+            if (empty($children)) {
+              // $worker_term_defaults[$term->tid] = _taxonomy_access_format_grant_record($term->tid, $rid, $create_and_list);
+            }
+            else {
+              $worker_term_defaults[$term->tid] = _taxonomy_access_format_grant_record($term->tid, $rid, $list);
+            }
+            break;
+          default:
+        }
+      }
+    }
+  }
+
+  // Process global default grants.
+  if (!empty($anonymous_global_defaults)) {
+    taxonomy_access_set_default_grants($anonymous_global_defaults);
+  }
+  if (!empty($authenticated_global_defaults)) {
+    taxonomy_access_set_default_grants($authenticated_global_defaults);
+  }
+  if (!empty($editor_global_defaults)) {
+    taxonomy_access_set_default_grants($editor_global_defaults);
+  }
+  if (!empty($worker_global_defaults)) {
+    taxonomy_access_set_default_grants($worker_global_defaults);
+  }
+
+  // Process vocabulary default grants.
+  if (!empty($anonymous_vocabulary_defaults)) {
+    taxonomy_access_set_default_grants($anonymous_vocabulary_defaults);
+  }
+  if (!empty($authenticated_vocabulary_defaults)) {
+    taxonomy_access_set_default_grants($authenticated_vocabulary_defaults);
+  }
+  if (!empty($editor_vocabulary_defaults)) {
+    taxonomy_access_set_default_grants($editor_vocabulary_defaults);
+  }
+  if (!empty($worker_vocabulary_defaults)) {
+    taxonomy_access_set_default_grants($worker_vocabulary_defaults);
+  }
+
+  // Process term grants.
+  if (!empty($editor_term_defaults)) {
+    taxonomy_access_set_term_grants($editor_term_defaults);
+  }
+  if (!empty($worker_term_defaults)) {
+    taxonomy_access_set_term_grants($worker_term_defaults);
+  }
+}
+
 /**
  * array_filter() callback used to filter out already installed dependencies.
  */
 function _devtrac_filter_dependencies($dependency) {
-	return !module_exists($dependency);
+  return !module_exists($dependency);
 }
 
 /**
  * Inplements devtrac_solr_configure_form()
  */
 function devtrac_solr_configure_form() {
-  include_once DRUPAL_ROOT . '/includes/iso.inc';
-
   drupal_set_title(st('Configure Solr Settings'));
 
   $form['solr'] = array(
@@ -539,7 +843,7 @@ function devtrac_solr_configure_form() {
   $form['solr']['path'] = array(
     '#type' => 'textfield',
     '#title' => t('Path'),
-    '#default_value' => 'solr4/devtracd7',
+    '#default_value' => '/solr4/devtracd7',
     '#maxlength' => 64,
     '#description' => t('Path to your solr Instance', array('@overview' => url('admin/structure/block'))),
     '#required' => FALSE,
@@ -556,16 +860,24 @@ function devtrac_solr_configure_form() {
 }
 
 function devtrac_solr_configure_form_submit($form, &$form_state) {
+  global $databases, $drupal_hash_salt;
 
-  global $conf, $databases, $drupal_hash_salt;
+  $settings = array();
+  $settings['databases'] = array(
+    'value' => $databases,
+  );
+  $settings['drupal_hash_salt'] = array(
+    'value' => $drupal_hash_salt,
+  );
 
-  $settings=array();
-  $settings['databases']=array( 'value' => $databases);
-  $settings['drupal_hash_salt']=array('value' => $drupal_hash_salt);
-  $settings['conf[\'' .'search_api_solr_overrides' . '\']'] =  array (
-    'value'=> array(
-      'localhost' => array(
-        'name' => st('Devtrac Solr Server (Overridden)'),
+  $settings["conf['search_api_override_mode']"] = array(
+    'value' => 'load',
+    'required' => TRUE,
+  );
+  $settings["conf['search_api_override_servers']"] = array(
+    'value' => array(
+      'devtrac_solr_server' => array(
+        'name' => 'Devtrac Solr Server (Overridden)',
         'options' => array(
           'host' => $form_state['values']['host'],
           'port' => $form_state['values']['port'],
@@ -576,12 +888,59 @@ function devtrac_solr_configure_form_submit($form, &$form_state) {
           'retrieve_data' => 0,
           'highlight_data' => 0,
           'http_method' => 'POST',
-        )
-      )
+        ),
+      ),
     ),
-    'required' => TRUE
+    'required' => TRUE,
   );
+
   //Do the actual write to settings.php.
   drupal_rewrite_settings($settings);
+}
 
+function devtrac_date_format_form() {
+  module_load_include('inc', 'system', 'system.admin');
+  $date_time_settings = system_date_time_settings();
+  // Remove any status messages that might have been set.
+  drupal_get_messages('status', TRUE);
+  return $date_time_settings;
+}
+
+/**
+ * Iplements hook_username_geonames_form()
+ */
+function devtrac_username_geonames_form() {
+  drupal_set_title(st('Configure Geonames Username'));
+
+  $form['geo_usr_name'] = array(
+    '#type' => 'fieldset',
+    '#title' => st('Geonames Settings'),
+  );
+
+  $form['geo_usr_name']['username'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Registered Username'),
+    '#maxlength' => 64,
+    '#description' => t('<a href="http://www.geonames.org/login">The username</a> for your application can be registered here.
+      You will then receive an email with a confirmation link and after you have confirmed the email you can enable your account
+      for the webservice on your account page'),
+    '#required' => FALSE,
+    '#default_value' => 'devtrac',
+    '#weight' => -18,
+  );
+
+  $form['actions'] = array('#type' => 'actions');
+  $form['actions']['submit'] = array(
+    '#type' => 'submit',
+    '#value' => st('Create and Continue'),
+    '#weight' => 15,
+  );
+  return $form;
+}
+
+/**
+ * Implements username_geonames_form_submit()
+ */
+function devtrac_username_geonames_form_submit($form, &$form_state) {
+  variable_set('geonames_username',$form_state['values']['username']);
 }
