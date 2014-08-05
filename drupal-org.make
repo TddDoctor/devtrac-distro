@@ -1,6 +1,16 @@
-; Drupal Make File
-api = 2
+; Drush Make File
 core = 7.x
+api = 2
+
+projects[drupal][type] = core
+projects[drupal][version] = "7.30"
+
+; Mountbatten defaults
+includes[mountbatten_web_analytics] = https://raw.githubusercontent.com/benjaminug/mountbatten_makefiles/master/mountbatten_web_analytics.make
+includes[mountbatten_seo] = https://raw.githubusercontent.com/benjaminug/mountbatten_makefiles/master/mountbatten_seo.make
+includes[mountbatten_spam_protection] = https://raw.githubusercontent.com/benjaminug/mountbatten_makefiles/master/mountbatten_spam_protection.make
+includes[mountbatten_web_media] = https://raw.githubusercontent.com/benjaminug/mountbatten_makefiles/master/mountbatten_web_media.make
+
 ; Modules
 projects[acl][version] = "1.0"
 projects[acl][type] = "module"
@@ -18,7 +28,7 @@ projects[admin_menu][subdir] = "contrib"
 ; projects[advanced_help][type] = "module"
 ; projects[advanced_help][subdir] = "contrib"
 
-projects[autoassignrole][version] = "1.0-beta1"
+projects[autoassignrole][version] = "1.0-beta2"
 projects[autoassignrole][type] = "module"
 projects[autoassignrole][subdir] = "contrib"
 
@@ -50,10 +60,6 @@ projects[chosen][version] = "2.0-beta4"
 projects[chosen][type] = "module"
 projects[chosen][subdir] = "contrib"
 
-projects[ckeditor][version] = "1.14"
-projects[ckeditor][type] = "module"
-projects[ckeditor][subdir] = "contrib"
-
 projects[collapsiblock][version] = "1.0"
 projects[collapsiblock][type] = "module"
 projects[collapsiblock][subdir] = "contrib"
@@ -71,7 +77,6 @@ projects[content_taxonomy][type] = "module"
 projects[content_taxonomy][subdir] = "contrib"
 
 projects[context][version] = "3.2"
-;projects[context][patch][] = "https://drupal.org/files/sitewide_hook_init-1893068-1.patch"
 projects[context][type] = "module"
 projects[context][subdir] = "contrib"
 
@@ -83,7 +88,7 @@ projects[custom_breadcrumbs][version] = "2.0-alpha3"
 projects[custom_breadcrumbs][type] = "module"
 projects[custom_breadcrumbs][subdir] = "contrib"
 
-projects[date][version] = "2.7"
+projects[date][version] = "2.8"
 projects[date][type] = "module"
 projects[date][subdir] = "contrib"
 
@@ -123,13 +128,18 @@ projects[entityreference_prepopulate][version] = "1.5"
 projects[entityreference_prepopulate][type] = "module"
 projects[entityreference_prepopulate][subdir] = "contrib"
 
-projects[facetapi][version] = "1.3"
+projects[exif][version] = "1.2"
+projects[exif][type] = "module"
+projects[exif][subdir] = "contrib"
+
+projects[facetapi][version] = "1.5"
 projects[facetapi][type] = "module"
 projects[facetapi][subdir] = "contrib"
 
 projects[facetapi_bonus][version] = "1.1"
 projects[facetapi_bonus][type] = "module"
 projects[facetapi_bonus][subdir] = "contrib"
+projects[facetapi_bonus][patch][] = "https://www.drupal.org/files/facetapi_bonus_exclude_inaccessible_items.patch"
 
 projects[facetapi_graphs][version] = "1.x-dev"
 projects[facetapi_graphs][type] = "module"
@@ -139,7 +149,11 @@ projects[facetapi_tagcloud][version] = "1.0-beta1"
 projects[facetapi_tagcloud][type] = "module"
 projects[facetapi_tagcloud][subdir] = "contrib"
 
-projects[features][version] = "2.0"
+projects[facetapi_textfield_widget][version] = "1.x-dev"
+projects[facetapi_textfield_widget][type] = "module"
+projects[facetapi_textfield_widget][subdir] = "contrib"
+
+projects[features][version] = "2.1"
 projects[features][type] = "module"
 projects[features][subdir] = "contrib"
 
@@ -167,17 +181,23 @@ projects[file_entity][version] = "2.0-alpha3"
 projects[file_entity][type] = "module"
 projects[file_entity][subdir] = "contrib"
 
+projects[file_entity_usage][version] = "1.x-dev"
+projects[file_entity_usage][type] = "module"
+projects[file_entity_usage][subdir] = "contrib"
+
 projects[flot][version] = "1.x-dev"
 projects[flot][type] = "module"
 projects[flot][subdir] = "contrib"
+projects[flot][patch][] = "https://www.drupal.org/files/flot-pie_options-2088021-3.patch"
 
-projects[footable][version] = "1.0-beta2"
+projects[footable][version] = "1.0-beta3"
 projects[footable][type] = "module"
 projects[footable][subdir] = "contrib"
 
-projects[geocoder][version] = "1.2"
+projects[geocoder][version] = "1.x-dev"
 projects[geocoder][type] = "module"
 projects[geocoder][subdir] = "contrib"
+projects[geocoder][patch][] = "https://www.drupal.org/files/issues/geocoder-fix_nominatim_data-1748412-39.patch"
 
 projects[geocoder_wfs][version] = "1.0"
 projects[geocoder_wfs][type] = "module"
@@ -186,6 +206,9 @@ projects[geocoder_wfs][subdir] = "contrib"
 projects[geofield][version] = "2.1"
 projects[geofield][type] = "module"
 projects[geofield][subdir] = "contrib"
+projects[geofield][patch][] = "https://www.drupal.org/files/issues/geofield-merge-openlayers-layers.patch"
+projects[geofield][patch][] = "https://www.drupal.org/files/issues/geofield-sql-error-1965484-18.patch"
+projects[geofield][patch][] = "https://www.drupal.org/files/issues/geofield-wkb-exception-1924206-11.patch"
 
 projects[geonames][version] = "1.1"
 projects[geonames][type] = "module"
@@ -195,19 +218,21 @@ projects[geophp][version] = "1.7"
 projects[geophp][type] = "module"
 projects[geophp][subdir] = "contrib"
 
-projects[globalredirect][version] = "1.5"
-projects[globalredirect][type] = "module"
-projects[globalredirect][subdir] = "contrib"
-
-; This module might be deleted from the
-; code base during a separate install task.
 projects[google_analytics][version] = "1.4"
 projects[google_analytics][type] = "module"
 projects[google_analytics][subdir] = "contrib"
 
+projects[globalredirect][version] = "1.5"
+projects[globalredirect][type] = "module"
+projects[globalredirect][subdir] = "contrib"
+
 projects[hidden_comment][version] = "1.x-dev"
 projects[hidden_comment][type] = "module"
 projects[hidden_comment][subdir] = "contrib"
+
+projects[hurricane][version] = "1.x-dev"
+projects[hurricane][type] = "module"
+projects[hurricane][subdir] = "contrib"
 
 projects[image_url_formatter][version] = "1.4"
 projects[image_url_formatter][type] = "module"
@@ -220,6 +245,7 @@ projects[jquery_update][subdir] = "contrib"
 projects[kml][version] = "1.x-dev"
 projects[kml][type] = "module"
 projects[kml][subdir] = "contrib"
+projects[kml][patch][] = "https://www.drupal.org/files/kml_blockify.patch"
 
 projects[libraries][version] = "2.2"
 projects[libraries][type] = "module"
@@ -229,9 +255,17 @@ projects[link][version] = "1.2"
 projects[link][type] = "module"
 projects[link][subdir] = "contrib"
 
-projects[mapit][version] = "1.0"
+projects[mapit][version] = "1.x-dev"
 projects[mapit][type] = "module"
 projects[mapit][subdir] = "contrib"
+
+projects[masonry][version] = "2.0"
+projects[masonry][type] = "module"
+projects[masonry][subdir] = "contrib"
+
+projects[masonry_views][version] = "1.0"
+projects[masonry_views][type] = "module"
+projects[masonry_views][subdir] = "contrib"
 
 projects[maxlength][version] = "3.0-beta1"
 projects[maxlength][type] = "module"
@@ -241,13 +275,10 @@ projects[me][version] = "1.1"
 projects[me][type] = "module"
 projects[me][subdir] = "contrib"
 
-projects[media][version] = "2.0-alpha3"
-projects[media][type] = "module"
-projects[media][subdir] = "contrib"
-
 projects[menu_token][version] = "1.0-beta5"
 projects[menu_token][type] = "module"
 projects[menu_token][subdir] = "contrib"
+projects[menu_token][patch][] = "https://www.drupal.org/files/issues/localized_options-not-set.patch"
 
 projects[migrate][version] = "2.5"
 projects[migrate][type] = "module"
@@ -257,6 +288,10 @@ projects[migrate_extras][version] = "2.5"
 projects[migrate_extras][type] = "module"
 projects[migrate_extras][subdir] = "contrib"
 
+projects[module_filter][version] = "2.0-alpha2"
+projects[module_filter][type] = "module"
+projects[module_filter][subdir] = "contrib"
+
 projects[nice_menus][version] = "2.5"
 projects[nice_menus][type] = "module"
 projects[nice_menus][subdir] = "contrib"
@@ -264,32 +299,30 @@ projects[nice_menus][subdir] = "contrib"
 projects[openlayers][version] = "2.0-beta9"
 projects[openlayers][type] = "module"
 projects[openlayers][subdir] = "contrib"
+projects[openlayers][patch][] = "https://www.drupal.org/files/2060451-bbox_geojson_anydisplay_4.patch"
 
 projects[openlayers_geosearch][version] = "1.0-beta1"
 projects[openlayers_geosearch][type] = "module"
 projects[openlayers_geosearch][subdir] = "contrib"
 
-projects[openlayers_plus][version] = "3.0-beta1"
+projects[openlayers_plus][version] = "3.x-dev"
 projects[openlayers_plus][type] = "module"
 projects[openlayers_plus][subdir] = "contrib"
 
-projects[pane][version] = "2.4"
+projects[pane][version] = "2.5"
 projects[pane][type] = "module"
 projects[pane][subdir] = "contrib"
+projects[pane][patch][] = "https://www.drupal.org/files/issues/pane-remove-wrapper-markup-2119593-3.patch"
 
 projects[pathauto][version] = "1.2"
 projects[pathauto][type] = "module"
 projects[pathauto][subdir] = "contrib"
+projects[pathauto][patch][] = "https://www.drupal.org/files/pathauto-add-drush-support-867578-42.patch"
 
-; This module might be deleted from the
-; code base during a separate install task.
-projects[piwik][version] = "2.5"
-projects[piwik][type] = "module"
-projects[piwik][subdir] = "contrib"
-
-projects[prepopulate][version] = "2.x-dev"
+projects[prepopulate][version] = "2.0"
 projects[prepopulate][type] = "module"
 projects[prepopulate][subdir] = "contrib"
+projects[prepopulate][patch][] = "https://www.drupal.org/files/issues/prepopulate_undefined_index_type-1090930-4.patch"
 
 projects[profile_switcher][version] = "1.0-beta1"
 projects[profile_switcher][type] = "module"
@@ -307,17 +340,23 @@ projects[publishcontent][version] = "1.3"
 projects[publishcontent][type] = "module"
 projects[publishcontent][subdir] = "contrib"
 
-projects[purl][version] = "1.0-beta1"
+projects[purl][version] = "1.x-dev"
 projects[purl][type] = "module"
 projects[purl][subdir] = "contrib"
+projects[purl][patch][] = "https://www.drupal.org/files/1511708_5_menu_save.patch"
 
 projects[purl_search_api][version] = "1.0-beta1"
 projects[purl_search_api][type] = "module"
 projects[purl_search_api][subdir] = "contrib"
 
+projects[questionnaire][version] = "1.x-dev"
+projects[questionnaire][type] = "module"
+projects[questionnaire][subdir] = "contrib"
+
 projects[quicktabs][version] = "3.6"
 projects[quicktabs][type] = "module"
 projects[quicktabs][subdir] = "contrib"
+projects[quicktabs][patch][] = "https://www.drupal.org/files/quicktabs.user-interface.2108935-3.patch"
 
 projects[realname][version] = "1.2"
 projects[realname][type] = "module"
@@ -332,13 +371,18 @@ projects[relation_add][version] = "1.2"
 projects[relation_add][type] = "module"
 projects[relation_add][subdir] = "contrib"
 
-projects[robotstxt][version] = "1.1"
+projects[robotstxt][version] = "1.2"
 projects[robotstxt][type] = "module"
 projects[robotstxt][subdir] = "contrib"
 
-projects[search_api][version] = "1.12"
+projects[rules][version] = "2.7"
+projects[rules][type] = "module"
+projects[rules][subdir] = "contrib"
+
+projects[search_api][version] = "1.13"
 projects[search_api][type] = "module"
 projects[search_api][subdir] = "contrib"
+projects[search_api][patch][] = "https://www.drupal.org/files/issues/search_api-drush-user-do-not-test.patch"
 
 projects[search_api_autocomplete][version] = "1.1"
 projects[search_api_autocomplete][type] = "module"
@@ -347,6 +391,7 @@ projects[search_api_autocomplete][subdir] = "contrib"
 projects[search_api_date][version] = "1.0-alpha2"
 projects[search_api_date][type] = "module"
 projects[search_api_date][subdir] = "contrib"
+projects[search_api_date][patch][] = "https://www.drupal.org/files/issues/search_api_date-widget_date_only_links-2063115-7.patch"
 
 projects[search_api_file_usage][version] = "1.x-dev"
 projects[search_api_file_usage][type] = "module"
@@ -355,10 +400,20 @@ projects[search_api_file_usage][subdir] = "contrib"
 projects[search_api_saved_searches][version] = "1.3"
 projects[search_api_saved_searches][type] = "module"
 projects[search_api_saved_searches][subdir] = "contrib"
+projects[search_api_saved_searches][patch][] = "https://www.drupal.org/files/issues/search_api_saved_searches-7.x-1.2-reminders-3.patch"
+projects[search_api_saved_searches][patch][] = "https://www.drupal.org/files/issues/search_api_saved_searches-last_excuted-field-7.x-1.x-2142063_9.patch"
 
 projects[search_api_solr][version] = "1.5"
 projects[search_api_solr][type] = "module"
 projects[search_api_solr][subdir] = "contrib"
+
+projects[search_api_solr_boundingbox_search][version] = "1.x-dev"
+projects[search_api_solr_boundingbox_search][type] = "module"
+projects[search_api_solr_boundingbox_search][subdir] = "contrib"
+
+projects[search_api_solr_dynamic_ranges][version] = "1.x-dev"
+projects[search_api_solr_dynamic_ranges][type] = "module"
+projects[search_api_solr_dynamic_ranges][subdir] = "contrib"
 
 projects[search_api_override][version] = "1.0-rc1"
 projects[search_api_override][type] = "module"
@@ -376,6 +431,10 @@ projects[services_views][version] = "1.0"
 projects[services_views][type] = "module"
 projects[services_views][subdir] = "contrib"
 
+projects[special_menu_items][version] = "2.0"
+projects[special_menu_items][type] = "module"
+projects[special_menu_items][subdir] = "contrib"
+
 projects[stringoverrides][version] = "1.8"
 projects[stringoverrides][type] = "module"
 projects[stringoverrides][subdir] = "contrib"
@@ -387,6 +446,7 @@ projects[strongarm][subdir] = "contrib"
 projects[taxonomy_access][version] = "1.0-rc1"
 projects[taxonomy_access][type] = "module"
 projects[taxonomy_access][subdir] = "contrib"
+projects[taxonomy_access][patch][] = "https://www.drupal.org/files/1313912-5.patch"
 
 projects[tipsy][version] = "1.0-rc1"
 projects[tipsy][type] = "module"
@@ -407,6 +467,7 @@ projects[uuid][subdir] = "contrib"
 projects[views][version] = "3.8"
 projects[views][type] = "module"
 projects[views][subdir] = "contrib"
+projects[views][patch][] = "https://www.drupal.org/files/issues/views-site_info-730752-8.patch"
 
 projects[views_charts][version] = "1.x-dev"
 projects[views_charts][type] = "module"
@@ -415,22 +476,23 @@ projects[views_charts][subdir] = "contrib"
 projects[views_data_export][version] = "3.0-beta7"
 projects[views_data_export][type] = "module"
 projects[views_data_export][subdir] = "contrib"
+projects[views_data_export][patch][] = "https://www.drupal.org/files/issues/views_data_export-blockify_3.0-beta7.patch"
+projects[views_data_export][patch][] = "https://www.drupal.org/files/views_data_export-solr_export-1258390-13.patch"
 
 projects[views_field_view][version] = "1.1"
 projects[views_field_view][type] = "module"
 projects[views_field_view][subdir] = "contrib"
 
-projects[views_flipped_table][version] = "1.0-alpha2"
+projects[views_flipped_table][version] = "1.0"
 projects[views_flipped_table][type] = "module"
 projects[views_flipped_table][subdir] = "contrib"
 
 projects[views_geojson][version] = "1.x-dev"
 projects[views_geojson][type] = "module"
 projects[views_geojson][subdir] = "contrib"
-
-; projects[views_hacks][version] = "1.0-alpha2"
-; projects[views_hacks][type] = "module"
-; projects[views_hacks][subdir] = "contrib"
+projects[views_geojson][patch][] = "https://www.drupal.org/files/issues/1839554_views_geojson_bbox_argument_handler_fixes_15.patch"
+projects[views_geojson][patch][] = "https://drupal.org/files/bbox_on_all_views.patch"
+projects[views_geojson][patch][] = "https://www.drupal.org/files/views_geojson-description_property-2082143-1.patch"
 
 projects[views_infinite_scroll][version] = "1.1"
 projects[views_infinite_scroll][type] = "module"
@@ -452,14 +514,10 @@ projects[views_slideshow][version] = "3.x-dev"
 projects[views_slideshow][type] = "module"
 projects[views_slideshow][subdir] = "contrib"
 
-;projects[views_two_column_table][version] = "1.2"
-;projects[views_two_column_table][type] = "module"
-;projects[views_two_column_table][patch][] = "https://drupal.org/files/views_two_column_table_d7_upgrade-1273990-5.patch"
-;projects[views_two_column_table][subdir] = "contrib"
-
 projects[virtual_field][version] = "1.2"
 projects[virtual_field][type] = "module"
 projects[virtual_field][subdir] = "contrib"
+projects[virtual_field][patch][] = "https://www.drupal.org/files/virtual_field_views_support_1506376_2.patch"
 
 projects[wms][version] = "2.x-dev"
 projects[wms][type] = "module"
@@ -477,18 +535,14 @@ projects[commentblock][download][type] = "git"
 projects[commentblock][download][url] = "http://git.drupal.org/sandbox/bc/1447318.git"
 projects[commentblock][download][branch] = "7.x-1.x"
 projects[commentblock][subdir] = "contrib"
+projects[commentblock][patch][] = "https://www.drupal.org/files/parameter-1-expected-to-be-a-reference.patch"
 
 projects[facetapi_context][type] = "module"
 projects[facetapi_context][download][type] = "git"
 projects[facetapi_context][download][url] = "http://git.drupal.org/sandbox/ygerasimov/1591872.git"
 projects[facetapi_context][download][branch] = "7.x-1.x"
 projects[facetapi_context][subdir] = "contrib"
-
-projects[facetapi_textfield_widget][type] = "module"
-projects[facetapi_textfield_widget][download][type] = "git"
-projects[facetapi_textfield_widget][download][url] = "http://git.drupal.org/sandbox/janvandiepen/2060337.git"
-projects[facetapi_textfield_widget][download][branch] = "7.x-1.x"
-projects[facetapi_textfield_widget][subdir] = "contrib"
+projects[facetapi_context][patch][] = "https://www.drupal.org/files/moreoptions-1704152-1.patch"
 
 projects[OL_lat_long][type] = "module"
 projects[OL_lat_long][download][type] = "git"
@@ -503,20 +557,11 @@ projects[geocoder_geonames][download][branch] = "7.x-1.x"
 projects[geocoder_geonames][download][revision] = "57417b6bab16585f8d06a06e460e5096d3ba25b0"
 projects[geocoder_geonames][subdir] = "contrib"
 
-projects[questionnaire][type] = "module"
-projects[questionnaire][download][type] = "git"
-projects[questionnaire][download][url] = "http://git.drupal.org/sandbox/batje/1509732.git"
-projects[questionnaire][download][revision] = "c6515a2236d3bae5e602a19a0ef8facfc7fc5987"
-projects[questionnaire][subdir] = "contrib"
-
-projects[search_api_solr_boundingbox_search][type] = "module"
-projects[search_api_solr_boundingbox_search][download][type] = "git"
-projects[search_api_solr_boundingbox_search][download][url] = "http://git.drupal.org/sandbox/janvandiepen/2183305.git"
-projects[search_api_solr_boundingbox_search][download][branch] = "master"
-projects[search_api_solr_boundingbox_search][subdir] = "contrib"
-
 ; Themes
 projects[omega][version] = "3.1"
+projects[omega][patch][] = "https://www.drupal.org/files/omega-mini-pager-1828552-49.patch"
+
+projects[shiny][version] = "1.6"
 
 projects[devtrac7_theme][version] = "1.x-dev"
 projects[devtrac7_theme][type] = "theme"
@@ -531,11 +576,6 @@ libraries[chosen][download][type] = "file"
 libraries[chosen][download][url] = "https://github.com/harvesthq/chosen/releases/download/v1.1.0/chosen_v1.1.0.zip"
 libraries[chosen][directory_name] = "chosen"
 libraries[chosen][type] = "library"
-
-; libraries[ckeditor][download][type] = ""
-; libraries[ckeditor][download][url] = ""
-; libraries[ckeditor][directory_name] = "ckeditor"
-; libraries[ckeditor][type] = "library"
 
 libraries[colorbox][download][type] = "file"
 libraries[colorbox][download][url] = "http://github.com/jackmoore/colorbox/zipball/1.5.9/jackmoore-colorbox-1.5.9-0-g124ec40.zip"
@@ -557,42 +597,28 @@ libraries[FooTable][download][url] = "https://github.com/bradvin/FooTable/archiv
 libraries[FooTable][directory_name] = "FooTable"
 libraries[FooTable][type] = "library"
 
-; libraries[jquery.cycle][download][type] = ""
-; libraries[jquery.cycle][download][url] = ""
-; libraries[jquery.cycle][directory_name] = "jquery.cycle"
-; libraries[jquery.cycle][type] = "library"
-
 libraries[jquery-mb-extruder][download][type] = "file"
-libraries[jquery-mb-extruder][download][url] = "https://github.com/pupunzi/jquery.mb.extruder/archive/master.zip"
+; libraries[jquery-mb-extruder][download][url] = "https://github.com/pupunzi/jquery.mb.extruder/archive/master.zip"
+libraries[jquery-mb-extruder][download][url] = "https://github.com/pupunzi/jquery.mb.extruder/archive/2.5.0.zip"
 libraries[jquery-mb-extruder][directory_name] = "jquery-mb-extruder"
 libraries[jquery-mb-extruder][type] = "library"
 
-; libraries[json2][download][type] = "file"
-; libraries[json2][download][url] = "https://github.com/douglascrockford/JSON-js/blob/master/json2.js"
-; libraries[json2][directory_name] = "json2"
-; libraries[json2][type] = "library"
+libraries[masonry][download][type] = "file"
+libraries[masonry][download][url] = "http://desandro.github.io/masonry/jquery.masonry.min.js"
+libraries[masonry][directory_name] = "masonry"
+libraries[masonry][destination] = "libraries"
 
-; libraries[openlayers][download][type] = ""
-; libraries[openlayers][download][url] = ""
-; libraries[openlayers][directory_name] = "openlayers"
-; libraries[openlayers][type] = "library"
+libraries[openlayers][download][type] = "file"
+libraries[openlayers][download][url] = "https://github.com/janvandiepen/openlayers/archive/master.zip"
+libraries[openlayers][directory_name] = "openlayers"
+libraries[openlayers][destination] = "libraries"
 
-; libraries[proj4js][download][type] = ""
-; libraries[proj4js][download][url] = ""
-; libraries[proj4js][directory_name] = "proj4js"
-; libraries[proj4js][type] = "library"
+libraries[raphael][download][type] = "file"
+libraries[raphael][download][url] = "http://github.com/DmitryBaranovskiy/raphael/raw/master/raphael-min.js"
+libraries[raphael][directory_name] = "raphael"
+libraries[raphael][type] = "library"
 
-libraries[SolrPhpClient][download][type] = "file"
-libraries[SolrPhpClient][download][url] = "https://solr-php-client.googlecode.com/files/SolrPhpClient.r60.2011-05-04.tgz"
-libraries[SolrPhpClient][directory_name] = "SolrPhpClient"
-libraries[SolrPhpClient][type] = "library"
-
-; libraries[spyc][download][type] = ""
-; libraries[spyc][download][url] = ""
-; libraries[spyc][directory_name] = "spyc"
-; libraries[spyc][type] = "library"
-
-; libraries[tcpdf][download][type] = "file"
-; libraries[tcpdf][download][url] = "http://downloads.sourceforge.net/project/tcpdf/OldFiles/tcpdf_6_0_083.zip"
-; libraries[tcpdf][directory_name] = "tcpdf"
-; libraries[tcpdf][type] = "library"
+libraries[spinjs][download][type] = "file"
+libraries[spinjs][download][url] = "http://github.com/DmitryBaranovskiy/raphael/raw/master/raphael.js"
+libraries[spinjs][directory_name] = "raphael"
+libraries[spinjs][type] = "library"
