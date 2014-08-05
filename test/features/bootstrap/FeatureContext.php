@@ -30,4 +30,20 @@ class FeatureContext extends DrupalContext
     {
         // Initialize your context here
     }
+    
+    /**
+     * @Given /^I fill hidden longitude and latitude field with "(?P<arg1>([0-9]+\.[0-9]+))" and "(?P<arg2>([0-9]+\.[0-9]+))"$/
+     */
+     
+    public function iFillHiddenLongitudeAndLatitudeFieldWithPoint2($arg1, $arg2) {
+       $this->getSession()->getPage()->find('css','input[name="field_place_lat_long[und][0][geom]"]')->setValue("POINT(" . $arg1 . " " . $arg2 . ")");
+            
+    }
+    
+    
+    
+    
+    
+    
+    
 }
