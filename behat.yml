@@ -31,7 +31,7 @@ default:
         alias: 'seven'
       api_driver: "drupal"
       drupal:
-        drupal_root: "/var/www/devtracmanual"
+        drupal_root: "/home/travis/build/TddDoctor/devtrac-distro"
       text:
         log_out: "Sign out"
         log_in: "Log in"
