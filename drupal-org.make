@@ -517,7 +517,7 @@ projects[views_slideshow][subdir] = "contrib"
 projects[virtual_field][version] = "1.2"
 projects[virtual_field][type] = "module"
 projects[virtual_field][subdir] = "contrib"
-projects[virtual_field][patch][] = "https://www.drupal.org/files/virtual_field_views_support_1506376_2.patch"
+projects[virtual_field][patch][] = "https://www.drupal.org/files/virtual_field_views_support_1506376_7.patch"
 
 projects[wms][version] = "2.x-dev"
 projects[wms][type] = "module"
