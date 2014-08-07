@@ -2,14 +2,13 @@
 core = 7.x
 api = 2
 
-projects[drupal][type] = core
-projects[drupal][version] = "7.30"
-
 ; Mountbatten defaults
 includes[mountbatten_web_analytics] = https://raw.githubusercontent.com/benjaminug/mountbatten_makefiles/master/mountbatten_web_analytics.make
 includes[mountbatten_seo] = https://raw.githubusercontent.com/benjaminug/mountbatten_makefiles/master/mountbatten_seo.make
 includes[mountbatten_spam_protection] = https://raw.githubusercontent.com/benjaminug/mountbatten_makefiles/master/mountbatten_spam_protection.make
 includes[mountbatten_web_media] = https://raw.githubusercontent.com/benjaminug/mountbatten_makefiles/master/mountbatten_web_media.make
+includes[mountbatten_sitewide] = https://raw.githubusercontent.com/benjaminug/mountbatten_makefiles/master/mountbatten_sitewide.make
+
 
 ; Modules
 projects[acl][version] = "1.0"
@@ -20,14 +19,6 @@ projects[adaptive_image][version] = "1.4"
 projects[adaptive_image][type] = "module"
 projects[adaptive_image][subdir] = "contrib"
 
-projects[admin_menu][version] = "3.0-rc4"
-projects[admin_menu][type] = "module"
-projects[admin_menu][subdir] = "contrib"
-
-; projects[advanced_help][version] = "1.1"
-; projects[advanced_help][type] = "module"
-; projects[advanced_help][subdir] = "contrib"
-
 projects[autoassignrole][version] = "1.0-beta2"
 projects[autoassignrole][type] = "module"
 projects[autoassignrole][subdir] = "contrib"
@@ -36,17 +27,9 @@ projects[behavior_weights][version] = "1.0"
 projects[behavior_weights][type] = "module"
 projects[behavior_weights][subdir] = "contrib"
 
-projects[better_messages][version] = "1.x-dev"
-projects[better_messages][type] = "module"
-projects[better_messages][subdir] = "contrib"
-
 projects[blockify][version] = "1.2"
 projects[blockify][type] = "module"
 projects[blockify][subdir] = "contrib"
-
-projects[ctools][version] = "1.4"
-projects[ctools][type] = "module"
-projects[ctools][subdir] = "contrib"
 
 projects[charts_graphs][version] = "2.0"
 projects[charts_graphs][type] = "module"
@@ -55,10 +38,6 @@ projects[charts_graphs][subdir] = "contrib"
 projects[charts_graphs_flot][version] = "1.x-dev"
 projects[charts_graphs_flot][type] = "module"
 projects[charts_graphs_flot][subdir] = "contrib"
-
-projects[chosen][version] = "2.0-beta4"
-projects[chosen][type] = "module"
-projects[chosen][subdir] = "contrib"
 
 projects[collapsiblock][version] = "1.0"
 projects[collapsiblock][type] = "module"
@@ -76,10 +55,6 @@ projects[content_taxonomy][version] = "1.0-beta2"
 projects[content_taxonomy][type] = "module"
 projects[content_taxonomy][subdir] = "contrib"
 
-projects[context][version] = "3.2"
-projects[context][type] = "module"
-projects[context][subdir] = "contrib"
-
 projects[css_browser_selector][version] = "1.1"
 projects[css_browser_selector][type] = "module"
 projects[css_browser_selector][subdir] = "contrib"
@@ -87,10 +62,6 @@ projects[css_browser_selector][subdir] = "contrib"
 projects[custom_breadcrumbs][version] = "2.0-alpha3"
 projects[custom_breadcrumbs][type] = "module"
 projects[custom_breadcrumbs][subdir] = "contrib"
-
-projects[date][version] = "2.8"
-projects[date][type] = "module"
-projects[date][subdir] = "contrib"
 
 projects[date_duration_formatter][version] = "1.x-dev"
 projects[date_duration_formatter][type] = "module"
@@ -111,14 +82,6 @@ projects[draggableviews][subdir] = "contrib"
 projects[ds][version] = "1.9"
 projects[ds][type] = "module"
 projects[ds][subdir] = "contrib"
-
-projects[email][version] = "1.3"
-projects[email][type] = "module"
-projects[email][subdir] = "contrib"
-
-projects[entity][version] = "1.5"
-projects[entity][type] = "module"
-projects[entity][subdir] = "contrib"
 
 projects[entityreference][version] = "1.1"
 projects[entityreference][type] = "module"
@@ -152,10 +115,6 @@ projects[facetapi_tagcloud][subdir] = "contrib"
 projects[facetapi_textfield_widget][version] = "1.x-dev"
 projects[facetapi_textfield_widget][type] = "module"
 projects[facetapi_textfield_widget][subdir] = "contrib"
-
-projects[features][version] = "2.1"
-projects[features][type] = "module"
-projects[features][subdir] = "contrib"
 
 projects[field_collection][version] = "1.0-beta7"
 projects[field_collection][type] = "module"
@@ -218,10 +177,6 @@ projects[geophp][version] = "1.7"
 projects[geophp][type] = "module"
 projects[geophp][subdir] = "contrib"
 
-projects[google_analytics][version] = "1.4"
-projects[google_analytics][type] = "module"
-projects[google_analytics][subdir] = "contrib"
-
 projects[globalredirect][version] = "1.5"
 projects[globalredirect][type] = "module"
 projects[globalredirect][subdir] = "contrib"
@@ -246,14 +201,6 @@ projects[kml][version] = "1.x-dev"
 projects[kml][type] = "module"
 projects[kml][subdir] = "contrib"
 projects[kml][patch][] = "https://www.drupal.org/files/kml_blockify.patch"
-
-projects[libraries][version] = "2.2"
-projects[libraries][type] = "module"
-projects[libraries][subdir] = "contrib"
-
-projects[link][version] = "1.2"
-projects[link][type] = "module"
-projects[link][subdir] = "contrib"
 
 projects[mapit][version] = "1.x-dev"
 projects[mapit][type] = "module"
@@ -288,10 +235,6 @@ projects[migrate_extras][version] = "2.5"
 projects[migrate_extras][type] = "module"
 projects[migrate_extras][subdir] = "contrib"
 
-projects[module_filter][version] = "2.0-alpha2"
-projects[module_filter][type] = "module"
-projects[module_filter][subdir] = "contrib"
-
 projects[nice_menus][version] = "2.5"
 projects[nice_menus][type] = "module"
 projects[nice_menus][subdir] = "contrib"
@@ -313,11 +256,6 @@ projects[pane][version] = "2.5"
 projects[pane][type] = "module"
 projects[pane][subdir] = "contrib"
 projects[pane][patch][] = "https://www.drupal.org/files/issues/pane-remove-wrapper-markup-2119593-3.patch"
-
-projects[pathauto][version] = "1.2"
-projects[pathauto][type] = "module"
-projects[pathauto][subdir] = "contrib"
-projects[pathauto][patch][] = "https://www.drupal.org/files/pathauto-add-drush-support-867578-42.patch"
 
 projects[prepopulate][version] = "2.0"
 projects[prepopulate][type] = "module"
@@ -439,10 +377,6 @@ projects[stringoverrides][version] = "1.8"
 projects[stringoverrides][type] = "module"
 projects[stringoverrides][subdir] = "contrib"
 
-projects[strongarm][version] = "2.0"
-projects[strongarm][type] = "module"
-projects[strongarm][subdir] = "contrib"
-
 projects[taxonomy_access][version] = "1.0-rc1"
 projects[taxonomy_access][type] = "module"
 projects[taxonomy_access][subdir] = "contrib"
@@ -452,10 +386,6 @@ projects[tipsy][version] = "1.0-rc1"
 projects[tipsy][type] = "module"
 projects[tipsy][subdir] = "contrib"
 
-projects[token][version] = "1.5"
-projects[token][type] = "module"
-projects[token][subdir] = "contrib"
-
 projects[transliteration][version] = "3.2"
 projects[transliteration][type] = "module"
 projects[transliteration][subdir] = "contrib"
@@ -463,11 +393,6 @@ projects[transliteration][subdir] = "contrib"
 projects[uuid][version] = "1.0-alpha5"
 projects[uuid][type] = "module"
 projects[uuid][subdir] = "contrib"
-
-projects[views][version] = "3.8"
-projects[views][type] = "module"
-projects[views][subdir] = "contrib"
-projects[views][patch][] = "https://www.drupal.org/files/issues/views-site_info-730752-8.patch"
 
 projects[views_charts][version] = "1.x-dev"
 projects[views_charts][type] = "module"
@@ -517,7 +442,7 @@ projects[views_slideshow][subdir] = "contrib"
 projects[virtual_field][version] = "1.2"
 projects[virtual_field][type] = "module"
 projects[virtual_field][subdir] = "contrib"
-projects[virtual_field][patch][] = "https://www.drupal.org/files/virtual_field_views_support_1506376_7.patch"
+projects[virtual_field][patch][] = "https://www.drupal.org/files/issues/virtual_field_views_support_1506376_7.patch"
 
 projects[wms][version] = "2.x-dev"
 projects[wms][type] = "module"
@@ -571,11 +496,6 @@ libraries[autopager][download][type] = "file"
 libraries[autopager][download][url] = "https://jquery-autopager.googlecode.com/files/jquery.autopager-1.0.0.js"
 libraries[autopager][directory_name] = "autopager"
 libraries[autopager][type] = "library"
-
-libraries[chosen][download][type] = "file"
-libraries[chosen][download][url] = "https://github.com/harvesthq/chosen/releases/download/v1.1.0/chosen_v1.1.0.zip"
-libraries[chosen][directory_name] = "chosen"
-libraries[chosen][type] = "library"
 
 libraries[colorbox][download][type] = "file"
 libraries[colorbox][download][url] = "http://github.com/jackmoore/colorbox/zipball/1.5.9/jackmoore-colorbox-1.5.9-0-g124ec40.zip"
