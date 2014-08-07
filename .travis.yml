@@ -38,7 +38,7 @@ before_script:
   # removed the testing module
   #- chmod 777 -R test/solrtest/
   - cd build
-  - drush --yes site-install minimal --db-url="mysql://travis@127.0.0.1/devtrac_distro"
+  - drush --yes site-install devtrac --db-url="mysql://travis@127.0.0.1/devtrac_distro"
   - drush --yes dl search_api_solr
   - drush --yes dl search_api
   - drush --yes en search_api
