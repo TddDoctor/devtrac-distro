@@ -38,7 +38,7 @@ before_script:
   # removed the testing module
   #- chmod 777 -R test/solrtest/
   - cd build
-  - drush --yes site-install devtrac --db-url="mysql://travis@127.0.0.1/devtrac_distro" 
+  - drush --yes site-install devtrac --db-url="mysql://travis@127.0.0.1/devtrac_distro"  --account-name=admin --account-pass=admin --account-mail=ishmael@mountbatten.net --site-mail=ishmael@mountbatten.net --site-name="Devtrac Development" --clean-url install_configure_form.site_default_country=UG install_configure_form.date_default_timezone=Africa/Kampala devtrac_install_statistics_select_form.module=none devtrac_solr_configure_form.host=localhost devtrac_solr_configure_form.port=8983 devtrac_solr_configure_form.path=/solr devtrac_username_geonames_form.username=reinier
   - drush --yes dl search_api_solr
   - drush --yes dl search_api
   - drush --yes en search_api
@@ -49,15 +49,14 @@ before_script:
   - cp -R /home/travis/build/TddDoctor/devtrac-distro/modules/ sites/default/
   - sudo chmod 777 sites/default/settings.php 
   - sudo echo " " >> sites/default/settings.php
-  - echo "\$conf['search_api_solr_overrides'] = array(" >> sites/default/settings.php
-  - echo "  'travis_solr_server' => array(" >> sites/default/settings.php
-  - echo "    'options' => array(" >> sites/default/settings.php
-  - echo "      'host' => 'localhost'," >> sites/default/settings.php
-  - echo "      'path' => '/solr'," >> sites/default/settings.php
-  - echo "      'port' =>'8983'," >> sites/default/settings.php
-  - echo "    )," >> sites/default/settings.php
-  - echo "  )," >> sites/default/settings.php
-  - echo ");" >> sites/default/settings.php
+  #- echo "  'travis_solr_server' => array(" >> sites/default/settings.php
+  #- echo "    'options' => array(" >> sites/default/settings.php
+  #- echo "      'host' => 'localhost'," >> sites/default/settings.php
+  #- echo "      'path' => '/solr'," >> sites/default/settings.php
+  #- echo "      'port' =>'8983'," >> sites/default/settings.php
+  #- echo "    )," >> sites/default/settings.php
+  #- echo "  )," >> sites/default/settings.php
+  #- echo ");" >> sites/default/settings.php
   
   - drush --yes en simpletest  
   - drush cache-clear all
