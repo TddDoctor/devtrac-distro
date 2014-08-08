@@ -39,8 +39,8 @@ before_script:
   #- chmod 777 -R test/solrtest/
   - cd build
   - cp profiles/devtrac/modules/contrib/search_api_solr/solr-conf/3.x/* /home/travis/build/TddDoctor/devtrac-distro/apache-solr-3.5.0/example/solr/conf/
-  - php -d sendmail_path=/dev/null `which drush` si ${PROJECT_NAME} \
-      --db-url=mysql://root:@127.0.0.1/${PROJECT_NAME} \
+  - php -d sendmail_path=/dev/null `which drush` si devtrac \
+      --db-url=mysql://root:@127.0.0.1/devtrac_distro \
       --account-name=admin \
       --account-pass=admin \
       --site-mail=admin@example.com \
