@@ -1,0 +1,32 @@
+<?php
+
+/**
+ * @file
+ * Tests for OpenAidMap.
+ * 
+ * 
+ */
+class DevtarcOrgUsersTestsCase extends DrupalWebTestCase {
+	protected $profile = 'devtrac';
+  public static function getInfo() {
+    return array(
+        'name' => 'devtrac',
+        'description' => "Testing the different users access permissions and roles",
+        'group' => 'devtrac',
+    );
+  }
+  public function setup() {
+     parent::setUp();
+     $this->admin_user = $this->drupalCreateUser(array('administer users', 'administer iati', 'administer permissions', 'access user profiles', 'administer site configuration', 'administer modules', 'access content'));
+     $this->drupalLogin($this->admin_user);
+  }
+ /**
+   * Still anonymous user/ the public
+   * WHEN on the index page,
+   * THEN the top manu bar with unicef logo must not  be showing on the left side
+   */
+  public function testUnicefLogRemovetest() {
+    $this->drupalGet('sites/default/files/devtrac_logo.jpg');
+    $this->assertResponse(404, 'unicef Logo is found on the index is  found', 'devtrac');
+  }
+}

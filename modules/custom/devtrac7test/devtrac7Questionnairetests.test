@@ -1,0 +1,961 @@
+ <?php 
+ module_load_include('test', 'simpletest_clone');
+class testQuestionnaireCase extends SimpleTestCloneTestCase {
+	protected $admin_user;
+  public static function getInfo() {
+    return array(
+        'name' => 'Questionnaire and answers Test',
+        'description' => 'these tests are directly intended fo the questionnaire-answers workflow',
+        'group' => 'question',
+    );
+  }
+
+  /**
+   * Log in a user with the internal browser.
+   *
+   * If a user is already logged in, then the current user is logged out before
+   * logging in the specified user.
+   *
+   * Please note that neither the global $user nor the passed in user object is
+   * populated with data of the logged in user. If you need full access to the
+   * user object after logging in, it must be updated manually. If you also need
+   * access to the plain-text password of the user (set by drupalCreateUser()),
+   * e.g. to login the same user again, then it must be re-assigned manually.
+   * For example:
+   * @code
+   *   // Create a user.
+   *   $account = $this->drupalCreateUser(array());
+   *   $this->drupalLogin($account);
+   *   // Load real user object.
+   *   $pass_raw = $account->pass_raw;
+   *   $account = user_load($account->uid);
+   *   $account->pass_raw = $pass_raw;
+   * @endcode
+   *
+   * @param $user
+   *   User object representing the user to login.
+   *
+   * @see drupalCreateUser()
+   */
+  protected function drupalLogin(stdClass $user) {
+    if ($this->loggedInUser) {
+      $this->drupalLogout();
+    }
+
+    $edit = array(
+        'name' => $user->name,
+        'pass' => $user->pass_raw
+    );
+    $this->drupalPost('user', $edit, t('Log in'));
+
+    // If a "log out" link appears on the page, it is almost certainly because
+    // the login was successful.
+    $pass = $this->assertLink(t('Sign out'), 0, t('User %name successfully logged in.', array('%name' => $edit['name'])), t('User login'));
+
+    if ($pass) {
+      $this->loggedInUser = $user;
+    }
+  }
+
+  public function setup() {
+    parent::setUp();
+    // Create and log in a permitted user.
+    $this->admin_user = $this->drupalCreateUser(array('administer users', 'administer permissions', 'access user profiles', 'administer site configuration', 'administer modules'));
+    $this->drupalLogin($this->admin_user);
+    $this->assertNoText(t('Overview'), t('User is successifuly logged in'), 'Devtrac');
+    $this->drupalPost('user/' . $this->admin_user->uid . '/edit', array("roles[3]" => 3, 'taxonomy_vocabulary_5[und]' => 30, 'taxonomy_vocabulary_4[und]' => 26, 'field_user_firstname[und][0][value]' => 'Admino', 'field_user_surname[und][0][value]' => 'Adminol', 'field_user_aboutme[und][0][value]' => 'aboutAdmin', 'field_user_superior[und][0][target_id]' => 'Jenkins TestRun (314)'), t('Save'));
+    $this->assertLink('Users', 0, t('User link is found'));
+    $this->assertText('The changes have been saved.', 'The changes have been saved.');
+  }
+
+  
+  public function testQuestionnaireAdd() {
+  	$this->drupalGet('node/add/questionnaire-question');
+  	$this->assertResponse(200, 'page found by the server');
+  	$this->assertText('Question', 'Questionnaire page found and loaded');	
+  }
+  /**
+   * testing the qeutionnaire field presence
+   * 
+   */
+  public function testQuestionnaireFieldexistance() {
+  	$this->drupalGet('node/add/questionnaire-question');
+  	$this->assertField('title', 'Question title field is found');
+  	$this->assertField('taxonomy_vocabulary_1[und]', 'Question Location type field is found');
+  	$this->assertField('field_question_subject[und]', 'Question Sub-Category field is found');
+  	$this->assertField('questionnaire_question_type[und]', 'Question The type of question. field is found');
+  	$this->assertField('questionnaire_question_options[und][0][value]', 'Question Options field is found');
+  	$this->assertField('questionnaire_question_options_add_more', 'Question add another item button is found');
+  	$this->assertField('taxonomy_vocabulary_8[und][]', 'Question Sector field is found');
+   	 
+   }
+  public function testQuestionnaireEmptySubmit() {
+  	$this->drupalGet('node/add/questionnaire-question');
+  	$emptyq['title'] = '';
+  	//$emptyq['taxonomy_vocabulary_1[und]'] = '';
+  	//$emptyq['field_question_subject[und]'] = '';
+  	//$emptyq['questionnaire_question_type[und]'] = '';
+  	$emptyq['questionnaire_question_options[und][0][value]'] = '';
+  	$emptyq['questionnaire_question_options[und][0][value]'] =  '';
+  	$this->drupalPost(NULL, $emptyq, t('Save'));
+  	$this->assertText('Question field is required', 'Question field is required left empty');
+  	$this->assertText('The type of question. field is required.', 'The type of question. field is required.');
+  	$this->assertText('Sub-Category field is required.', 'Sub-Category field is required.');
+
+  }
+  public function testQuestionnaireSubmit() {
+  	$this->drupalGet('node/add/questionnaire-question');
+  	$qsubmit['title'] = $this->randomString(35);
+  	$qsubmit['taxonomy_vocabulary_1[und]'] = 3;
+  	$qsubmit['field_question_subject[und]'] = 488;
+  	$qsubmit['questionnaire_question_type[und]'] = 'select';
+  	$qsubmit['taxonomy_vocabulary_8[und][]'] = 214;
+  	$this->drupalPost(NULL, $qsubmit, t('Save'));
+  	$this->assertText('has been created.', 'questionnair is created');
+  	$this->assertLink('Government Office', 0, 'Government Office link is found');
+  	$this->assertLink('Child Protection', 0, 'Child Protection link is found');
+  	
+  }
+
+  
+}
+
+
+
+
+class testUnicefEditorQuestionnaireCase extends SimpleTestCloneTestCase {
+	protected $Editor_user;
+	public static function getInfo() {
+		return array(
+				'name' => 'unicef editor user Questionnaire and answers Test',
+				'description' => 'these tests are directly intended for unicef editor user questionnaire-answers workflow',
+				'group' => 'question',
+		);
+	}
+
+	/**
+	 * Log in a user with the internal browser.
+	 *
+	 * If a user is already logged in, then the current user is logged out before
+	 * logging in the specified user.
+	 *
+	 * Please note that neither the global $user nor the passed in user object is
+	 * populated with data of the logged in user. If you need full access to the
+	 * user object after logging in, it must be updated manually. If you also need
+	 * access to the plain-text password of the user (set by drupalCreateUser()),
+	 * e.g. to login the same user again, then it must be re-assigned manually.
+	 * For example:
+	 * @code
+	 *   // Create a user.
+	 *   $account = $this->drupalCreateUser(array());
+	 *   $this->drupalLogin($account);
+	 *   // Load real user object.
+	 *   $pass_raw = $account->pass_raw;
+	 *   $account = user_load($account->uid);
+	 *   $account->pass_raw = $pass_raw;
+	 * @endcode
+	 *
+	 * @param $user
+	 *   User object representing the user to login.
+	 *
+	 * @see drupalCreateUser()
+	 */
+	protected function drupalLogin(stdClass $user) {
+		if ($this->loggedInUser) {
+			$this->drupalLogout();
+		}
+
+		$edit = array(
+				'name' => $user->name,
+				'pass' => $user->pass_raw
+		);
+		$this->drupalPost('user', $edit, t('Log in'));
+
+		// If a "log out" link appears on the page, it is almost certainly because
+		// the login was successful.
+		$pass = $this->assertLink(t('Sign out'), 0, t('User %name successfully logged in.', array('%name' => $edit['name'])), t('User login'));
+
+		if ($pass) {
+			$this->loggedInUser = $user;
+		}
+	}
+	
+	public function setup() {
+		parent::setUp();
+		// Create and log in a permitted user.
+		$this->Editor_user = $this->drupalCreateUser(array('administer users', 'administer permissions', 'access user profiles', 'administer site configuration', 'administer modules'));
+		$this->drupalLogin($this->Editor_user);
+		$this->assertNoText(t('Overview'), t('User is successifuly logged in'), 'Devtrac');
+		$this->drupalPost('user/' . $this->Editor_user->uid . '/edit', array("roles[3]" => 3, 'taxonomy_vocabulary_5[und]' => 30, 'taxonomy_vocabulary_4[und]' => 26, 'field_user_firstname[und][0][value]' => 'Admino', 'field_user_surname[und][0][value]' => 'Adminol', 'field_user_aboutme[und][0][value]' => 'aboutAdmin', 'field_user_superior[und][0][target_id]' => 'Jenkins TestRun (314)'), t('Save'));
+		$this->assertLink('Users', 0, t('User link is found'));
+		$this->assertText('The changes have been saved.', 'The changes have been saved.');
+	}
+	
+	
+	public function testEditorQuestionnaireAdd() {
+		$this->drupalGet('node/add/questionnaire-question');
+		$this->assertResponse(200, 'page found by the server');
+		$this->assertText('Question', 'Questionnaire page found and loaded');
+	}
+	/**
+	 * testing the qeutionnaire field presence
+	 *
+	 */
+	public function testEditorQuestionnaireFieldexistance() {
+		$this->drupalGet('node/add/questionnaire-question');
+		$this->assertField('title', 'Question title field is found');
+		$this->assertField('taxonomy_vocabulary_1[und]', 'Question Location type field is found');
+		$this->assertField('field_question_subject[und]', 'Question Sub-Category field is found');
+		$this->assertField('questionnaire_question_type[und]', 'Question The type of question. field is found');
+		$this->assertField('questionnaire_question_options[und][0][value]', 'Question Options field is found');
+		$this->assertField('questionnaire_question_options_add_more', 'Question add another item button is found');
+		$this->assertField('taxonomy_vocabulary_8[und][]', 'Question Sector field is found');
+	
+	}
+	public function testEditorQuestionnaireEmptySubmit() {
+		$this->drupalGet('node/add/questionnaire-question');
+		$emptyq['title'] = '';
+		//$emptyq['taxonomy_vocabulary_1[und]'] = '';
+		//$emptyq['field_question_subject[und]'] = '';
+		//$emptyq['questionnaire_question_type[und]'] = '';
+		$emptyq['questionnaire_question_options[und][0][value]'] = '';
+		$emptyq['questionnaire_question_options[und][0][value]'] =  '';
+		$this->drupalPost(NULL, $emptyq, t('Save'));
+		$this->assertText('Question field is required', 'Question field is required left empty');
+		$this->assertText('The type of question. field is required.', 'The type of question. field is required.');
+		$this->assertText('Sub-Category field is required.', 'Sub-Category field is required.');
+	
+	}
+	public function testEditorQuestionnaireSubmit() {
+		$this->drupalGet('node/add/questionnaire-question');
+		$qsubmit['title'] = $this->randomString(35);
+		$qsubmit['taxonomy_vocabulary_1[und]'] = 3;
+		$qsubmit['field_question_subject[und]'] = 488;
+		$qsubmit['questionnaire_question_type[und]'] = 'select';
+		$qsubmit['taxonomy_vocabulary_8[und][]'] = 214;
+		$this->drupalPost(NULL, $qsubmit, t('Save'));
+		$this->assertText('has been created.', 'questionnair is created');
+		$this->assertLink('Government Office', 0, 'Government Office link is found');
+		$this->assertLink('Child Protection', 0, 'Child Protection link is found');
+	
+	}
+	
+	
+}
+
+class testUnicefUserQuestionnaireCase extends SimpleTestCloneTestCase {
+	protected $unicef_user;
+	public static function getInfo() {
+		return array(
+				'name' => 'unicef user Questionnaire and answers Test',
+				'description' => 'these tests are directly intended for unicef user questionnaire-answers workflow',
+				'group' => 'question',
+		);
+	}
+	/**
+	 * Log in a user with the internal browser.
+	 *
+	 * If a user is already logged in, then the current user is logged out before
+	 * logging in the specified user.
+	 *
+	 * Please note that neither the global $user nor the passed in user object is
+	 * populated with data of the logged in user. If you need full access to the
+	 * user object after logging in, it must be updated manually. If you also need
+	 * access to the plain-text password of the user (set by drupalCreateUser()),
+	 * e.g. to login the same user again, then it must be re-assigned manually.
+	 * For example:
+	 * @code
+	 *   // Create a user.
+	 *   $account = $this->drupalCreateUser(array());
+	 *   $this->drupalLogin($account);
+	 *   // Load real user object.
+	 *   $pass_raw = $account->pass_raw;
+	 *   $account = user_load($account->uid);
+	 *   $account->pass_raw = $pass_raw;
+	 * @endcode
+	 *
+	 * @param $user
+	 *   User object representing the user to login.
+	 *
+	 * @see drupalCreateUser()
+	 */
+	protected function drupalLogin(stdClass $user) {
+		if ($this->loggedInUser) {
+			$this->drupalLogout();
+		}
+	
+		$edit = array(
+				'name' => $user->name,
+				'pass' => $user->pass_raw
+		);
+		$this->drupalPost('user', $edit, t('Log in'));
+	
+		// If a "log out" link appears on the page, it is almost certainly because
+		// the login was successful.
+		$pass = $this->assertLink(t('Sign out'), 0, t('User %name successfully logged in.', array('%name' => $edit['name'])), t('User login'));
+	
+		if ($pass) {
+			$this->loggedInUser = $user;
+		}
+	}
+	
+	public function setup() {
+		parent::setUp();
+		// Create and log in a permitted user.
+		$this->unicef_user = $this->drupalCreateUser(array('administer users', 'administer permissions', 'access user profiles', 'administer site configuration', 'administer modules'));
+		$this->drupalLogin($this->unicef_user);
+		$this->assertNoText(t('Overview'), t('User is successifuly logged in'), 'Devtrac');
+		$this->drupalPost('user/' . $this->unicef_user->uid . '/edit', array("roles[3]" => 3, 'taxonomy_vocabulary_5[und]' => 30, 'taxonomy_vocabulary_4[und]' => 26, 'field_user_firstname[und][0][value]' => 'Admino', 'field_user_surname[und][0][value]' => 'Adminol', 'field_user_aboutme[und][0][value]' => 'aboutAdmin', 'field_user_superior[und][0][target_id]' => 'Jenkins TestRun (314)'), t('Save'));
+		$this->assertLink('Users', 0, t('User link is found'));
+		$this->assertText('The changes have been saved.', 'The changes have been saved.');
+	}
+	/**
+	 * 
+	 * 
+	 */
+	
+	
+	
+	public function testFieldtripQuestionnaireAdd() {
+		$this->drupalGet('node/add/fieldtrip', array('query' => array('field_fieldtrip_user' => $this->unicef_user->uid, 'field_fieldtrip_places' => '')));
+  	$this->assertText(t('TA Number'), t('TA number field is found'), 'Devtrac');
+  	$percentage = array('field_fieldtrip_fc_purpose_percent[und][0][value]' =>78);
+  	// populating the fieldtrip create form
+  	//$fieldAddreportItem['taxonomy_vocabulary_6[und][]'] = 81;
+  	$this->assertNoField('taxonomy_vocabulary_6[und][]', 'District field is removed from the add field trip form');
+  	$fieldAddreportItem['title'] = 'YES WE CAN';
+  	$fieldAddreportItem['field_fieldtrip_fc_purpose[und][0][field_fieldtrip_purpose_descr][und][0][value]'] = $this->randomName(32);
+  	$fieldAddreportItem['field_fieldtrip_proms_ta_id[und][0][value]'] = 76;
+  	$fieldAddreportItem['field_fieldtrip_fc_purpose[und][0][field_fieldtrip_fc_purpose_purps][und]'] = 236;
+  	$fieldAddreportItem['field_fieldtrip_fc_purpose[und][0][field_fieldtrip_purpose_percent][und][0][value]'] = 100;
+  	$fieldAddreportItem['field_fieldtrip_start_end_date[und][0][value][date]'] = '26/09/2012';
+  	$fieldAddreportItem['field_fieldtrip_start_end_date[und][0][value2][date]'] = '26/10/2012';
+  	$this->drupalPost(NULL, $fieldAddreportItem, t('Save'), array('query' => array('field_fieldtrip_user' => $this->unicef_user->uid, 'field_fieldtrip_places' => '')));
+  		//
+  	$this->assertText(t('has been created.'), ('field trip is created successifuly'), 'Devtrac');
+  		//
+  	$nodeAddreportItem = $this->drupalGetNodeByTitle($fieldAddreportItem["title"]);
+  	$this->assertNotNull($nodeAddreportItem, t('node loaded'));
+  	$this->drupalGet('node/'.$nodeAddreportItem->nid.'/addplaceform/ajax/nojs/go', array('query' => array('destination' => 'node/' . $nodeAddreportItem->nid)));
+  	$formsubmitreport['reporttype'] = 2;
+  	$formsubmitreport['district'] = 81;
+  	//$formsubmitreport['placetype'] = 0;
+  	$this->drupalPost('node/'.$nodeAddreportItem->nid.'/addplaceform/ajax/nojs/go', $formsubmitreport, t('Submit'), array('query' => array('destination' => 'node/' . $nodeAddreportItem->nid)));
+  	//$this->drupalGet('node/add/place/'. $formsubmitreport['district'], array('query' => array('edit[taxonomy_vocabulary_6][und]' => 81, 'destination' => 'places/' .$fieldAddreportItem['taxonomy_vocabulary_6[und][]'][0].'/'. $nodeAddreportItem->nid.'/' . _devtrac7_site_report_tid('Site Visit'))));
+  	//name field
+  	$this->assertNoLink('Create New Location', 0, 'clicked');
+  	//$this->clickLink('Create New Location', 0, 'clicked');
+  	$this->assertField(t('title'), t('Field Title is found on the add location form'), 'Devtrac');
+  	$this->assertText(t('Name'), t('Label Name is found on the form'), 'Devtrac');
+  	//
+  	$this->assertField(t('taxonomy_vocabulary_1[und]'), t('Field Title is found on the add location form'), 'Devtrac');
+  	$this->assertText(t('Location Types'), t('Label  Place Types is found on the form'), 'Devtrac');
+  	//now to the Contact field
+  	$this->assertField(t('field_place_responsible_person[und][0][value]'), t('Field Contact is found on the add location form'), 'Devtrac');
+  	$this->assertText(t('Contact'), t('Label Contact Types is found on the form'), 'Devtrac');
+  	// checking the Phone
+  	$this->assertField(t('field_place_phone[und][0][value]'), t('Field Contact is found on the add location form'), 'Devtrac');
+  	$this->assertText(t('Phone'), t('Label Phone Types is found on the form'), 'Devtrac');
+  	//
+  	$this->assertField(t('field_place_website[und][0][url]'), t('Field Contact is found on the add location form'), 'Devtrac');
+  	$this->assertText(t('Website'), t('Label Website Types is found on the form'), 'Devtrac');
+  	//
+  	$locationAddFull['title'] = $this->randomName(32);
+  	$locationAddFull['taxonomy_vocabulary_1[und]'] = 206;
+  	$locationAddFull['taxonomy_vocabulary_6[und]'] = 81;
+  	//$locationAddFull['field_place_responsible_person[und][0][value]'] = 'jan';
+  	$locationAddFull['field_place_lat_long[und][0][geom]'] = 'POINT (33.346199035645 2.911979913712)';
+  	 //TO BE CONTINUED 
+  	$this->drupalPost(NULL, $locationAddFull, t('Save'), array('query' => array('field_actionitem_responsible' => $this->unicef_user->uid, 'edit[taxonomy_vocabulary_6][und]' => 81, 'destination' => 'places/' .$locationAddFull['taxonomy_vocabulary_6[und]'].'/'. $nodeAddreportItem->nid.'/'. _devtrac7_site_report_tid('Site Visit'))));
+  	$this->assertNoText(t('Copied Lat-Lon to the Site Report.'), t('User Added the location on the map'), 'Devtrac');
+  	$this->assertNoText(t('Copied District on the Site Report.'), t('User Added the location on the map'), 'Devtrac');
+  	$this->assertNoText(t('Copied Place Type to Site Report.'), t('User Copied Place Type to Site Report.'), 'Devtrac');
+  	$this->assertText(t('has been created.'), t('Place has been created.'), 'Devtrac');
+  	$this->assertNoText(t('Defaulted Date Visited to Start Date of Field Trip.'), t('Defaulted Date Visited to Start Date of Field Trip.'), 'Devtrac');
+  	$this->assertNoText('An illegal choice has been detected. Please contact the site administrator.');
+	  
+  	$this->assertLink('Site Reports', 0, 'Site Reports found');
+  	$this->drupalGet('fieldtrip/yes-we-can', array('query' => array('fieldtrip_content_first' => 3)));
+  	$this->assertText('Human Interest Story at', 'site report item on the menu is selected');
+	  //$this->clickLink('Site Reports', 0, 'Add Questionnaire link clicked');
+	  $this->drupalGet('node/15076/addsubmission', array('query' => array('destination' => 'node/' . $nodeAddreportItem->nid, 'fieldtrip_content_first' => 3)));
+	  
+	}
+	/**
+	 * 
+	 * 
+	 * 
+	 */
+	
+	public function testFieldtripQuestionnaireSubmit() {
+		$this->drupalGet('node/add/fieldtrip', array('query' => array('field_fieldtrip_user' => $this->unicef_user->uid, 'field_fieldtrip_places' => '')));
+		$this->assertText(t('TA Number'), t('TA number field is found'), 'Devtrac');
+		$percentage = array('field_fieldtrip_fc_purpose_percent[und][0][value]' =>78);
+		// populating the fieldtrip create form
+		//$fieldAddreportItem['taxonomy_vocabulary_6[und][]'] = 81;
+		$this->assertNoField('taxonomy_vocabulary_6[und][]', 'District field is removed from the add field trip form');
+		$fieldAddreportItem['title'] = 'YES WE CAN';
+		$fieldAddreportItem['field_fieldtrip_fc_purpose[und][0][field_fieldtrip_purpose_descr][und][0][value]'] = $this->randomName(32);
+		$fieldAddreportItem['field_fieldtrip_proms_ta_id[und][0][value]'] = 76;
+		$fieldAddreportItem['field_fieldtrip_fc_purpose[und][0][field_fieldtrip_fc_purpose_purps][und]'] = 236;
+		$fieldAddreportItem['field_fieldtrip_fc_purpose[und][0][field_fieldtrip_purpose_percent][und][0][value]'] = 100;
+		$fieldAddreportItem['field_fieldtrip_start_end_date[und][0][value][date]'] = '26/09/2012';
+		$fieldAddreportItem['field_fieldtrip_start_end_date[und][0][value2][date]'] = '26/10/2012';
+		$this->drupalPost(NULL, $fieldAddreportItem, t('Save'), array('query' => array('field_fieldtrip_user' => $this->unicef_user->uid, 'field_fieldtrip_places' => '')));
+		//
+		$this->assertText(t('has been created.'), ('field trip is created successifuly'), 'Devtrac');
+		//
+		$nodeAddreportItem = $this->drupalGetNodeByTitle($fieldAddreportItem["title"]);
+		$this->assertNotNull($nodeAddreportItem, t('node loaded'));
+		$this->drupalGet('node/'.$nodeAddreportItem->nid.'/addplaceform/ajax/nojs/go', array('query' => array('destination' => 'node/' . $nodeAddreportItem->nid)));
+		$formsubmitreport['reporttype'] = 2;
+		$formsubmitreport['district'] = 81;
+		//$formsubmitreport['placetype'] = 0;
+		$this->drupalPost('node/'.$nodeAddreportItem->nid.'/addplaceform/ajax/nojs/go', $formsubmitreport, t('Submit'), array('query' => array('destination' => 'node/' . $nodeAddreportItem->nid)));
+		//$this->drupalGet('node/add/place/'. $formsubmitreport['district'], array('query' => array('edit[taxonomy_vocabulary_6][und]' => 81, 'destination' => 'places/' .$fieldAddreportItem['taxonomy_vocabulary_6[und][]'][0].'/'. $nodeAddreportItem->nid.'/'._devtrac7_site_report_tid('Site Visit'))));
+		//name field
+		$this->assertNoLink('Create New Location', 0, 'clicked');
+		//$this->clickLink('Create New Location', 0, 'clicked');
+		$this->assertField(t('title'), t('Field Title is found on the add location form'), 'Devtrac');
+		$this->assertText(t('Name'), t('Label Name is found on the form'), 'Devtrac');
+		//
+		$this->assertField(t('taxonomy_vocabulary_1[und]'), t('Field Title is found on the add location form'), 'Devtrac');
+		$this->assertText(t('Location Types'), t('Label  Place Types is found on the form'), 'Devtrac');
+		//now to the Contact field
+		$this->assertField(t('field_place_responsible_person[und][0][value]'), t('Field Contact is found on the add location form'), 'Devtrac');
+		$this->assertText(t('Contact'), t('Label Contact Types is found on the form'), 'Devtrac');
+		// checking the Phone
+		$this->assertField(t('field_place_phone[und][0][value]'), t('Field Contact is found on the add location form'), 'Devtrac');
+		$this->assertText(t('Phone'), t('Label Phone Types is found on the form'), 'Devtrac');
+		//
+		$this->assertField(t('field_place_website[und][0][url]'), t('Field Contact is found on the add location form'), 'Devtrac');
+		$this->assertText(t('Website'), t('Label Website Types is found on the form'), 'Devtrac');
+		//
+		$locationAddFull['title'] = $this->randomName(32);
+		$locationAddFull['taxonomy_vocabulary_1[und]'] = 206;
+		$locationAddFull['taxonomy_vocabulary_6[und]'] = 81;
+		//$locationAddFull['field_place_responsible_person[und][0][value]'] = 'jan';
+		$locationAddFull['field_place_lat_long[und][0][geom]'] = 'POINT (33.346199035645 2.911979913712)';
+		//TO BE CONTINUED
+		$this->drupalPost(NULL, $locationAddFull, t('Save'), array('query' => array('field_actionitem_responsible' => $this->unicef_user->uid, 'edit[taxonomy_vocabulary_6][und]' => 81, 'destination' => 'places/' .$locationAddFull['taxonomy_vocabulary_6[und]'].'/'. $nodeAddreportItem->nid.'/' . _devtrac7_site_report_tid('Site Visit'))));
+		$this->assertNoText(t('Copied Lat-Lon to the Site Report.'), t('User Added the location on the map'), 'Devtrac');
+		$this->assertNoText(t('Copied District on the Site Report.'), t('User Added the location on the map'), 'Devtrac');
+		$this->assertNoText(t('Copied Place Type to Site Report.'), t('User Copied Place Type to Site Report.'), 'Devtrac');
+		$this->assertText(t('has been created.'), t('Place has been created.'), 'Devtrac');
+		$this->assertNoText(t('Defaulted Date Visited to Start Date of Field Trip.'), t('Defaulted Date Visited to Start Date of Field Trip.'), 'Devtrac');
+		$this->assertNoText('An illegal choice has been detected. Please contact the site administrator.');
+		$this->assertLink('Site Reports', 0, 'Site Reports found');
+		//$this->drupalGet('fieldtrip/yes-we-can', array('query' => array('fieldtrip_content_first' => 3)));
+		$this->assertText('Human Interest Story at', 'site report item on the menu is selected');
+		$sitereportItem = $this->drupalGetNodeByTitle('Human Interest Story at '.$locationAddFull['title']);
+		$this->assertNotNull($sitereportItem, t('node loaded'));
+		//$this->clickLink('Site Reports', 0, 'Add Questionnaire link clicked');
+		$this->drupalGet('node/'.$sitereportItem->nid.'/addsubmission', array('query' => array('destination' => 'node/' . $nodeAddreportItem->nid,)));
+	  $this->assertText('Questionnaire for', 'Questionnaire for the site report is showing');
+	  $this->assertText('487 How many teachers in this school have NOT received training on violence and abuse against children', 'Questions are showing');
+	  $question[487] = 487;
+	  $question[404] = 404;
+	  //$question[406] = 'yes';
+	  //$question[485] = 'yes';
+	  $question['488[MRE classroom discussions]'] = 'MRE classroom discussions';
+	  //$question[487] = 487;
+	  //$question[487] = 487;
+	  //$question[487] = 487;
+	  //$question[487] = 487;
+	  //$this->drupalPost(NULL, $question, t('Submit'), array('query' => array('destination' => 'node/' . $nodeAddreportItem->nid)));
+	}
+	
+	/**
+	 * exceptional testing for empty submit
+	 * 
+	 * 
+	 */
+	
+	public function testFieldtripQuestionnaireEmptySubmit() {
+		$this->drupalGet('node/add/fieldtrip', array('query' => array('field_fieldtrip_user' => $this->unicef_user->uid, 'field_fieldtrip_places' => '')));
+		$this->assertText(t('TA Number'), t('TA number field is found'), 'Devtrac');
+		$percentage = array('field_fieldtrip_fc_purpose_percent[und][0][value]' =>78);
+		// populating the fieldtrip create form
+		//$fieldAddreportItem['taxonomy_vocabulary_6[und][]'] = 81;
+		$this->assertNoField('taxonomy_vocabulary_6[und][]', 'District field is removed from the add field trip form');
+		$fieldAddreportItem['title'] = 'YES WE CAN';
+		$fieldAddreportItem['field_fieldtrip_fc_purpose[und][0][field_fieldtrip_purpose_descr][und][0][value]'] = $this->randomName(32);
+		$fieldAddreportItem['field_fieldtrip_proms_ta_id[und][0][value]'] = 76;
+		$fieldAddreportItem['field_fieldtrip_fc_purpose[und][0][field_fieldtrip_fc_purpose_purps][und]'] = 236;
+		$fieldAddreportItem['field_fieldtrip_fc_purpose[und][0][field_fieldtrip_purpose_percent][und][0][value]'] = 100;
+		$fieldAddreportItem['field_fieldtrip_start_end_date[und][0][value][date]'] = '26/09/2012';
+		$fieldAddreportItem['field_fieldtrip_start_end_date[und][0][value2][date]'] = '26/10/2012';
+		$this->drupalPost(NULL, $fieldAddreportItem, t('Save'), array('query' => array('field_fieldtrip_user' => $this->unicef_user->uid, 'field_fieldtrip_places' => '')));
+		//
+		$this->assertText(t('has been created.'), ('field trip is created successifuly'), 'Devtrac');
+		//
+		$nodeAddreportItem = $this->drupalGetNodeByTitle($fieldAddreportItem["title"]);
+		$this->assertNotNull($nodeAddreportItem, t('node loaded'));
+		$this->drupalGet('node/'.$nodeAddreportItem->nid.'/addplaceform/ajax/nojs/go', array('query' => array('destination' => 'node/' . $nodeAddreportItem->nid)));
+		$formsubmitreport['reporttype'] = 2;
+		$formsubmitreport['district'] = 81;
+		//$formsubmitreport['placetype'] = 0;
+		$this->drupalPost('node/'.$nodeAddreportItem->nid.'/addplaceform/ajax/nojs/go', $formsubmitreport, t('Submit'), array('query' => array('destination' => 'node/' . $nodeAddreportItem->nid)));
+		//$this->drupalGet('node/add/place/'. $formsubmitreport['district'], array('query' => array('edit[taxonomy_vocabulary_6][und]' => 81, 'destination' => 'places/' .$fieldAddreportItem['taxonomy_vocabulary_6[und][]'][0].'/'. $nodeAddreportItem->nid.'/' ._devtrac7_site_report_tid('Site Visit'))));
+		//name field
+		$this->assertNoLink('Create New Location', 0, 'clicked');
+		//$this->clickLink('Create New Location', 0, 'clicked');
+		$this->assertField(t('title'), t('Field Title is found on the add location form'), 'Devtrac');
+		$this->assertText(t('Name'), t('Label Name is found on the form'), 'Devtrac');
+		//
+		$this->assertField(t('taxonomy_vocabulary_1[und]'), t('Field Title is found on the add location form'), 'Devtrac');
+		$this->assertText(t('Location Types'), t('Label  Place Types is found on the form'), 'Devtrac');
+		//now to the Contact field
+		$this->assertField(t('field_place_responsible_person[und][0][value]'), t('Field Contact is found on the add location form'), 'Devtrac');
+		$this->assertText(t('Contact'), t('Label Contact Types is found on the form'), 'Devtrac');
+		// checking the Phone
+		$this->assertField(t('field_place_phone[und][0][value]'), t('Field Contact is found on the add location form'), 'Devtrac');
+		$this->assertText(t('Phone'), t('Label Phone Types is found on the form'), 'Devtrac');
+		//
+		$this->assertField(t('field_place_website[und][0][url]'), t('Field Contact is found on the add location form'), 'Devtrac');
+		$this->assertText(t('Website'), t('Label Website Types is found on the form'), 'Devtrac');
+		//
+		$locationAddFull['title'] = $this->randomName(32);
+		$locationAddFull['taxonomy_vocabulary_1[und]'] = 206;
+		$locationAddFull['taxonomy_vocabulary_6[und]'] = 81;
+		//$locationAddFull['field_place_responsible_person[und][0][value]'] = 'jan';
+		$locationAddFull['field_place_lat_long[und][0][geom]'] = 'POINT (33.346199035645 2.911979913712)';
+		//TO BE CONTINUED
+		$this->drupalPost(NULL, $locationAddFull, t('Save'), array('query' => array('field_actionitem_responsible' => $this->unicef_user->uid, 'edit[taxonomy_vocabulary_6][und]' => 81, 'destination' => 'places/' .$locationAddFull['taxonomy_vocabulary_6[und]'].'/'. $nodeAddreportItem->nid.'/' . _devtrac7_site_report_tid('Site Visit'))));
+		$this->assertNoText(t('Copied Lat-Lon to the Site Report.'), t('User Added the location on the map'), 'Devtrac');
+		$this->assertNoText(t('Copied District on the Site Report.'), t('User Added the location on the map'), 'Devtrac');
+		$this->assertNoText(t('Copied Place Type to Site Report.'), t('User Copied Place Type to Site Report.'), 'Devtrac');
+		$this->assertText(t('has been created.'), t('Place has been created.'), 'Devtrac');
+		$this->assertNoText(t('Defaulted Date Visited to Start Date of Field Trip.'), t('Defaulted Date Visited to Start Date of Field Trip.'), 'Devtrac');
+		$this->assertNoText('An illegal choice has been detected. Please contact the site administrator.');
+		$this->assertLink('Site Reports', 0, 'Site Reports found');
+		$this->drupalGet('fieldtrip/yes-we-can', array('query' => array('qt-fieldtrip_content_first' => 3)));
+		$this->assertText('Human Interest Story at', 'site report item on the menu is selected');
+		$sitereportItem = $this->drupalGetNodeByTitle('Human Interest Story at '.$locationAddFull['title']);
+		$this->assertNotNull($sitereportItem, t('node loaded'));
+		//$this->clickLink('Site Reports', 0, 'Add Questionnaire link clicked');
+		$this->drupalGet('node/'.$sitereportItem->nid.'/addsubmission', array('query' => array('destination' => 'node/' . $nodeAddreportItem->nid, 'qt-fieldtrip_content_first' => 3)));
+		$this->assertText('Questionnaire for', 'Questionnaire for the site report is showing');
+		$this->assertText('487 How many teachers in this school have NOT received training on violence and abuse against children', 'Questions are showing');
+		$question[487] = 487;
+		$question[404] = '';
+		//$question[406] = '';
+		//$question[485] = '';
+		$question['488[MRE classroom discussions]'] = '';
+		//$question[487] = 487;
+		//$question[487] = 487;
+		//$question[487] = 487;
+		//$question[487] = 487;
+		//$this->drupalPost('node/'.$sitereportItem->nid.'/addsubmission', $question, t('Submit'), array('query' => array('destination' => 'node/' . $nodeAddreportItem->nid, 'qt-fieldtrip_content_first' => 3)));
+	}
+	/**
+	 * exceptional 
+	 *
+	 *
+	 *
+	 */
+	
+	public function testFieldtrippoliceQuestionnaireEditSubmit() {
+		$this->drupalGet('node/add/fieldtrip', array('query' => array('field_fieldtrip_user' => $this->unicef_user->uid, 'field_fieldtrip_places' => '')));
+		$this->assertText(t('TA Number'), t('TA number field is found'), 'Devtrac');
+		$percentage = array('field_fieldtrip_fc_purpose_percent[und][0][value]' =>78);
+		// populating the fieldtrip create form
+		//$fieldAddreportItem['taxonomy_vocabulary_6[und][]'] = 81;
+		$this->assertNoField('taxonomy_vocabulary_6[und][]', 'District field is removed from the add field trip form');
+		$fieldAddreportItem['title'] = 'YES WE CAN';
+		$fieldAddreportItem['field_fieldtrip_fc_purpose[und][0][field_fieldtrip_purpose_descr][und][0][value]'] = $this->randomName(32);
+		$fieldAddreportItem['field_fieldtrip_proms_ta_id[und][0][value]'] = 76;
+		$fieldAddreportItem['field_fieldtrip_fc_purpose[und][0][field_fieldtrip_fc_purpose_purps][und]'] = 236;
+		$fieldAddreportItem['field_fieldtrip_fc_purpose[und][0][field_fieldtrip_purpose_percent][und][0][value]'] = 100;
+		$fieldAddreportItem['field_fieldtrip_start_end_date[und][0][value][date]'] = '26/09/2014';
+		$fieldAddreportItem['field_fieldtrip_start_end_date[und][0][value2][date]'] = '26/10/2014';
+		$this->drupalPost(NULL, $fieldAddreportItem, t('Save'), array('query' => array('field_fieldtrip_user' => $this->unicef_user->uid, 'field_fieldtrip_places' => '')));
+		//
+		$this->assertText(t('has been created.'), ('field trip is created successifuly'), 'Devtrac');
+		//
+		$nodeAddreportItem = $this->drupalGetNodeByTitle($fieldAddreportItem["title"]);
+		$this->assertNotNull($nodeAddreportItem, t('node loaded'));
+		$this->drupalGet('node/'.$nodeAddreportItem->nid.'/addplaceform/ajax/nojs/go', array('query' => array('destination' => 'node/' . $nodeAddreportItem->nid)));
+		$formsubmitreport['reporttype'] = 2;
+		$formsubmitreport['district'] = 81;
+		//$formsubmitreport['placetype'] = 0;
+		$this->drupalPost('node/'.$nodeAddreportItem->nid.'/addplaceform/ajax/nojs/go', $formsubmitreport, t('Submit'), array('query' => array('destination' => 'node/' . $nodeAddreportItem->nid)));
+		$this->assertNoLink('Create New Location', 0, 'clicked');
+		//$this->clickLink('Create New Location', 0, 'clicked');
+		$this->assertField(t('title'), t('Field Title is found on the add location form'), 'Devtrac');
+		$this->assertText(t('Name'), t('Label Name is found on the form'), 'Devtrac');
+		//
+		$this->assertField(t('taxonomy_vocabulary_1[und]'), t('Field Title is found on the add location form'), 'Devtrac');
+		$this->assertText(t('Location Types'), t('Label  Place Types is found on the form'), 'Devtrac');
+		//now to the Contact field
+		$this->assertField(t('field_place_responsible_person[und][0][value]'), t('Field Contact is found on the add location form'), 'Devtrac');
+		$this->assertText(t('Contact'), t('Label Contact Types is found on the form'), 'Devtrac');
+		// checking the Phone
+		$this->assertField(t('field_place_phone[und][0][value]'), t('Field Contact is found on the add location form'), 'Devtrac');
+		$this->assertText(t('Phone'), t('Label Phone Types is found on the form'), 'Devtrac');
+		//
+		$this->assertField(t('field_place_website[und][0][url]'), t('Field Contact is found on the add location form'), 'Devtrac');
+		$this->assertText(t('Website'), t('Label Website Types is found on the form'), 'Devtrac');
+		//
+		$locationAddFull['title'] = 'this is meant for questionnaires';
+		$locationAddFull['taxonomy_vocabulary_1[und]'] = 203;
+		$locationAddFull['taxonomy_vocabulary_6[und]'] = 81;
+		//$locationAddFull['field_place_responsible_person[und][0][value]'] = 'jan';
+		$locationAddFull['field_place_lat_long[und][0][geom]'] = 'POINT (33.346199035645 2.911979913712)';
+		//TO BE CONTINUED
+		$this->drupalPost(NULL, $locationAddFull, t('Save'), array('query' => array('field_actionitem_responsible' => $this->unicef_user->uid, 'edit[taxonomy_vocabulary_6][und]' => 81, 'destination' => 'places/' .$locationAddFull['taxonomy_vocabulary_6[und]'].'/'. $nodeAddreportItem->nid.'/' . _devtrac7_site_report_tid('Site Visit'))));
+		$this->assertNoText(t('Copied Lat-Lon to the Site Report.'), t('User Added the location on the map'), 'Devtrac');
+		$this->assertNoText(t('Copied District on the Site Report.'), t('User Added the location on the map'), 'Devtrac');
+		$this->assertNoText(t('Copied Place Type to Site Report.'), t('User Copied Place Type to Site Report.'), 'Devtrac');
+		$this->assertText(t('has been created.'), t('Place has been created.'), 'Devtrac');
+		$this->assertNoText(t('Defaulted Date Visited to Start Date of Field Trip.'), t('Defaulted Date Visited to Start Date of Field Trip.'), 'Devtrac');
+		$this->assertNoText('An illegal choice has been detected. Please contact the site administrator.');
+		$this->assertLink('Site Reports', 0, 'Site Reports found');
+		$this->drupalGet('fieldtrip/yes-we-can', array('query' => array('qt-fieldtrip_content_first' => 3)));
+	
+		$this->assertText('Human Interest Story at', 'site report item on the menu is selected');
+		$sitereportItem = $this->drupalGetNodeByTitle('Human Interest Story at '.$locationAddFull['title']);
+		$this->assertNotNull($sitereportItem, t('node loaded'));
+		$this->clickLink('Human Interest Story at this is meant for questionnaires', 0, 'Sitereport link is clicked');
+		$this->drupalGet('node/'.$sitereportItem->nid.'/addsubmission', array('query' => array('destination' => 'node/' . $sitereportItem->nid)));
+		$this->assertText('Questionnaire for', 'Questionnaire for the site report is showing');
+		$this->assertNoText('487 How many teachers in this school have NOT received training on violence and abuse against children', 'Questions are showing');
+		$this->assertText('506 It there a focal person for Child Protection and Family?', 'question 506 It there a focal person for Child Protection and Family? found');
+		$question['507'] = 112;
+		$this->assertField('507', '507 is showing');
+		$question['506'] = 'Yes';
+		//$this->drupalPost('node/'.$sitereportItem->nid.'/addsubmission', $question, t('Submit'), array('query' => array('destination' => 'node/' . $sitereportItem->nid)));
+		$this->assertNoText('Thank you for your submission', 'messaging is showing');
+	}
+	
+	
+	/**
+	 * Editting the questionnaire
+	 *  
+	 * 
+	 */ 
+	 
+	
+	public function testQuestionnaireEditExceptionSubmit() {
+	  $this->drupalGet('node/add/fieldtrip', array('query' => array('field_fieldtrip_user' => $this->unicef_user->uid, 'field_fieldtrip_places' => '')));
+		$this->assertText(t('TA Number'), t('TA number field is found'), 'Devtrac');
+		$percentage = array('field_fieldtrip_fc_purpose_percent[und][0][value]' =>78);
+		// populating the fieldtrip create form
+		//$fieldAddreportItem['taxonomy_vocabulary_6[und][]'] = 81;
+		$this->assertNoField('taxonomy_vocabulary_6[und][]', 'District field is removed from the add field trip form');
+		$fieldAddreportItem['title'] = 'YES WE CAN';
+		$fieldAddreportItem['field_fieldtrip_fc_purpose[und][0][field_fieldtrip_purpose_descr][und][0][value]'] = $this->randomName(32);
+		$fieldAddreportItem['field_fieldtrip_proms_ta_id[und][0][value]'] = 76;
+		$fieldAddreportItem['field_fieldtrip_fc_purpose[und][0][field_fieldtrip_fc_purpose_purps][und]'] = 236;
+		$fieldAddreportItem['field_fieldtrip_fc_purpose[und][0][field_fieldtrip_purpose_percent][und][0][value]'] = 100;
+		$fieldAddreportItem['field_fieldtrip_start_end_date[und][0][value][date]'] = '26/09/2014';
+		$fieldAddreportItem['field_fieldtrip_start_end_date[und][0][value2][date]'] = '26/10/2014';
+		$this->drupalPost(NULL, $fieldAddreportItem, t('Save'), array('query' => array('field_fieldtrip_user' => $this->unicef_user->uid, 'field_fieldtrip_places' => '')));
+		//
+		$this->assertText(t('has been created.'), ('field trip is created successifuly'), 'Devtrac');
+		//
+		$nodeAddreportItem = $this->drupalGetNodeByTitle($fieldAddreportItem["title"]);
+		$this->assertNotNull($nodeAddreportItem, t('node loaded'));
+		$this->drupalGet('node/'.$nodeAddreportItem->nid.'/addplaceform/ajax/nojs/go', array('query' => array('destination' => 'node/' . $nodeAddreportItem->nid)));
+		$formsubmitreport['reporttype'] = 2;
+		$formsubmitreport['district'] = 81;
+		//$formsubmitreport['placetype'] = 0;
+		$this->drupalPost('node/'.$nodeAddreportItem->nid.'/addplaceform/ajax/nojs/go', $formsubmitreport, t('Submit'), array('query' => array('destination' => 'node/' . $nodeAddreportItem->nid)));
+		$this->assertNoLink('Create New Location', 0, 'clicked');
+		//$this->clickLink('Create New Location', 0, 'clicked');
+		$this->assertField(t('title'), t('Field Title is found on the add location form'), 'Devtrac');
+		$this->assertText(t('Name'), t('Label Name is found on the form'), 'Devtrac');
+		//
+		$this->assertField(t('taxonomy_vocabulary_1[und]'), t('Field Title is found on the add location form'), 'Devtrac');
+		$this->assertText(t('Location Types'), t('Label  Place Types is found on the form'), 'Devtrac');
+		//now to the Contact field
+		$this->assertField(t('field_place_responsible_person[und][0][value]'), t('Field Contact is found on the add location form'), 'Devtrac');
+		$this->assertText(t('Contact'), t('Label Contact Types is found on the form'), 'Devtrac');
+		// checking the Phone
+		$this->assertField(t('field_place_phone[und][0][value]'), t('Field Contact is found on the add location form'), 'Devtrac');
+		$this->assertText(t('Phone'), t('Label Phone Types is found on the form'), 'Devtrac');
+		//
+		$this->assertField(t('field_place_website[und][0][url]'), t('Field Contact is found on the add location form'), 'Devtrac');
+		$this->assertText(t('Website'), t('Label Website Types is found on the form'), 'Devtrac');
+		//
+		$locationAddFull['title'] = 'this is meant for questionnaires';
+		$locationAddFull['taxonomy_vocabulary_1[und]'] = 203;
+		$locationAddFull['taxonomy_vocabulary_6[und]'] = 81;
+		//$locationAddFull['field_place_responsible_person[und][0][value]'] = 'jan';
+		$locationAddFull['field_place_lat_long[und][0][geom]'] = 'POINT (33.346199035645 2.911979913712)';
+		//TO BE CONTINUED
+		$this->drupalPost(NULL, $locationAddFull, t('Save'), array('query' => array('field_actionitem_responsible' => $this->unicef_user->uid, 'edit[taxonomy_vocabulary_6][und]' => 81, 'destination' => 'places/' .$locationAddFull['taxonomy_vocabulary_6[und]'].'/'. $nodeAddreportItem->nid.'/' . _devtrac7_site_report_tid('Site Visit'))));
+		$this->assertNoText(t('Copied Lat-Lon to the Site Report.'), t('User Added the location on the map'), 'Devtrac');
+		$this->assertNoText(t('Copied District on the Site Report.'), t('User Added the location on the map'), 'Devtrac');
+		$this->assertNoText(t('Copied Place Type to Site Report.'), t('User Copied Place Type to Site Report.'), 'Devtrac');
+		$this->assertText(t('has been created.'), t('Place has been created.'), 'Devtrac');
+		$this->assertNoText(t('Defaulted Date Visited to Start Date of Field Trip.'), t('Defaulted Date Visited to Start Date of Field Trip.'), 'Devtrac');
+		$this->assertNoText('An illegal choice has been detected. Please contact the site administrator.');
+		$this->assertLink('Site Reports', 0, 'Site Reports found');
+		$this->drupalGet('fieldtrip/yes-we-can', array('query' => array('qt-fieldtrip_content_first' => 3)));
+		
+		$this->assertText('Human Interest Story at', 'site report item on the menu is selected');
+		$sitereportItem = $this->drupalGetNodeByTitle('Human Interest Story at '.$locationAddFull['title']);
+		$this->assertNotNull($sitereportItem, t('node loaded'));
+		$this->clickLink('Human Interest Story at this is meant for questionnaires', 0, 'Sitereport link is clicked');
+		$this->drupalGet('node/'.$sitereportItem->nid.'/addsubmission', array('query' => array('destination' => 'node/' . $sitereportItem->nid)));
+		$this->assertText('Questionnaire for', 'Questionnaire for the site report is showing');
+		$this->assertNoText('487 How many teachers in this school have NOT received training on violence and abuse against children', 'Questions are showing');
+		$this->assertText('506 It there a focal person for Child Protection and Family?', 'question 506 It there a focal person for Child Protection and Family? found');
+		
+		
+		$question['507'] = 112;
+		$this->assertField('507', '507 is showing');
+		$question['506'] = 'Yes';
+		//$this->drupalPost('node/'.$sitereportItem->nid.'/addsubmission', $question, t('Submit'), array('query' => array('destination' => 'node/' . $sitereportItem->nid)));
+	  $this->assertNoText('Thank you for your submission', 'messaging is showing');
+	}
+	
+	/**
+	 * filling in the add action item form and submit.
+	 * but for the roadside observation the it wont work
+	 *
+	 *
+	 *
+	 */
+	public function testactionItemFormField() {
+		$this->drupalGet('node/add/fieldtrip', array('query' => array('field_fieldtrip_user' => $this->unicef_user->uid, 'field_fieldtrip_places' => '')));
+		$this->assertText(t('TA Number'), t('TA number field is found'), 'Devtrac');
+		// populating the fieldtrip create form
+		//$fieldAddreportItem['taxonomy_vocabulary_6[und][]'] = 81;
+		$this->assertNoField('taxonomy_vocabulary_6[und][]', 'District field is removed from the add field tri form');
+		$fieldAddreportItem['title'] = 'YES WE CAN';
+		$fieldAddreportItem['field_fieldtrip_fc_purpose[und][0][field_fieldtrip_purpose_descr][und][0][value]'] = $this->randomName(32);
+		$fieldAddreportItem['field_fieldtrip_proms_ta_id[und][0][value]'] = 76;
+		$fieldAddreportItem['field_fieldtrip_fc_purpose[und][0][field_fieldtrip_fc_purpose_purps][und]'] = 236;
+		$fieldAddreportItem['field_fieldtrip_fc_purpose[und][0][field_fieldtrip_purpose_percent][und][0][value]'] = 100;
+		$fieldAddreportItem['field_fieldtrip_start_end_date[und][0][value][date]'] = '26/09/2012';
+		$fieldAddreportItem['field_fieldtrip_start_end_date[und][0][value2][date]'] = '26/10/2012';
+		$this->drupalPost(NULL, $fieldAddreportItem, t('Save'), array('query' => array('field_fieldtrip_user' => $this->unicef_user->uid, 'field_fieldtrip_places' => '')));
+		//
+		$this->assertText(t('has been created.'), ('field trip is created successifuly'), 'Devtrac');
+		//
+		$nodeAddreportItem = $this->drupalGetNodeByTitle($fieldAddreportItem["title"]);
+		$this->assertNotNull($nodeAddreportItem, t('node loaded'));
+		$this->drupalGet('node/'.$nodeAddreportItem->nid.'/addplaceform/ajax/nojs/go', array('query' => array('destination' => 'node/' . $nodeAddreportItem->nid)));
+		$formsubmitreport['reporttype'] = 1;
+		$formsubmitreport['district'] = 81;
+	
+		//$formsubmitreport['placetype'] = 1;
+		$this->assertNoField('placetype', 'place type field on add site reports to the fieldtrip is removed');
+		$this->drupalPost('node/'.$nodeAddreportItem->nid.'/addplaceform/ajax/nojs/go', $formsubmitreport, t('Submit'), array('query' => array('destination' => 'node/' . $nodeAddreportItem->nid)));
+		//$this->drupalGet('node/add/place/'. $formsubmitreport['district'], array('query' => array('edit[taxonomy_vocabulary_6][und]' => 81, 'destination' => 'places/' .$fieldAddreportItem['taxonomy_vocabulary_6[und][]'][0].'/'. $nodeAddreportItem->nid.'/' . _devtrac7_site_report_tid('Site Visit'))));
+		//name field
+		$this->assertField(t('title'), t('Field Title is found on the add location form'), 'Devtrac');
+		$this->assertText(t('Name'), t('Label Name is found on the form'), 'Devtrac');
+		//
+		$this->assertField(t('taxonomy_vocabulary_1[und]'), t('Field Title is found on the add location form'), 'Devtrac');
+		$this->assertText(t('Location Types'), t('Label  Place Types is found on the form'), 'Devtrac');
+		//now to the Contact field
+		$this->assertNoField(t('field_place_responsible_person[und][0][value]'), t('Field Contact is not found on the add location form'), 'Devtrac');
+		$this->assertText(t('Contact'), t('Label Contact Types is found on the form'), 'Devtrac');
+		// checking the Phone
+		$this->assertNoField(t('field_place_phone[und][0][value]'), t('Field Contact is found on the add location form'), 'Devtrac');
+		$this->assertText(t('Phone'), t('Label Phone Types is found on the form'), 'Devtrac');
+		//
+		$this->assertNoField(t('field_place_website[und][0][url]'), t('Field Contact is found on the add location form'), 'Devtrac');
+		$this->assertText(t('Website'), t('Label Website Types is found on the form'), 'Devtrac');
+		//
+		$locationAddFull['title'] = $this->randomName(32);
+		$locationAddFull['taxonomy_vocabulary_1[und]'] = 3;
+		$locationAddFull['field_ftritem_narrative[und][0][value]'] = 'jhfjkdjkcbxcb';
+		//$ditnarrativeozyq['field_ftritem_public_summary[und][0][value]'] = $this->randomName(15);
+		$locationAddFull['taxonomy_vocabulary_6[und]'] =  $formsubmitreport['district'];
+		$locationAddFull['taxonomy_vocabulary_8[und][]'] = array(326);
+		$locationAddFull['field_ftritem_lat_long[und][0][geom]'] = 'POINT(33.346199035645 2.911979913712)';
+		$this->drupalPost(NULL, $locationAddFull, t('Save'), array('query' => array('field_actionitem_responsible' => $this->unicef_user->uid, 'edit[taxonomy_vocabulary_6][und]' => 81, 'destination' => 'places/' .$locationAddFull['taxonomy_vocabulary_6[und]'].'/'. $nodeAddreportItem->nid.'/' . _devtrac7_site_report_tid('Site Visit'))));
+		$this->assertNoText(t('Copied Lat-Lon to the Site Report.'), t('User Added the location on the map'), 'Devtrac');
+		$this->assertNoText(t('Copied District on the Site Report.'), t('User Added the location on the map'), 'Devtrac');
+		$this->assertNoText(t('Copied Place Type to Site Report.'), t('User Copied Place Type to Site Report.'), 'Devtrac');
+		$this->assertNoText(t('has been created.'), t('Place has been created.'), 'Devtrac');
+		$this->assertNoText(t('Defaulted Date Visited to Start Date of Field Trip.'), t('Defaulted Date Visited to Start Date of Field Trip no longer showing.'), 'Devtrac');
+		$this->drupalGet('node/add/actionitem', array('query' => array('destination'=> 'node/'.$nodeAddreportItem->nid)));
+		//node/add/actionitem?destination=node/9615&field_actionitem_responsible=247&field_actionitem_resp_place=9617&field_actionitem_ftreportitem=9618&edit[taxonomy_vocabulary_6][und]=82
+		$ActionItemForm['title'] = $this->randomName(23);
+		$ActionItemForm['taxonomy_vocabulary_8[und][]'] = 221;
+		$ActionItemForm['field_actionitem_followuptask[und][0][value]'] = $this->randomName(23);
+		$ActionItemForm['field_actionitem_severity[und]'] = 2;
+		//$ActionItemForm['field_actionitem_responsible[und][0][target_id]'] = $this-> 1;
+		$this->drupalPost('node/add/actionitem', $ActionItemForm, t('Save'), array('query' => array('field_actionitem_responsible' => $this->unicef_user->uid, 'field_actionitem_resp_place'=> 9617, 'edit[taxonomy_vocabulary_6][und]' => 82, 'destination'=> 'node/'.$nodeAddreportItem->nid)));
+		//
+		$this->assertNoText(t('Set District on the Action Item.'), t('User Added Set District on the Action Item.'), 'Devtrac');
+		$this->assertNoText(t('Changed Subjects on Action Item:'), t('User Added Changed Subjects on Action Item'), 'Devtrac');
+		$this->assertNoText(t('has been created'), t('Action Item has been created.'), 'Devtrac');
+		$this->assertNoText(t('Purpose(s) of the Fieldtrip:'), t('Purpose(s) of the Fieldtrip Section is no longer showing'), 'Devtrac');
+		$this->assertNoLink('Edit Narrative', 0,  t('Link to edit narrative is no longer showing'), 'Devtrac');
+	}
+	
+	
+	
+	
+	public function testactionItemFormFieldwithOption2() {
+		$this->drupalGet('node/add/fieldtrip', array('query' => array('field_fieldtrip_user' => $this->unicef_user->uid, 'field_fieldtrip_places' => '')));
+		$this->assertText(t('TA Number'), t('TA number field is found'), 'Devtrac');
+		// populating the fieldtrip create form
+		//$fieldAddreportItem['taxonomy_vocabulary_6[und][]'] = 81;
+		$this->assertNoField('taxonomy_vocabulary_6[und][]', 'District field is removed from the add field tri form');
+		$fieldAddreportItem['title'] = 'YES WE CAN';
+		$fieldAddreportItem['field_fieldtrip_fc_purpose[und][0][field_fieldtrip_purpose_descr][und][0][value]'] = $this->randomName(32);
+		$fieldAddreportItem['field_fieldtrip_proms_ta_id[und][0][value]'] = 76;
+		$fieldAddreportItem['field_fieldtrip_fc_purpose[und][0][field_fieldtrip_fc_purpose_purps][und]'] = 236;
+		$fieldAddreportItem['field_fieldtrip_fc_purpose[und][0][field_fieldtrip_purpose_percent][und][0][value]'] = 100;
+		$fieldAddreportItem['field_fieldtrip_start_end_date[und][0][value][date]'] = '26/09/2012';
+		$fieldAddreportItem['field_fieldtrip_start_end_date[und][0][value2][date]'] = '26/10/2012';
+		$this->drupalPost(NULL, $fieldAddreportItem, t('Save'), array('query' => array('field_fieldtrip_user' => $this->unicef_user->uid, 'field_fieldtrip_places' => '')));
+		//
+		$this->assertText(t('has been created.'), ('field trip is created successifuly'), 'Devtrac');
+		//
+		$nodeAddreportItem = $this->drupalGetNodeByTitle($fieldAddreportItem["title"]);
+		$this->assertNotNull($nodeAddreportItem, t('node loaded'));
+		$this->drupalGet('node/'.$nodeAddreportItem->nid.'/addplaceform/ajax/nojs/go', array('query' => array('destination' => 'node/' . $nodeAddreportItem->nid)));
+		$formsubmitreport['reporttype'] = 2;
+		$formsubmitreport['district'] = 81;
+	
+		//$formsubmitreport['placetype'] = 1;
+		$this->assertNoField('placetype', 'place type field on add site reports to the fieldtrip is removed');
+		$this->drupalPost('node/'.$nodeAddreportItem->nid.'/addplaceform/ajax/nojs/go', $formsubmitreport, t('Submit'), array('query' => array('destination' => 'node/' . $nodeAddreportItem->nid)));
+		//$this->drupalGet('node/add/place/'. $formsubmitreport['district'], array('query' => array('edit[taxonomy_vocabulary_6][und]' => 81, 'destination' => 'places/' .$fieldAddreportItem['taxonomy_vocabulary_6[und][]'].'/'. $nodeAddreportItem->nid.'/' . _devtrac7_site_report_tid('Site Visit'))));
+		//name field
+		$this->assertField(t('title'), t('Field Title is found on the add location form'), 'Devtrac');
+		$this->assertText(t('Name'), t('Label Name is found on the form'), 'Devtrac');
+		//
+		$this->assertField(t('taxonomy_vocabulary_1[und]'), t('Field Title is found on the add location form'), 'Devtrac');
+		$this->assertText(t('Location Types'), t('Label  Place Types is found on the form'), 'Devtrac');
+		//now to the Contact field
+		$this->assertField(t('field_place_responsible_person[und][0][value]'), t('Field Contact is found on the add location form'), 'Devtrac');
+		$this->assertText(t('Contact'), t('Label Contact Types is found on the form'), 'Devtrac');
+		// checking the Phone
+		$this->assertField(t('field_place_phone[und][0][value]'), t('Field Contact is found on the add location form'), 'Devtrac');
+		$this->assertText(t('Phone'), t('Label Phone Types is found on the form'), 'Devtrac');
+		//
+		$this->assertField(t('field_place_website[und][0][url]'), t('Field Contact is found on the add location form'), 'Devtrac');
+		$this->assertText(t('Website'), t('Label Website Types is found on the form'), 'Devtrac');
+		//
+		$loc['title'] = $this->randomString(32);
+		$loc['taxonomy_vocabulary_1[und]'] = 4;
+		$loc['taxonomy_vocabulary_6[und]'] = $formsubmitreport['district'];
+		$this->drupalPost(NULL, $loc, t('Save'));
+		$this->drupalGet('node/add/actionitem', array('query' => array('field_actionitem_responsible' => $this->unicef_user->uid, 'field_actionitem_resp_place'=> 9617, 'ield_actionitem_ftreportitem' => 9618,'edit[taxonomy_vocabulary_6][und]' => 82, 'destination'=> 'node/'.$nodeAddreportItem->nid)));
+		
+		//$locationAddFull['title'] = $this->randomName(32);
+		//$locationAddFull['taxonomy_vocabulary_1[und]'] = 3;
+		//$locationAddFull['field_ftritem_narrative[und][0][value]'] = 'jhfjkdjkcbxcb';
+		//$ditnarrativeozyq['field_ftritem_public_summary[und][0][value]'] = $this->randomName(15);
+		//$locationAddFull['taxonomy_vocabulary_6[und]'] =  $formsubmitreport['district'];
+		//$locationAddFull['taxonomy_vocabulary_8[und][]'] = array(326);
+		//$locationAddFull['field_ftritem_lat_long[und][0][geom]'] = 'POINT(33.346199035645 2.911979913712)';
+		//$this->drupalPost(NULL, $locationAddFull, t('Save'), array('query' => array('field_actionitem_responsible' => $this->unicef_user->uid, 'edit[taxonomy_vocabulary_6][und]' => 81, 'destination' => 'places/' .$locationAddFull['taxonomy_vocabulary_6[und]'].'/'. $nodeAddreportItem->nid.'/' . _devtrac7_site_report_tid('Site Visit'))));
+		$this->assertNoText(t('Copied Lat-Lon to the Site Report.'), t('User Added the location on the map'), 'Devtrac');
+		$this->assertNoText(t('Copied District on the Site Report.'), t('User Added the location on the map'), 'Devtrac');
+		$this->assertNoText(t('Copied Place Type to Site Report.'), t('User Copied Place Type to Site Report.'), 'Devtrac');
+		$this->assertNoText(t('has been created.'), t('Place has been created.'), 'Devtrac');
+		$this->assertNoText(t('Defaulted Date Visited to Start Date of Field Trip.'), t('Defaulted Date Visited to Start Date of Field Trip no longer showing.'), 'Devtrac');
+		$this->drupalGet('node/add/actionitem', array('query' => array('destination'=> 'node/'.$nodeAddreportItem->nid)));
+		//node/add/actionitem?destination=node/9615&field_actionitem_responsible=247&field_actionitem_resp_place=9617&field_actionitem_ftreportitem=9618&edit[taxonomy_vocabulary_6][und]=82
+		$ActionItemForm['title'] = $this->randomName(23);
+		$ActionItemForm['taxonomy_vocabulary_8[und][]'] = 221;
+		$ActionItemForm['field_actionitem_followuptask[und][0][value]'] = $this->randomName(23);
+		$ActionItemForm['field_actionitem_severity[und]'] = 2;
+		$ActionItemForm['field_actionitem_lat_long[und][0][geom]'] = 'POINT(33.346199035645 2.911979913712)';
+		$ActionItemForm['field_actionitem_ftreportitem[und][0][target_id]'] = '';
+		//$ActionItemForm['field_actionitem_responsible[und][0][target_id]'] = $this-> 1;
+		$this->drupalPost('node/add/actionitem', $ActionItemForm, t('Save'), array('query' => array('field_actionitem_responsible' => $this->unicef_user->uid, 'field_actionitem_resp_place'=> 9617, 'ield_actionitem_ftreportitem' => 9618,'edit[taxonomy_vocabulary_6][und]' => 82, 'destination'=> 'node/'.$nodeAddreportItem->nid)));
+		
+		$this->assertNoText(t('Set District on the Action Item.'), t('User Added Set District on the Action Item.'), 'Devtrac');
+		$this->assertNoText(t('Changed Subjects on Action Item:'), t('User Added Changed Subjects on Action Item'), 'Devtrac');
+		$this->assertNoText(t('has been created'), t('Action Item has been created.'), 'Devtrac');
+		$this->assertNoText(t('Purpose(s) of the Fieldtrip:'), t('Purpose(s) of the Fieldtrip Section is no longer showing'), 'Devtrac');
+		$this->assertNoLink('Edit Narrative', 0,  t('Link to edit narrative is no longer showing'), 'Devtrac');
+	}
+	/**
+	 * 
+	 * 
+	 */
+	public function testactionItemFormFieldwithOption0() {
+		$this->drupalGet('node/add/fieldtrip', array('query' => array('field_fieldtrip_user' => $this->unicef_user->uid, 'field_fieldtrip_places' => '')));
+		$this->assertText(t('TA Number'), t('TA number field is found'), 'Devtrac');
+		// populating the fieldtrip create form
+		//$fieldAddreportItem['taxonomy_vocabulary_6[und][]'] = 81;
+		$this->assertNoField('taxonomy_vocabulary_6[und][]', 'District field is removed from the add field tri form');
+		$fieldAddreportItem['title'] = 'YES WE CAN';
+		$fieldAddreportItem['field_fieldtrip_fc_purpose[und][0][field_fieldtrip_purpose_descr][und][0][value]'] = $this->randomName(32);
+		$fieldAddreportItem['field_fieldtrip_proms_ta_id[und][0][value]'] = 76;
+		$fieldAddreportItem['field_fieldtrip_fc_purpose[und][0][field_fieldtrip_fc_purpose_purps][und]'] = 236;
+		$fieldAddreportItem['field_fieldtrip_fc_purpose[und][0][field_fieldtrip_purpose_percent][und][0][value]'] = 100;
+		$fieldAddreportItem['field_fieldtrip_start_end_date[und][0][value][date]'] = '26/09/2012';
+		$fieldAddreportItem['field_fieldtrip_start_end_date[und][0][value2][date]'] = '26/10/2012';
+		$this->drupalPost(NULL, $fieldAddreportItem, t('Save'), array('query' => array('field_fieldtrip_user' => $this->unicef_user->uid, 'field_fieldtrip_places' => '')));
+		//
+		$this->assertText(t('has been created.'), ('field trip is created successifuly'), 'Devtrac');
+		//
+		$nodeAddreportItem = $this->drupalGetNodeByTitle($fieldAddreportItem["title"]);
+		$this->assertNotNull($nodeAddreportItem, t('node loaded'));
+		$this->drupalGet('node/'.$nodeAddreportItem->nid.'/addplaceform/ajax/nojs/go', array('query' => array('destination' => 'node/' . $nodeAddreportItem->nid)));
+		$formsubmitreport['reporttype'] = 0;
+		$formsubmitreport['district'] = 81;
+	
+		//$formsubmitreport['placetype'] = 1;
+		$this->assertNoField('placetype', 'place type field on add site reports to the fieldtrip is removed');
+		$this->drupalPost('node/'.$nodeAddreportItem->nid.'/addplaceform/ajax/nojs/go', $formsubmitreport, t('Submit'), array('query' => array('destination' => 'node/' . $nodeAddreportItem->nid)));
+		//$this->drupalGet('node/add/place/'. $formsubmitreport['district'], array('query' => array('edit[taxonomy_vocabulary_6][und]' => 81, 'destination' => 'places/' .$fieldAddreportItem['taxonomy_vocabulary_6[und][]'].'/'. $nodeAddreportItem->nid.'/' . _devtrac7_site_report_tid('Site Visit'))));
+		//name field
+		$this->assertField(t('title'), t('Field Title is found on the add location form'), 'Devtrac');
+		$this->assertText(t('Name'), t('Label Name is found on the form'), 'Devtrac');
+		//
+		$this->assertField(t('taxonomy_vocabulary_1[und]'), t('Field Title is found on the add location form'), 'Devtrac');
+		$this->assertText(t('Location Types'), t('Label  Place Types is found on the form'), 'Devtrac');
+		//now to the Contact field
+		$this->assertField(t('field_place_responsible_person[und][0][value]'), t('Field Contact is found on the add location form'), 'Devtrac');
+		$this->assertText(t('Contact'), t('Label Contact Types is found on the form'), 'Devtrac');
+		// checking the Phone
+		$this->assertField(t('field_place_phone[und][0][value]'), t('Field Contact is found on the add location form'), 'Devtrac');
+		$this->assertText(t('Phone'), t('Label Phone Types is found on the form'), 'Devtrac');
+		//
+		$this->assertField(t('field_place_website[und][0][url]'), t('Field Contact is found on the add location form'), 'Devtrac');
+		$this->assertText(t('Website'), t('Label Website Types is found on the form'), 'Devtrac');
+		//
+		$loc['title'] = $this->randomString(32);
+		$loc['taxonomy_vocabulary_1[und]'] = 4;
+		$loc['taxonomy_vocabulary_6[und]'] = $formsubmitreport['district'];
+		$this->drupalPost(NULL, $loc, t('Save'));
+		$this->drupalGet('node/add/actionitem', array('query' => array('field_actionitem_responsible' => $this->unicef_user->uid, 'field_actionitem_resp_place'=> 9617, 'ield_actionitem_ftreportitem' => 9618,'edit[taxonomy_vocabulary_6][und]' => 82, 'destination'=> 'node/'.$nodeAddreportItem->nid)));
+	
+		//$locationAddFull['title'] = $this->randomName(32);
+		//$locationAddFull['taxonomy_vocabulary_1[und]'] = 3;
+		//$locationAddFull['field_ftritem_narrative[und][0][value]'] = 'jhfjkdjkcbxcb';
+		//$ditnarrativeozyq['field_ftritem_public_summary[und][0][value]'] = $this->randomName(15);
+		//$locationAddFull['taxonomy_vocabulary_6[und]'] =  $formsubmitreport['district'];
+		//$locationAddFull['taxonomy_vocabulary_8[und][]'] = array(326);
+		//$locationAddFull['field_ftritem_lat_long[und][0][geom]'] = 'POINT(33.346199035645 2.911979913712)';
+		//$this->drupalPost(NULL, $locationAddFull, t('Save'), array('query' => array('field_actionitem_responsible' => $this->unicef_user->uid, 'edit[taxonomy_vocabulary_6][und]' => 81, 'destination' => 'places/' .$locationAddFull['taxonomy_vocabulary_6[und]'].'/'. $nodeAddreportItem->nid.'/' . _devtrac7_site_report_tid('Site Visit'))));
+		$this->assertNoText(t('Copied Lat-Lon to the Site Report.'), t('User Added the location on the map'), 'Devtrac');
+		$this->assertNoText(t('Copied District on the Site Report.'), t('User Added the location on the map'), 'Devtrac');
+		$this->assertNoText(t('Copied Place Type to Site Report.'), t('User Copied Place Type to Site Report.'), 'Devtrac');
+		$this->assertNoText(t('has been created.'), t('Place has been created.'), 'Devtrac');
+		$this->assertNoText(t('Defaulted Date Visited to Start Date of Field Trip.'), t('Defaulted Date Visited to Start Date of Field Trip no longer showing.'), 'Devtrac');
+		$this->drupalGet('node/add/actionitem', array('query' => array('destination'=> 'node/'.$nodeAddreportItem->nid)));
+		//node/add/actionitem?destination=node/9615&field_actionitem_responsible=247&field_actionitem_resp_place=9617&field_actionitem_ftreportitem=9618&edit[taxonomy_vocabulary_6][und]=82
+		$ActionItemForm['title'] = $this->randomName(23);
+		$ActionItemForm['taxonomy_vocabulary_8[und][]'] = 221;
+		$ActionItemForm['field_actionitem_followuptask[und][0][value]'] = $this->randomName(23);
+		$ActionItemForm['field_actionitem_severity[und]'] = 2;
+		$ActionItemForm['field_actionitem_lat_long[und][0][geom]'] = 'POINT(33.346199035645 2.911979913712)';
+		$ActionItemForm['field_actionitem_ftreportitem[und][0][target_id]'] = '';
+		//$ActionItemForm['field_actionitem_responsible[und][0][target_id]'] = $this-> 1;
+		$this->drupalPost('node/add/actionitem', $ActionItemForm, t('Save'), array('query' => array('field_actionitem_responsible' => $this->unicef_user->uid, 'field_actionitem_resp_place'=> 9617, 'ield_actionitem_ftreportitem' => 9618,'edit[taxonomy_vocabulary_6][und]' => 82, 'destination'=> 'node/'.$nodeAddreportItem->nid)));
+	
+		$this->assertNoText(t('Set District on the Action Item.'), t('User Added Set District on the Action Item.'), 'Devtrac');
+		$this->assertNoText(t('Changed Subjects on Action Item:'), t('User Added Changed Subjects on Action Item'), 'Devtrac');
+		$this->assertNoText(t('has been created'), t('Action Item has been created.'), 'Devtrac');
+		$this->assertNoText(t('Purpose(s) of the Fieldtrip:'), t('Purpose(s) of the Fieldtrip Section is no longer showing'), 'Devtrac');
+		$this->assertNoLink('Edit Narrative', 0,  t('Link to edit narrative is no longer showing'), 'Devtrac');
+	}
+
+}
+	
+	

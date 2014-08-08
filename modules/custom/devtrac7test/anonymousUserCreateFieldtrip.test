@@ -1,0 +1,69 @@
+<?php
+
+/**
+ * @file
+ * Creating a Fieldtrip on the DevTrac7 website.
+ **/
+
+/**
+ * Load simpletest_clone.
+ *
+ * We want to do testing on an existing website,
+ * not on an empty database.
+ */
+
+module_load_include('test', 'simpletest_clone');
+
+/**
+ * Functional tests for anonymous Fieldtrip creation.
+ */
+class FieldtripCreateAnonymousTestCase extends SimpleTestCloneTestCase {
+  public static function getInfo() {
+    return array(
+      'name' => 'Anonymous fieldtrip create authentication',
+      'description' => 'Have an anonymous user create a Fieldtrip.',
+      'group' => 'Devtrac',
+    );
+  }
+
+  /**
+   * (non-PHPdoc)
+   * @see SimpleTestCloneTestCase::setUp()
+   */
+  public function setUp() {
+    parent::setUp();
+    // Nothing else to do.
+  }
+
+  //Assess 'Create Fieldtrip' permission for anonymous user.
+
+  // 1. Open the Fieltrip creation form.
+  // 2. Test for "Access denied".
+
+  public function testFieldtripCreateAnonymous() {
+    $this->drupalGet('node/add/fieldtrip');
+    $this->assertText(t('Access denied'), t('Anonymous user not permitted to create a fieldtrip.'), 'Devtrac');
+  }
+
+  //Functional tests for authenticated (not permitted) Fieldtrip creation.
+
+  public function testFieldtripCreateNotPermitted() {
+    $this->drupalGet('node/add/fieldtrip');
+    // We should get an "Access denied".
+    $this->assertText(t('Access denied'), t('Authenticated user not permitted to create a fieldtrip.'), 'Devtrac');
+    $this->assertNoLink(t('SITE REPORTS'), 0 ,t('Link to site report devtrac page'));
+  }
+
+  public function testTaNumberExisttest() {
+    $this->drupalGet('node/add/fieldtrip');
+    $ta['field_fieldtrip_proms_ta_id[und][0][value]'] = '';
+    $this->assertNoField(t('$ta'), t('TA Number field is exists'), 'DevTrac');
+    $this->assertNoText(t('TA Number'), t('Fill in the TA Number'), 'DevTrac');
+    $this->assertNoText(t('Create Field Trip'), t('Create Filed Trip form exists'), 'DevTrac');
+  }
+
+  public function testStatusCodetest() {
+    $this->drupalGet('node/add/fieldtrip');
+    $this->assertResponse(403, 'The server says that you are not authorised to access the requested page Access denied');
+  }
+}

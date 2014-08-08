@@ -6,8 +6,8 @@
  * It returns FALSE if it doesn't.
  */
 function devtrac7_fieldtrip_promstaidset($node) {
-  if (!empty($node->field_fieldtrip_proms_ta_id) && isset($node->field_fieldtrip_proms_ta_id[$node->language])) {
-    return (count($node->field_fieldtrip_proms_ta_id[$node->language]) > 0);
+  if (!empty($node->field_fieldtrip_internal_id) && isset($node->field_fieldtrip_internal_id[$node->language])) {
+    return (count($node->field_fieldtrip_internal_id[$node->language]) > 0);
   }
   return FALSE;
 }

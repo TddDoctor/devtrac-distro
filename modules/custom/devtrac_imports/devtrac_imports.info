@@ -13,3 +13,4 @@ files[] = includes/devtrac_imports_sectors0.inc
 files[] = includes/devtrac_imports_sectors1.inc
 files[] = includes/devtrac_imports_sector_icons.inc
 files[] = includes/devtrac_imports_placetype_icons.inc
+files[] = includes/devtrac_imports_site_report_type.inc

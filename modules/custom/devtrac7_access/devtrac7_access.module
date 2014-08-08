@@ -456,6 +456,9 @@ function devtrac7_access_node_access_records($node) {
 
   $grants = array();
 
+  // Retrieve the rid for role "field worker".
+  $role = user_role_load_by_name('field worker');
+  $rid = $role->rid;
   if ($node->type == 'fieldtrip') {
     $fieldtrip = $node;
     if (isset($fieldtrip->field_fieldtrip_status['und'][0]['value'])) {
@@ -471,10 +474,10 @@ function devtrac7_access_node_access_records($node) {
             'grant_delete' => 0,
             'priority' => 26,
           );
-          // Grant view access to role unicef user
+          // Grant view access to role field worker
           $grants[] = array(
             'realm' => 'devtrac_rid',
-            'gid' => 5,
+            'gid' => $rid,
             'grant_view' => 1,
             'grant_update' => 0,
             'grant_delete' => 0,
@@ -520,10 +523,10 @@ function devtrac7_access_node_access_records($node) {
             'grant_delete' => 0,
             'priority' => 26,
           );
-          // Grant view access to role unicef user
+          // Grant view access to role field worker
           $grants[] = array(
             'realm' => 'devtrac_rid',
-            'gid' => 5,
+            'gid' => $rid,
             'grant_view' => 1,
             'grant_update' => 0,
             'grant_delete' => 0,
@@ -592,6 +595,8 @@ function devtrac7_access_node_access_records($node) {
     }
     if (isset($fieldtrip->field_fieldtrip_status['und'][0]['value'])) {
       $localuser = user_load($fieldtrip->field_fieldtrip_user['und'][0]['target_id']);
+      $role = user_role_load_by_name('field worker');
+      $rid = $role->rid;
       switch ($fieldtrip->field_fieldtrip_status['und'][0]['value']) {
         case 'In Progress':
         case 'Submitted':
@@ -604,10 +609,10 @@ function devtrac7_access_node_access_records($node) {
             'grant_delete' => 0,
             'priority' => 26,
           );
-          // Grant view access to role unicef user
+          // Grant view access to role field worker
           $grants[] = array(
             'realm' => 'devtrac_rid',
-            'gid' => 5,
+            'gid' => $rid,
             'grant_view' => 1,
             'grant_update' => 0,
             'grant_delete' => 0,
@@ -652,10 +657,10 @@ function devtrac7_access_node_access_records($node) {
         'grant_delete' => 0,
         'priority' => 26,
       );
-      // Grant view access to role unicef user
+      // Grant view access to role field worker
       $grants[] = array(
         'realm' => 'devtrac_rid',
-        'gid' => 5,
+        'gid' => $rid,
         'grant_view' => 1,
         'grant_update' => 0,
         'grant_delete' => 0,
@@ -687,3 +692,164 @@ function devtrac7_access_node_access_records($node) {
   return $grants;
 }
 
+/**
+ * Implements hook_taxonomy_term_insert().
+ *
+ * Initializes taxonomy access on the term to be inserted.
+ * Also updates taxonomy access on the parent term if needed.
+ *
+ * @param unknown_type $term
+ */
+function devtrac7_access_taxonomy_term_insert($term) {
+  // Initialize some default settings.
+  $list = array(
+    'view' => 0,
+    'update' => 0,
+    'delete' => 0,
+    'create' => 0,
+    'list' => 1,
+  );
+  // Get the array of all role names, indexed by rid.
+  $roles = _taxonomy_access_user_roles();
+  // Get all parents of the term to be inserted.
+  $parent_tids = $term->parent;
+
+  // Initialize term settings for different roles.
+  foreach ($roles as $rid => $role_name) {
+    foreach ($parent_tids as $pid => $parent_tid) {
+      if ($pid != 0) {
+        // Initialize parent term settings for different roles.
+        switch ($role_name) {
+          case 'editor':
+            // Revoke create access to the parent term.
+            $editor_term_defaults[$pid] = _taxonomy_access_format_grant_record($pid, $rid, $list);
+            break;
+          case 'field worker':
+            // revoke create access to the parent term.
+            $worker_term_defaults[$pid] = _taxonomy_access_format_grant_record($pid, $rid, $list);
+            break;
+          default:
+        }
+      }
+    }
+  }
+
+  // Process each set.
+  if (!empty($editor_term_defaults)) {
+    taxonomy_access_set_term_grants($editor_term_defaults);
+  }
+  if (!empty($worker_term_defaults)) {
+    taxonomy_access_set_term_grants($worker_term_defaults);
+  }
+}
+
+/**
+ * Implements hook_taxonomy_term_update().
+ *
+ * Updates taxonomy access on the old and new parent terms
+ * if needed. It only fires when terms are updated.
+ *
+ * @param unknown_type $term
+ */
+function devtrac7_access_taxonomy_term_update($term) {
+  _devtrac7_access_tree_update_term_grants($term->vid);
+}
+
+/**
+ * Implements hook_taxonomy_term_delete().
+ *
+ * Updates taxonomy access on the parent term if needed.
+ * 
+ * @param unknown_type $term
+ */
+function devtrac7_access_taxonomy_term_delete($term) {
+  _devtrac7_access_tree_update_term_grants($term->vid);
+}
+
+/**
+ * Helper function that updates all term access settings in a vocabulary.
+ * 
+ * @param unknown_type $term
+ *   A term object that belongs to the vocabulary to be updated.
+ */
+function _devtrac7_access_tree_update_term_grants($vid) {
+  // Initialize some default settings.
+  $list = array(
+    'view' => 0,
+    'update' => 0,
+    'delete' => 0,
+    'create' => 0,
+    'list' => 1,
+  );
+  // Get the array of all role names, indexed by rid.
+  $roles = _taxonomy_access_user_roles();
+  // Getting all parents of the term to be inserted using
+  // taxonomy_get_parent() fails because the term has already
+  // been deleted from the database. So instead we get the
+  // whole tree using taxonomy_get_tree().
+  $tree = taxonomy_get_tree($vid, 0, NULL, TRUE);
+
+  // Delete term settings for different roles.
+  foreach ($roles as $rid => $role_name) {
+    // Redo term access settings for different roles.
+    switch ($role_name) {
+      case 'editor':
+        foreach ($tree as $branch) {
+          // If the term has no children then (re-)allow create access.
+          $children = taxonomy_get_children($branch->tid, $vid);
+          if (empty($children)) {
+            // Re-allow create access to leaf terms
+            // by deleting the access setting.
+            taxonomy_access_delete_term_grants($branch->tid, $rid);
+          }
+          else {
+            // Revoke create access to non-leaf terms.
+            $editor_term_defaults[$branch->tid] = _taxonomy_access_format_grant_record($branch->tid, $rid, $list);
+          }
+        }
+        break;
+      case 'field worker':
+        foreach ($tree as $branch) {
+          // If the term has no children then (re-)allow create access.
+          $children = taxonomy_get_children($branch->tid, $vid);
+          if (empty($children)) {
+            // Re-allow create access to leaf terms
+            // by deleting the access setting.
+            taxonomy_access_delete_term_grants($branch->tid, $rid);
+          }
+          else {
+            // Revoke create access to non-leaf terms.
+            $worker_term_defaults[$branch->tid] = _taxonomy_access_format_grant_record($branch->tid, $rid, $list);
+          }
+        }
+        break;
+      default:
+    }
+  }
+
+  // Process each set.
+  if (!empty($editor_term_defaults)) {
+    taxonomy_access_set_term_grants($editor_term_defaults);
+  }
+  if (!empty($worker_term_defaults)) {
+    taxonomy_access_set_term_grants($worker_term_defaults);
+  }
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ * 
+ * Implements hook_form_FORM_ID_alter() for the taxonomy_overview_terms form.
+ * It defines a new submit function so we can update the taxonomy access
+ * settings on the vocabulary when the hierarchy has been changed on the form.
+ */
+function devtrac7_access_form_taxonomy_overview_terms_alter(&$form, &$form_state, $form_id) {
+  $form['#submit'][] = 'devtrac7_access_taxonomy_overview_terms_submit';
+}
+
+/**
+ * 
+ */
+function devtrac7_access_taxonomy_overview_terms_submit($form, &$form_state) {
+  _devtrac7_access_tree_update_term_grants($form['#vocabulary']->vid);
+}

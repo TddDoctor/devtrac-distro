@@ -1,7 +1,7 @@
 <?php
 
-/*
- *   Implementation of hook_menu
+/**
+ * Implements hook_menu().
  */
 function devtrac7_menu() {
   // This is the mother of all Devtrac7 admin items
@@ -62,9 +62,9 @@ function devtrac7_menu() {
     'page callback' => 'devtrac7_fieldtrip_setstatus',
     'page arguments' => array(1, 3),
     'access callback' => TRUE, // array('devtrac7_fieldtrip_setstatus_access'),
-//    'access arguments' => array(1, 3),
-//    'type' => MENU_LOCAL_ACTION,
-//    'context' => MENU_CONTEXT_PAGE | MENU_CONTEXT_INLINE,
+    // 'access arguments' => array(1, 3),
+    // 'type' => MENU_LOCAL_ACTION,
+    // 'context' => MENU_CONTEXT_PAGE | MENU_CONTEXT_INLINE,
   );
   $items['addplacetofieldtrip/%/%/%'] = array(
     'title' => 'Add Location to Fieldtrip',
@@ -80,8 +80,8 @@ function devtrac7_menu() {
     'page arguments' => array(1, 4),
     'access callback' => array('devtrac7_update_fieldtrip_access'),
     'access arguments' => array(1),
-//    'type' => MENU_LOCAL_ACTION,
-//    'context' => MENU_CONTEXT_PAGE | MENU_CONTEXT_INLINE,
+    // 'type' => MENU_LOCAL_ACTION,
+    // 'context' => MENU_CONTEXT_PAGE | MENU_CONTEXT_INLINE,
     'weight' => 4,
   );
   $items['node/%/%/fieldtripcommentform/ajax/%ctools_js/go'] = array(
@@ -91,22 +91,20 @@ function devtrac7_menu() {
     'page arguments' => array(1, 2, 5),
     'access callback' => array('devtrac7_update_fieldtrip_access'),
     'access arguments' => array(1),
-//    'type' => MENU_LOCAL_ACTION,
-//    'context' => MENU_CONTEXT_PAGE | MENU_CONTEXT_INLINE,
+    // 'type' => MENU_LOCAL_ACTION,
+    // 'context' => MENU_CONTEXT_PAGE | MENU_CONTEXT_INLINE,
     'weight' => 4,
   );
-/*
-  $items['node/%/addplaceform/noajax'] = array(
-    'title' => t('Add Location Direct'),
-    'page callback' => 'devtrac7_pageaddplaceform',
-    'page arguments' => array(1),
-    'access callback' => array('devtrac7_update_fieldtrip_access'),
-    'access arguments' => array(1),
-    'type' => MENU_LOCAL_ACTION,
-    'context' => MENU_CONTEXT_PAGE | MENU_CONTEXT_INLINE,
-    'weight' => 4,
-  );
-*/
+  // $items['node/%/addplaceform/noajax'] = array(
+  //    'title' => t('Add Location Direct'),
+  //    'page callback' => 'devtrac7_pageaddplaceform',
+  //    'page arguments' => array(1),
+  //    'access callback' => array('devtrac7_update_fieldtrip_access'),
+  //    'access arguments' => array(1),
+  //    'type' => MENU_LOCAL_ACTION,
+  //    'context' => MENU_CONTEXT_PAGE | MENU_CONTEXT_INLINE,
+  //    'weight' => 4,
+  // );
   $items['node/%/addactionitem'] = array(
     'title' => t('Add Actionitem'),
     'title callback' => 'check_plain',
@@ -125,10 +123,10 @@ function devtrac7_menu() {
     'page callback' => 'devtrac7_drupal_goto',
     'page arguments' => array(1, 'fieldtrip'),
     'access callback' => 'devtrac7_addfieldtrip_access',
-//    'access arguments' => array(),
+    // 'access arguments' => array(),
     'description' => t('Create a new Field Trip'),
     'type' => MENU_CALLBACK, // MENU_LOCAL_ACTION,
-//    'context' => MENU_CONTEXT_PAGE | MENU_CONTEXT_INLINE,
+    // 'context' => MENU_CONTEXT_PAGE | MENU_CONTEXT_INLINE,
     'weight' => 4,
   );
   /* All field collections */
@@ -139,6 +137,18 @@ function devtrac7_menu() {
   );
 
   return $items;
+}
+
+/**
+ * Implements hook_permission().  
+ */
+function devtrac7_permission() {
+  return array(
+    'administer devtrac' => array(
+      'title' => t('Administer Devtrac'),
+      'description' => t('Perform administration tasks for Devtrac.'),
+    ),
+  );
 }
 
 /**
@@ -162,11 +172,14 @@ function devtrac7_menu_alter(&$items) {
 function devtrac7_menu_link_alter(&$item) {
   if ($item['link_path'] == 'user') {
     $item['menu_name'] = 'menu-my-profile';
-  	$item['link_title'] = 'Welcome, [current-user:field_user_firstname]';
+    $item['link_title'] = 'Home';
+    if (user_is_logged_in()) {
+      'Welcome, [current-user:field_user_firstname]';
+    }
     $item['hidden'] = 0;
     $options = array(
-     'menu_token_link_path' => 'user',
-     'menu_token_data' => array(
+      'menu_token_link_path' => 'user',
+      'menu_token_data' => array(
         'user' => array(
           'type' => 'user',
           'plugin' => 'user_context',
@@ -179,7 +192,7 @@ function devtrac7_menu_link_alter(&$item) {
       'attributes' => array(
         'title' => '',
       ),
-      'alter' => FALSE,
+      'alter' => TRUE,
     );
     $item['options'] = $options;
     $item['weigth'] = -48;
@@ -200,6 +213,18 @@ function devtrac7_menu_link_alter(&$item) {
     // and the code in function _menu_navigation_links_rebuild() in includes/menu.inc
     $item['customized'] = 1;
     $item['weigth'] = -50;
+  }
+}
+
+/**
+ * Implements hook_translated_menu_link_alter().
+ */
+function devtrac7_translated_menu_link_alter(&$item, $map) {
+  if ($item['link_path'] == 'user') {
+    $item['link_title'] = 'Home';
+    if (user_is_logged_in()) {
+      'Welcome, [current-user:field_user_firstname]';
+    }
   }
 }
 
@@ -322,13 +347,13 @@ function devtrac7_addfieldtrip_access() {
   $arg0 = arg(0);
   $arg1 = arg(1);
   if (($arg0 == 'user') && is_numeric($arg1)) {
-//    return (in_array('administrator', $user->roles) || (($user->uid == $arg1) && node_access('create', 'fieldtrip')));
+    // return (in_array('administrator', $user->roles) || (($user->uid == $arg1) && node_access('create', 'fieldtrip')));
     return (($user->uid == $arg1) && node_access('create', 'fieldtrip'));
   }
-//  if (($arg0 == 'node') && is_numeric($arg1)) {
-//    $node = node_load($arg1);
-//    return (($node->type = 'fieldtrip') && ($user->uid == $node->uid) && node_access('create', 'fieldtrip'));
-//  }
+  // if (($arg0 == 'node') && is_numeric($arg1)) {
+  //   $node = node_load($arg1);
+  //   return (($node->type = 'fieldtrip') && ($user->uid == $node->uid) && node_access('create', 'fieldtrip'));
+  // }
   return FALSE;
 }
 
@@ -343,13 +368,13 @@ function devtrac7_addactionitem_access($nid) {
     global $user;
     $node = node_load($nid);
     if ($node->type == 'ftritem') {
-//    return (in_array('administrator', $user->roles) || (($user->uid == $arg1) && user_access('create fieldtrip content')));
+      // return (in_array('administrator', $user->roles) || (($user->uid == $arg1) && user_access('create fieldtrip content')));
       return (($user->uid == $node->uid) && user_access('create actionitem content'));
     }
-//    if ($node->type == 'actionitem') {
-//      $node = node_load($arg1);
-//      return (($user->uid == $node->uid) && user_access('create actionitem content'));
-//    }
+    // if ($node->type == 'actionitem') {
+    //   $node = node_load($arg1);
+    //   return (($user->uid == $node->uid) && user_access('create actionitem content'));
+    // }
   }
   return FALSE;
 }
@@ -366,7 +391,7 @@ function devtrac7_update_fieldtrip_access($nid = NULL) {
   $result = $result && isset($fieldtrip->field_fieldtrip_status[$fieldtrip->language][0]['value']);
   $result = $result && ($fieldtrip->field_fieldtrip_status[$fieldtrip->language][0]['value'] != 'Approved');
   $result = $result && isset($fieldtrip->field_fieldtrip_user[$fieldtrip->language][0]['target_id']);
-//  $result = $result && ($fieldtrip->field_fieldtrip_user[$fieldtrip->language][0]['target_id'] == $user->uid);
+  // $result = $result && ($fieldtrip->field_fieldtrip_user[$fieldtrip->language][0]['target_id'] == $user->uid);
   $result = $result && node_access("update", $fieldtrip);
   }
   return $result;
@@ -406,11 +431,11 @@ function devtrac7_addplaceform($form, &$form_state, $fieldtrip = NULL) {
     $reporttypes[] = $term->name;
   }
   $form['reporttype'] = array(
-      '#title' => t('Site Report Type'),
-      '#type' => 'radios',
-      '#description' => 'Select the type of report you want to create.',
-      '#options' => $reporttypes,
-      '#default_value' => 0,
+    '#title' => t('Site Report Type'),
+    '#type' => 'radios',
+    '#description' => 'Select the type of report you want to create.',
+    '#options' => $reporttypes,
+    '#default_value' => 0,
   );
   $vocabulary = taxonomy_vocabulary_machine_name_load('vocabulary_6');
   $vocabulary = reset($vocabulary);
@@ -418,26 +443,24 @@ function devtrac7_addplaceform($form, &$form_state, $fieldtrip = NULL) {
   $tree = taxonomy_get_tree($vocabulary);
   $districts = array();
   foreach ($tree as $term) {
-
     $districts[$term->tid] = str_repeat ( '-' , $term->depth) . ' ' .$term->name;
   }
 
   $element = array(
-      '#title' => t('District'),
-      '#type' => 'select',
-      '#description' => '',
-      '#options' => $districts,
-/*      '#states' => array (
-        'visible' => array(
-          ':input[name="reporttype"]' => array('value' => '1'),
-        ),
-      ),
-*/
-      // And these are to satisfy the following function
-      '#default_value' => array('121'),  // This is Kampala
-      '#field_name' => 'devtrac7_dummy_district',
-      '#properties' => array('empty_option' => FALSE),
-      '#value_key' => 'tid', // Picked 'tid' because District is a vocabulary.
+    '#title' => t('District'),
+    '#type' => 'select',
+    '#description' => '',
+    '#options' => $districts,
+    // '#states' => array (
+    //   'visible' => array(
+    //     ':input[name="reporttype"]' => array('value' => '1'),
+    //   ),
+    // ),
+    // And these are to satisfy the following function
+    '#default_value' => array('121'),  // This is Kampala
+    '#field_name' => 'devtrac7_dummy_district',
+    '#properties' => array('empty_option' => FALSE),
+    '#value_key' => 'tid', // Picked 'tid' because District is a vocabulary.
   );
 
   _taxonomy_access_configure_options_widget($element, 1000);
@@ -445,13 +468,13 @@ function devtrac7_addplaceform($form, &$form_state, $fieldtrip = NULL) {
   $form['district'] = $element;
 
   $form['nid'] = array(
-      '#type' => 'hidden',
-      '#value' => $fieldtrip->nid,
+    '#type' => 'hidden',
+    '#value' => $fieldtrip->nid,
   );
 
   $form['submit'] = array(
-      '#type' => 'submit',
-      '#value' => t('Submit'),
+    '#type' => 'submit',
+    '#value' => t('Submit'),
   );
 
   return $form;
@@ -465,7 +488,7 @@ function devtrac7_addplaceform($form, &$form_state, $fieldtrip = NULL) {
  * @param unknown_type $form_state
  */
 function devtrac7_node_validate($node, $form, &$form_state) {
-  if(($node->type == 'ftritem') && ($node->taxonomy_vocabulary_7['und'][0]['tid'] == 210)) {
+  if(($node->type == 'ftritem') && ($node->taxonomy_vocabulary_7['und'][0]['tid'] == _devtrac7_site_report_tid('Roadside Observation'))) {
     if(empty($form_state['values']['field_ftritem_lat_long']['und'][0]['geom'])) {
       form_set_error('field_ftritem_lat_long', t("Please provide the lat/lon for the site report"));
     }
@@ -505,15 +528,15 @@ function devtrac7_addplaceform_submit($form, &$form_state) {
 
   unset($_GET['destination']);
   switch ($form_state['values']['reporttype']) {
-    // Site Visit
+      // Site Visit
     case 0:
-    // Human Interest Story
+      // Human Interest Story
     case 2:
-     /*
-      * Places can only be insterted if the full URL is
-      * node/add/place/fieldtripnid/reporttype
-      *
-      */
+      /*
+       * Places can only be insterted if the full URL is
+       * node/add/place/fieldtripnid/reporttype
+       *
+       */
       // Get the coordinates of the center point of the district.
       // They are required for the zoom to work properly.
       $districtterm = taxonomy_term_load($district);
@@ -525,7 +548,7 @@ function devtrac7_addplaceform_submit($form, &$form_state) {
         'lat' => $lat,
         'lon' => $lon,
       );
-     // $fragment = 'zoom=11&lat=' . $lat . '&lon=' . $lon;
+      // $fragment = 'zoom=11&lat=' . $lat . '&lon=' . $lon;
 
       $form_state['redirect'] =array('node/add/place/' . $fieldtripnid . '/' . $reporttype, array('query' => $prepopulate));
       break;
@@ -548,8 +571,8 @@ function devtrac7_init() {
   $nid = arg(1);
   if ((arg(0) == 'node') && isset($nid) && is_numeric(arg(1))) {
     // All nodes have a popup?
-      ctools_include('modal');
-      ctools_modal_add_js();
+    ctools_include('modal');
+    ctools_modal_add_js();
   }
 
   /*
@@ -565,7 +588,7 @@ function devtrac7_init() {
     ctools_add_css('dropbutton');
   }
 
-   /*
+  /*
    * This little shiny bit of code makes sure that the quicktabs can
    * store their settings on any page.
    * Somehow Drupal core does not load this specific file on user pages
@@ -574,8 +597,13 @@ function devtrac7_init() {
    * progressbar not being displayed correctly
    */
   drupal_add_js('misc/jquery.cookie.js');
+}
 
-  /*
+/**
+ * Implements hook_user_view().
+ */
+function devtrac7_user_view($account, $view_mode, $langcode) {
+  /**
    * Let's make sure the user gets a message as soon as he/she gets
    * close to the solr_search request string length on search pages.
    *
@@ -589,19 +617,20 @@ function devtrac7_init() {
    * request string is less than the cut-off length.
    */
   global $user;
-  $threshold = variable_get('devtrac7_solr_search_access_threshold', 75);
-  $query = db_select('acl_user', 'au')
-    ->condition('uid', $user->uid);
-  $count = $query
-    ->countQuery()
-    ->execute()
-    ->fetchField();
-  if ($count > $threshold) {
-    drupal_set_message(t('Dear user, you are advised to process some items from your ') . l(t('inbox'), 'user/' . $user/uid) . '. If you are getting empty searchpages and see the following error message "An error occurred while trying to search with Solr: \'400\' Status: Bad Request." please report this to the appropriate person.');
+  $arg1 = arg(1);
+  if (($account->uid == $user->uid) && (arg(0) == 'user') && (is_numeric($arg1))) {
+    $threshold = variable_get('devtrac7_solr_search_access_threshold', 75);
+    $query = db_select('acl_user', 'au')
+      ->condition('uid', $account->uid);
+    $count = $query
+      ->countQuery()
+      ->execute()
+      ->fetchField();
+    if ($count > $threshold) {
+      drupal_set_message(t('Dear user, you are advised to process some items from your ') . l(t('inbox'), 'user/' . $account->uid) . t('. If you are getting empty search pages and see the following error message "An error occurred while trying to search with Solr: \'400\' Status: Bad Request." please report this to your site administrator.'));
+    }
   }
 }
-
-
 
 function devtrac7_menu_local_tasks_alter(&$data, $router_item, $root_path) {
   if ($root_path == 'node/%') {
@@ -614,20 +643,20 @@ function devtrac7_menu_local_tasks_alter(&$data, $router_item, $root_path) {
       if ($data['actions']['output'][$key]['#link']['path'] == 'node/%/addplace') {
         // do prepopulate
       }
-//      if ($data['actions']['output'][$key]['#link']['path'] == 'node/%/edit/%/ajax/%/go') {
-//        $data['actions']['output'][$key]['#link']['options']['attributes']['class'] = Array('ctools-use-modal');
-//        $data['actions']['output'][$key]['#link']['localized_options']['attributes']['class'] = Array('ctools-use-modal');
-//      }
+      // if ($data['actions']['output'][$key]['#link']['path'] == 'node/%/edit/%/ajax/%/go') {
+      //   $data['actions']['output'][$key]['#link']['options']['attributes']['class'] = Array('ctools-use-modal');
+      //   $data['actions']['output'][$key]['#link']['localized_options']['attributes']['class'] = Array('ctools-use-modal');
+      // }
       if ($data['actions']['output'][$key]['#link']['path'] == 'node/%/addfieldtrip') {
         global $user;
         $data['actions']['output'][$key]['#link']['href'] = 'node/add/fieldtrip';
         $data['actions']['output'][$key]['#link']['options']['query'] = '?field_fieldtrip_user=' . $user->uid;
       }
-//      if ($data['actions']['output'][$key]['#link']['path'] == 'node/%/fieldtripapproveform/ajax/%/go') {
-//        global $user;
-//        $data['actions']['output'][$key]['#link']['options']['attributes']['class'] = Array('ctools-use-modal');
-//        $data['actions']['output'][$key]['#link']['localized_options']['attributes']['class'] = Array('ctools-use-modal');
-//      }
+      // if ($data['actions']['output'][$key]['#link']['path'] == 'node/%/fieldtripapproveform/ajax/%/go') {
+      //   global $user;
+      //   $data['actions']['output'][$key]['#link']['options']['attributes']['class'] = Array('ctools-use-modal');
+      //   $data['actions']['output'][$key]['#link']['localized_options']['attributes']['class'] = Array('ctools-use-modal');
+      // }
     }
   }
 }
@@ -646,8 +675,8 @@ function devtrac7_pageaddplaceform_modal($fieldtrip, $js = FALSE) {
   ctools_include('modal');
   ctools_include('ajax');
   $form_state = array(
-      'title' => t('Add a Location'),
-      'ajax' => TRUE,
+    'title' => t('Add a Location'),
+    'ajax' => TRUE,
   );
   $form_state['build_info']['args'] = array($node);
   $output = ctools_modal_form_wrapper('devtrac7_addplaceform', $form_state);
@@ -675,30 +704,30 @@ function devtrac7_fieldtripcommentform_modal($fieldtrip, $method, $js = FALSE) {
   module_load_include('inc', 'node', '');
   watchdog('devtrac7', 'modal fieldtrip workflow comment ' . $fieldtrip);
   $node = node_load($fieldtrip);
-/*
-  $op = isset($_POST['op']) ? $_POST['op'] : '';
-  if ($op == '') {
-    $comment = (object) array(
-      'nid' => $node->nid,
-      'name' => '',
-      'mail' => '',
-      'homepage' => '',
-      'subject' => t('@method Fieldtrip', array('@method' => ucfirst($method))),
-      'comment_body' => '',
-      'cid' => NULL,
-      'pid' => NULL,
-      'language' => LANGUAGE_NONE,
-      'uid' => 0,
-    );
-    // Save the comment object and the method string (reject/approve) somewhere on the node
-    $node->workflow_comment = $comment;
-    $node->workflow_method = $method;
-  }
-  else {
-    // Get the comment object from the node.
-    $comment = $node->workflow_comment;
-  }
-*/
+
+  // $op = isset($_POST['op']) ? $_POST['op'] : '';
+  // if ($op == '') {
+  //   $comment = (object) array(
+  //     'nid' => $node->nid,
+  //     'name' => '',
+  //     'mail' => '',
+  //     'homepage' => '',
+  //     'subject' => t('@method Fieldtrip', array('@method' => ucfirst($method))),
+  //     'comment_body' => '',
+  //     'cid' => NULL,
+  //     'pid' => NULL,
+  //     'language' => LANGUAGE_NONE,
+  //     'uid' => 0,
+  //   );
+  //   // Save the comment object and the method string (reject/approve) somewhere on the node
+  //   $node->workflow_comment = $comment;
+  //   $node->workflow_method = $method;
+  // }
+  // else {
+  //   // Get the comment object from the node.
+  //   $comment = $node->workflow_comment;
+  // }
+
   // Fall back if $js is not set.
   if (!$js) {
     return drupal_get_form('devtrac7_fieldtrip_comment_form', $node, $method);
@@ -814,8 +843,8 @@ function devtrac7_modal_operator_callback($field_name, $nid, $operator, $id = 0,
     ctools_include('ajax');
     ctools_include('modal');
     $form_state = array(
-        'ajax' => TRUE,
-        'title' => t('Field Collection'),
+      'ajax' => TRUE,
+      'title' => t('Field Collection'),
     );
 
     if ($operator == 'add') {
@@ -942,16 +971,16 @@ function devtrac7_field_attach_view_alter(&$output, $context) {
             ctools_modal_add_js();
 
             // Add
-/*            if (devtrac7_field_collection_item_access('create', field_collection_item_load($output[$fieldname]['#items'][0]['value']), $context['entity'])) {
-              $output[$fieldname]['#suffix'] = '<div class="description field-collection-description"></div>
-                  <ul class="action-links action-links-field-collection-add">
-                    <li>'
-                      . l(t('Add Purpose'), 'modal/field-collection/' . str_replace('_', '-', $fieldname) . '/' . $context['entity']->nid . '/add/0/nojs/go', array('attributes' => array('class' => 'ctools-use-modal'))) .
-                   '</li>
-                  </ul>
-                </div>';
-            }
-*/
+            // if (devtrac7_field_collection_item_access('create', field_collection_item_load($output[$fieldname]['#items'][0]['value']), $context['entity'])) {
+            //   $output[$fieldname]['#suffix'] = '<div class="description field-collection-description"></div>
+            //     <ul class="action-links action-links-field-collection-add">
+            //       <li>'
+            //         . l(t('Add Purpose'), 'modal/field-collection/' . str_replace('_', '-', $fieldname) . '/' . $context['entity']->nid . '/add/0/nojs/go', array('attributes' => array('class' => 'ctools-use-modal'))) .
+            //      '</li>
+            //     </ul>
+            //   </div>';
+            // }
+
             // Edit & Delete
             if (!empty($output[$fieldname])) {
               foreach ($output[$fieldname] as $k => $field_collection) {
@@ -1069,11 +1098,11 @@ function devtrac7_node_insert($node) {
       break;
     case 'ftritem':
       devtrac7_ftritem_addplacetofieldtrip($node);
-//      devtrac7_ftritem_updatelatlon($node);
-//      devtrac7_ftritem_updatedistrict($node);
-//      devtrac7_ftritem_updateplacetype($node);
-//      devtrac7_ftritem_updateoecdcodes($node);
-//      devtrac7_ftritem_updatedatevisited($node);
+      // devtrac7_ftritem_updatelatlon($node);
+      // devtrac7_ftritem_updatedistrict($node);
+      // devtrac7_ftritem_updateplacetype($node);
+      // devtrac7_ftritem_updateoecdcodes($node);
+      // devtrac7_ftritem_updatedatevisited($node);
       break;
     case 'fieldtrip':
       break;
@@ -1144,11 +1173,11 @@ function devtrac7_form_comment_node_actionitem_form_alter(&$form, &$form_state, 
   if (isset($form['cid']['#value'])) {
     return;
   }
-  // We have to set $form['#action'] to prevent AHAH nastiness.
-//  $form['#action'] = url('comment/reply/' . $nid);
-  // Add metadata to comment_form for users that are allowed to change it.
-//  $form['#prefix'] = '<div class="actionitem-comment"><div class="node-form"><div class="standard">';
-//  $form['#suffix'] = '</div></div></div>';
+  //// We have to set $form['#action'] to prevent AHAH nastiness.
+  // $form['#action'] = url('comment/reply/' . $nid);
+  //// Add metadata to comment_form for users that are allowed to change it.
+  // $form['#prefix'] = '<div class="actionitem-comment"><div class="node-form"><div class="standard">';
+  // $form['#suffix'] = '</div></div></div>';
 
   // First populate the sector field with the values from the actionitem.
   global $user;
@@ -1199,13 +1228,13 @@ function devtrac7_comment_change_status_default_value() {
 }
 
 function devtrac7_comment_insert($comment) {
-//  $referer = $_SERVER['HTTP_REFERER'];
-//  $referer = str_replace('%26', '&', $referer);
-//  $referer = str_replace('%3D', '=', $referer);
-//  $position = strpos($referer, '&method=');
-//  if ($position !== FALSE) {
-//    $method = substr($referer, $position + 8);
-//  }
+  // $referer = $_SERVER['HTTP_REFERER'];
+  // $referer = str_replace('%26', '&', $referer);
+  // $referer = str_replace('%3D', '=', $referer);
+  // $position = strpos($referer, '&method=');
+  // if ($position !== FALSE) {
+  //   $method = substr($referer, $position + 8);
+  // }
   $node = node_load($comment->nid);
   if ($node->type == 'actionitem') {
     $node->field_actionitem_status[$node->language][0]['value'] = $comment->field_actionitem_status[$comment->language][0]['value'];
@@ -1216,11 +1245,11 @@ function devtrac7_comment_insert($comment) {
     node_save($node);
     $_GET['destination'] = 'user';
   }
-//  if ($node->type == 'fieldtrip') {
-//    if (isset($method) && (($method == 'approve') || ($method == 'reject'))) {
-//      devtrac7_fieldtrip_setstatus($node, $method);
-//    }
-//  }
+  // if ($node->type == 'fieldtrip') {
+  //   if (isset($method) && (($method == 'approve') || ($method == 'reject'))) {
+  //     devtrac7_fieldtrip_setstatus($node, $method);
+  //   }
+  // }
 }
 /*
 function devtrac7_fieldtrip_setstatus_access($node, $method) {
@@ -1255,15 +1284,15 @@ function devtrac7_fieldtrip_setstatus_access($node, $method) {
   }
   return FALSE;
 }
- */
+*/
 function devtrac7_fieldtrip_setstatus($node, $method) {
   $status = $node->field_fieldtrip_status[$node->language][0]['value'];
-  //  drupal_set_message('Set Status to '. $status);
+  // drupal_set_message('Set Status to '. $status);
   switch ($method) {
     case 'submit':
-//        drupal_set_message('submitting');
+      //        drupal_set_message('submitting');
       if ($status == 'In Progress') {
-//        drupal_set_message('changing value');
+        // drupal_set_message('changing value');
         // Auto create a comment and assign it to the manager so it will show up in the managers inbox
         devtrac7_createsubmitcomment($node);
         $node->field_fieldtrip_status[$node->language][0]['value'] = 'Submitted';
@@ -1588,18 +1617,15 @@ function devtrac7_form_place_node_form_alter(&$form, &$form_state, $form_id) {
     '#markup' => '<div id="getfeatureinfo"></div>',
     '#weight' => 0,
   );
-/*
- * this isnt working yet.
- * Lets do this when we have a X&Y field
- *
-  $form['title']['#states'] = Array (
-   'visible' => array(
-     ':input[class="geofield_wkt"]' => array('!value' => ''),
-   ),
-  );
-
-*/
-
+  /*
+   * this isnt working yet.
+   * Lets do this when we have a X&Y field
+   */
+  // $form['title']['#states'] = array (
+  //   'visible' => array(
+  //     ':input[class="geofield_wkt"]' => array('!value' => ''),
+  //   ),
+  // );
 }
 
 /* Implements hook_form_alter()
@@ -1615,7 +1641,7 @@ function devtrac7_form_fieldtrip_node_form_alter(&$form, &$form_state, $form_id)
   else {
     /*
      * Remove the Formatter options from the textarea
-    */
+     */
     $form['field_fieldtrip_narrative']['#after_build'][] = 'devtrac7_removeformat_form';
   }
 
@@ -1626,7 +1652,7 @@ function devtrac7_form_fieldtrip_node_form_alter(&$form, &$form_state, $form_id)
   else {
     /*
      * Remove the Formatter options from the textarea
-    */
+     */
     $form['field_fieldtrip_public_summary']['#after_build'][] = 'devtrac7_removeformat_form';
   }
 
@@ -1645,17 +1671,16 @@ function devtrac7_form_fieldtrip_node_form_alter(&$form, &$form_state, $form_id)
   $form['revision_information']['#type'] = "hidden";
   // wow, this doesnt work at all. It actually forgets the default status of the Published field!!! (
   // We ended up fixing this using CSS (display: none)
-//  $form['options']['#type'] = "hidden";
+  // $form['options']['#type'] = "hidden";
 }
 
 /* implement hook_form_alter for ftritem
  * remove empty narrative and summary field when empty
-* Pivotal Story: https://www.pivotaltracker.com/story/show/24135227
-*
-* Remove other fields too
-*/
+ * Pivotal Story: https://www.pivotaltracker.com/story/show/24135227
+ *
+ * Remove other fields too
+ */
 function devtrac7_form_ftritem_node_form_alter(&$form, &$form_state, $form_id) {
-
   /* TODO
    *   - replace WKT for map
    *   - Disable Site Report Type
@@ -1671,8 +1696,6 @@ function devtrac7_form_ftritem_node_form_alter(&$form, &$form_state, $form_id) {
    *     - Chang Date to Date visited
    *     - Add new file > Add new Image
    *     - Hide Status
-   *        *
-   *
    */
 
   // Remove option "- None -" from Subject/Sector multi-select field.
@@ -1681,7 +1704,7 @@ function devtrac7_form_ftritem_node_form_alter(&$form, &$form_state, $form_id) {
   if (!isset($form['#node']->vocabulary_7) ||
       ((isset($form['#node']->vocabulary_7) && (empty($form['#node']->vocabulary_7['und'][0]['tid']))))) {
 
-    if (((isset($form['#node']->vocabulary_7)) && ($form['#node']->vocabulary_7['und'][0]['tid'] == 210)) || // Roadside Observation
+    if (((isset($form['#node']->vocabulary_7)) && ($form['#node']->vocabulary_7['und'][0]['tid'] == _devtrac7_site_report_tid('Roadside Observation'))) || // Roadside Observation
     (!isset($form['#node']->vocabulary_7))) { // new node
       $form['taxonomy_vocabulary_6']['und']['#type'] = "select";
       $form['taxonomy_vocabulary_6']['und']['#multiple'] = FALSE;
@@ -1730,9 +1753,9 @@ function devtrac7_form_ftritem_node_form_alter(&$form, &$form_state, $form_id) {
   $form['revision_information']['#type'] = "hidden";
 
   // Declare a new validation function.
-// Following line commented out for testing purposes.
-// Please re-enable when testing is done.
-//  $form['#validate'][] = 'devtrac7_ftritem_datevisited_validate';
+  // Following line commented out for testing purposes.
+  // Please re-enable when testing is done.
+  // $form['#validate'][] = 'devtrac7_ftritem_datevisited_validate';
 }
 
 /**
@@ -1769,12 +1792,12 @@ function devtrac7_ftritem_datevisited_validate($form, &$form_state){
 function devtrac7_form_actionitem_node_form_alter(&$form, &$form_state, $form_id) {
   /*
    * Remove the Formatter options from the textarea
-  */
+   */
   $form['field_actionitem_followuptask']['#after_build'][] = 'devtrac7_removeformat_form';
   // Hide the book vertical tab (finally)
   $form['book']['#type'] = "hidden";
   $form['revision_information']['#type'] = "hidden";
-//  $form['options']['#type'] = "hidden";
+  // $form['options']['#type'] = "hidden";
 
   // Hide map (location picker) if resp_place is given
   if (isset($form['#node']->field_actionitem_resp_place['und'][0]['target_id'])) {
@@ -1788,7 +1811,7 @@ function devtrac7_form_actionitem_node_form_alter(&$form, &$form_state, $form_id
 function devtrac7_form_user_profile_form_alter(&$form, &$form_state, $form_id) {
   /*
    * Remove the Formatter options from the textarea
-  */
+   */
   $form['field_user_aboutme']['#after_build'][] = 'devtrac7_removeformat_form';
   $form['#submit'][] = 'devtrac7_form_user_rebuild_menu';
 
@@ -1805,11 +1828,11 @@ function devtrac7_form_user_rebuild_menu() {
 
 /* implement hook_form_alter for comment
  *
-*/
+ */
 function devtrac7_form_comment_form_alter(&$form, &$form_state, $form_id) {
   /*
    * Remove the Formatter options from the textarea
-  */
+   */
   $form['comment_body']['#after_build'][] = 'devtrac7_removeformat_form';
 
 }
@@ -1877,9 +1900,9 @@ function devtrac7_getcontext($nid) {
 }
 
 /*
- *  implements hook_getquestions
+ *  Implements hook_questionnaire_getquestions().
  */
-function devtrac7_getquestions($nid) {
+function devtrac7_questionnaire_getquestions($nid) {
   $result = array();
   $place = node_load($nid);
 
@@ -1893,9 +1916,9 @@ function devtrac7_getquestions($nid) {
       $query->fields('n', array('nid'));
       $query->fields('d', array('weight'));
       $query->condition('p.taxonomy_vocabulary_1_tid', $placetype->tid)
-      ->condition('p.bundle', 'questionnaire_question')
-      ->condition('n.status', 1)
-      ->orderBy('d.weight', 'ASC');
+        ->condition('p.bundle', 'questionnaire_question')
+        ->condition('n.status', 1)
+        ->orderBy('d.weight', 'ASC');
       $qresult = $query->execute();
       foreach($qresult as $question) {
         $result[$question->nid] = node_load($question->nid);
@@ -2210,7 +2233,7 @@ function devtrac7_user_login(&$edit, $account) {
         !isset($account->mail) ||
         !isset($account->name)
     ) {
-      drupal_set_message("Please finish filling in you full profile byt filling in all mandatory fields.");
+      drupal_set_message("Please finish filling in you full profile by filling in all mandatory fields.");
       drupal_goto('user/'.$account->uid.'/edit');
     }
   }
@@ -2228,7 +2251,7 @@ function devtrac7_resave_geolayer_attributes() {
     'Admin Units' => 'devtrac_solr_view_districts_json',
     'Locations' => 'devtrac_solr_view_locations_json',
     'Site Reports' => 'devtrac_solr_view_sitevisits_json',
-//    'Images'=> 'devtrac_solr_view_images_json',
+    // 'Images'=> 'devtrac_solr_view_images_json',
   );
   foreach ($layers as $title => $layername) {
     $layer = openlayers_layer_load($layername);
@@ -2265,34 +2288,34 @@ function devtrac7_date_formats() {
 
 	// Short date formats.
 	$formats[] = array(
-			'type' => 'date_only',
-			'format' => 'Y-m-d',
-			'locales' => array(),
+    'type' => 'date_only',
+    'format' => 'Y-m-d',
+    'locales' => array(),
 	);
 	$formats[] = array(
-			'type' => 'date_only',
-			'format' => 'm/d/Y',
-			'locales' => array(),
+    'type' => 'date_only',
+    'format' => 'm/d/Y',
+    'locales' => array(),
 	);
 	$formats[] = array(
-			'type' => 'date_only',
-			'format' => 'Y/m/d',
-			'locales' => array(),
+    'type' => 'date_only',
+    'format' => 'Y/m/d',
+    'locales' => array(),
 	);
 	$formats[] = array(
-			'type' => 'date_only',
-			'format' => 'Y M j',
-			'locales' => array(),
+    'type' => 'date_only',
+    'format' => 'Y M j',
+     'locales' => array(),
 	);
 	$formats[] = array(
-			'type' => 'date_only',
-			'format' => 'M j Y',
-			'locales' => array(),
+    'type' => 'date_only',
+    'format' => 'M j Y',
+    'locales' => array(),
 	);
 	$formats[] = array(
-			'type' => 'date_only',
-			'format' => 'j M Y',
-			'locales' => array(),
+    'type' => 'date_only',
+    'format' => 'j M Y',
+    'locales' => array(),
 	);
 
 
@@ -2305,6 +2328,31 @@ function devtrac7_date_formats() {
 function devtrac7_date_format_types() {
 	// Define the core date format types.
 	return array(
-			'date_only' => t('Date Only'),
+    'date_only' => t('Date Only'),
 	);
 }
+
+/**
+ * Get the tid of the given term in vocabulary site repot
+ * @param $term Term whose tid is required
+ * @return int tid
+ */
+function _devtrac7_site_report_tid($term) {
+	//variables are devtrac7_site_visit, devtrac7_human_interest_story, devtrac7_roadside_observation
+	$return = 0;
+	$varname = 'devtrac7_'.str_replace(' ', '_', strtolower($term));
+	$termvar = variable_get($varname,0);
+		
+	if(empty($termvar)) {
+		$vocabulary = 'vocabulary_7';
+		$termarray = taxonomy_get_term_by_name($term , $vocabulary);
+		if(!empty($termarray)) {
+			$termarray = array_keys($termarray); 			
+			
+			$return = $termarray[0];
+			variable_set($varname, $return);
+		}
+	}
+	return	$return ;
+}
+

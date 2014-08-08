@@ -1,22 +1,31 @@
 <?php
 
 /**
- * This function checks if the Lat-Lon on the Location is set.
- * It returns TRUE if it does.
- * It returns FALSE if it doesn't.
- *
-function devtrac7_user_latlonset($node) {
-  if (!empty($node->field_ftritem_lat_long) && isset($node->field_ftritem_lat_long[$node->language])) {
-    return (count($node->field_ftritem_lat_long[$node->language]) > 0);
-  }
-  return FALSE;
-}
-*/
+ * @file
+ * An include file with user specific devtrac functionality.
+ */
+
+/**
+ * Implements progress check on the user profile edit link.
+ * 
+ * @param object $account
+ *   The user account object to perform the progres check on.
+ * @return boolean
+ *   Returns whether or not the user profile is complete.
+ */
 function devtrac7_user_edit_profile($account) {
-	// Always return FALSE so it will always show up.
+	// Always return FALSE so it will always is marked as not
+	// complete to have it always show up in the progress button.
   return FALSE;
 }
 
+/**
+ * Implements the override function on the user profile edit link.
+ * 
+ * @return boolean
+ *   Returns whether or not the current page
+ *   is the current user's profile page.
+ */
 function devtrac7_user_edit_profile_override() {
   global $user;
   $path = explode("/", $_GET['q']);
@@ -27,17 +36,34 @@ function devtrac7_user_edit_profile_override() {
   return FALSE;
 }
 
+/**
+ * Implements progress check on the user contact link.
+ * 
+ * @param object $account
+ *   The user account object to perform the progres check on.
+ * @return boolean
+ *   Returns whether or not the user is allowed to
+ *   be contacted through the user contact form.
+ */
 function devtrac7_user_contact($account) {
-	// Always return FALSE so it will always show up.
-  return FALSE;
+	// Always return FALSE so it will always is marked as not
+	// complete to have it always show up in the progress button.
+    return FALSE;
 }
 
+/**
+ * Implements the override function on the user contact link.
+ * 
+ * @return boolean
+ *   Returns whether or not the current page is a user profile page
+ *   and the current user is allowed to access the user contact form.
+ */
 function devtrac7_user_contact_override() {
   global $user;
   $path = explode("/", $_GET['q']);
   $uid = $path[1];
   if (($path[0] == 'user') && is_numeric($uid) && user_access("access user contact forms", $user)) {
-  	return TRUE;
+    return TRUE;
   }
   return FALSE;
 }
@@ -63,23 +89,6 @@ function devtrac7_user_contact_override() {
  *     required or not. Overrides required.
  */
 function devtrac7_user_devtrac7_progress_field_checks_info() {
-	/*
-  $httpreferer = $_SERVER['HTTP_REFERER'];
-  $referer = explode('?', $httpreferer);
-  $fullpath = $referer[0];
-  $path = explode('/', $fullpath);
-  if ((count($path) != 9) || ($path[4] != 'node') || ($path[5] != 'add') || ($path[6] != 'place') || !is_numeric($path[7]) || !is_numeric($path[8])) {
-    return array();
-  }
-  $fieldtrip = node_load($path[7]);
-  if ($fieldtrip->type == 'fieldtrip') {
-    $fieldtripnid = $path[7];
-  }
-  $term = taxonomy_term_load($path[8]);
-  if ($term->vid == 7) { // Vocabulary for report types = 7
-    $reporttype = $path[8];
-  }
-  */
   $progress_checks['devtrac7_user_edit_profile'] = array(
     'name' => t('devtrac7_user_edit_profile'),
     'label' => t('devtrac7_user_edit_profile'),

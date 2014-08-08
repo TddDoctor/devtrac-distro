@@ -1,0 +1,5 @@
+name = devtrac
+description = This test module is intended to enable unit tests for devtrac org. instal profile.
+files[] = devtracorgusers.test
+files[] = devtrac.module 
+core = 7.x

@@ -1,0 +1,28 @@
+<?php
+
+/**
+ * Implements hook_translated_menu_link_alter().
+ */
+function devtrac7_profile_menu_translated_menu_link_alter(&$item, $map) {
+  if ($item['menu_name'] == 'menu-my-profile') {
+    if (($item['link_path'] != 'user') && ($item['link_path'] != 'user/%/edit') && ($item['link_path'] != 'node/add/fieldtrip')) {
+      if ($item['link_path'] == $_GET['q']) {
+        $item['hidden'] = 0;
+      }
+      else {
+        if (strpos($item['link_path'], '<nolink>') || (strpos($item['link_path'], 'analyse') && (strpos($item['link_path'], $_GET['q']) !== FALSE ))) { // File exports.
+          $item['hidden'] = 0;
+        }
+        else {
+          $item['hidden'] = 1;
+        }
+      }
+    }
+    if ($item['link_path'] == 'user') {
+      $item['link_title'] = 'Sign in';
+      if (user_is_logged_in()) {
+        $item['link_title'] = 'Welcome, [current-user:field_user_firstname]';
+      }
+    }
+  }
+}

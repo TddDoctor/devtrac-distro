@@ -1,0 +1,268 @@
+<?php
+
+/**
+* @file
+* Tests for Devtrac version 3.11 'bug fix'.
+**/
+
+module_load_include('test', 'simpletest_clone');
+
+class devtracBugFixTestCase extends SimpleTestCloneTestCase {
+  protected $unicef_user;
+  public static function getInfo() {
+    return array(
+      'name' => 'Devtrac version3.11',
+      'description' => t('Confirming that all bugs identified in version 3.11 are cleared.'),
+    	'group' => 'Devtrac',
+ 
+    );
+  }
+   
+  //
+  protected function drupalLogin(stdClass $user) {
+  	if ($this->loggedInUser) {
+  		$this->drupalLogout();
+  	}
+  
+  	$edit = array(
+  			'name' => $user->name,
+  			'pass' => $user->pass_raw
+  	);
+  	$this->drupalPost('user', $edit, t('Log in'));
+  
+  	// If a "log out" link appears on the page, it is almost certainly because
+  	// the login was successful.
+  	$pass = $this->assertLink(t('Sign out'), 0, t('User %name successfully logged in.', array('%name' => $edit['name'])), t('User login'));
+  
+  	if ($pass) {
+  		$this->loggedInUser = $user;
+  	}
+  }
+  
+  /**
+   *
+   * creating a unicef who is to be stested with
+   *
+   */
+  public function setUp() {
+    parent::setUp();
+    // create and log in a permitted user
+    $this->unicef_user = $this->drupalCreateUser(array('administer users', 'administer permissions', 'access user profiles', 'administer site configuration', 'administer modules', 'create taxonomy_vocabulary_6', 'create taxonomy_vocabulary_8'));
+    $this->drupalLogin($this->unicef_user);
+    $this->drupalPost('user/' . $this->unicef_user->uid . '/edit', array("roles[3]" => 3, 'taxonomy_vocabulary_5[und]' => 30, 'taxonomy_vocabulary_4[und]' => 26, 'field_user_firstname[und][0][value]' => 'firstname', 'field_user_surname[und][0][value]' => 'lname', 'field_user_aboutme[und][0][value]' => 'aboutjan', 'name' =>'tester', 'field_user_superior[und][0][target_id]' => 'Jan van Diepen (3)'), t('Save'));
+    
+  }
+  
+  public function testTaNumber() {
+    $this->drupalGet('activities');
+    $this->assertResponse(200, 'devtrac server is recheable');
+  
+  }
+  
+  //user entered more characters in TA Number field.
+  public function testTaNumberNolongerRequired() {
+  	$this->drupalGet('node/add/fieldtrip', array('query' => array('field_fieldtrip_user' => $this->unicef_user->uid, 'field_fieldtrip_places' => '')));
+  	$this->assertText(t('TA Number'), t('TA number field is found'), 'Devtrac');
+  	//
+  	$percentage = array('field_fieldtrip_fc_purpose_percent[und][0][value]' =>78);
+  	//
+  	$rn1='Schools performance';
+  	//$actionsub['taxonomy_vocabulary_6[und][]'] = 81;
+  	$this->assertNoField('taxonomy_vocabulary_6[und][]', 'taxonomy_vocabulary_6[und][] is removed from the field trip add form');
+  	$actionsub['title'] = 'My future fieldtrip';
+  	$actionsub['field_fieldtrip_proms_ta_id[und][0][value]'] = '';
+  	$actionsub['field_fieldtrip_fc_purpose[und][0][field_fieldtrip_fc_purpose_purps][und]'] = 236;
+  	$actionsub['field_fieldtrip_fc_purpose[und][0][field_fieldtrip_purpose_percent][und][0][value]'] = 100;
+  	$actionsub['field_fieldtrip_start_end_date[und][0][value][date]'] = '26/09/2012';
+  	$actionsub['field_fieldtrip_start_end_date[und][0][value2][date]'] = '26/10/2012';
+  	$this->drupalPost('node/add/fieldtrip', $actionsub, t('Save'), array('query' => array('field_fieldtrip_user' => $this->unicef_user->uid, 'field_fieldtrip_places' => '')));
+  	//
+  	$this->assertNoText(t('TA Number cannot be longer than 24 characters but is currently 32 characters long.'), t('TA number field no longer mandatory'), 'Devtrac');
+  }
+  //
+  
+  public function testChangedAddLocation2AddSiteReports() {
+  	$this->drupalGet('node/add/fieldtrip', array('query' => array('field_fieldtrip_user' => $this->unicef_user->uid, 'field_fieldtrip_places' => '')));
+  	$this->assertText(t('TA Number'), t('TA number field is found'), 'Devtrac');
+  	//
+  	$percentage = array('field_fieldtrip_fc_purpose_percent[und][0][value]' =>78);
+  	//
+  	$rn1='Schools performance';
+  	//$actionsub['taxonomy_vocabulary_6[und][]'] = 81;
+  	$this->assertNoField('taxonomy_vocabulary_6[und][]', 'taxonomy_vocabulary_6[und][] is removed from the field trip add form');
+  	$actionsub['title'] = 'My future fieldtrip';
+  	$actionsub['field_fieldtrip_proms_ta_id[und][0][value]'] = '';
+  	$actionsub['field_fieldtrip_fc_purpose[und][0][field_fieldtrip_fc_purpose_purps][und]'] = 236;
+  	$actionsub['field_fieldtrip_fc_purpose[und][0][field_fieldtrip_purpose_percent][und][0][value]'] = 100;
+  	$actionsub['field_fieldtrip_start_end_date[und][0][value][date]'] = '26/09/2012';
+  	$actionsub['field_fieldtrip_start_end_date[und][0][value2][date]'] = '26/10/2012';
+  	$this->drupalPost('node/add/fieldtrip', $actionsub, t('Save'), array('query' => array('field_fieldtrip_user' => $this->unicef_user->uid, 'field_fieldtrip_places' => '')));
+  	//
+  	$this->drupalGet('user/' . $this->unicef_user->uid);
+  	$this->assertResponse(200, 'page loaded successfuly');
+  	$this->assertLink('Add Site Report', 0, 'Link to add site reports is not found on the user page');
+  	$this->assertLink('My future fieldtrip', 0, 'Link to add site reports is not found on the user page');
+  	
+  }
+  //
+  
+  public function testChangedViewChangesButton() {
+  	$this->drupalGet('node/add/fieldtrip', array('query' => array('field_fieldtrip_user' => $this->unicef_user->uid, 'field_fieldtrip_places' => '')));
+  	$this->assertNoFieldById('edit-preview-changes', 'View changes', t('View changes button is to showing on the fieldtrip page'));
+  	$this->assertText(t('TA Number'), t('TA number field is found'), 'Devtrac');
+  	//
+  	$percentage = array('field_fieldtrip_fc_purpose_percent[und][0][value]' =>78);
+  	//
+  	$rn1='Schools performance';
+  	//$actionsub['taxonomy_vocabulary_6[und][]'] = 81;
+  	$this->assertNoField('taxonomy_vocabulary_6[und][]', 'taxonomy_vocabulary_6[und][] is removed from the field trip add form');
+  	$actionsub['title'] = 'My future fieldtrip';
+  	$actionsub['field_fieldtrip_proms_ta_id[und][0][value]'] = '';
+  	$actionsub['field_fieldtrip_fc_purpose[und][0][field_fieldtrip_fc_purpose_purps][und]'] = 236;
+  	$actionsub['field_fieldtrip_fc_purpose[und][0][field_fieldtrip_purpose_percent][und][0][value]'] = 100;
+  	$actionsub['field_fieldtrip_start_end_date[und][0][value][date]'] = '26/09/2012';
+  	$actionsub['field_fieldtrip_start_end_date[und][0][value2][date]'] = '26/10/2012';
+  	$this->drupalPost('node/add/fieldtrip', $actionsub, t('Save'), array('query' => array('field_fieldtrip_user' => $this->unicef_user->uid, 'field_fieldtrip_places' => '')));
+  	//
+  	$this->drupalGet('user/' . $this->unicef_user->uid);
+  	$this->assertResponse(200, 'page loaded successfuly');
+  	$this->assertLink('Add Site Report', 0, 'Link to add site reports is found on the user page');
+  	$this->assertLink('My future fieldtrip', 0, 'Link to add site reports is not found on the user page');
+  	
+  	
+  }
+  
+  //iati activity
+  public function testChangedViewChangesButtonOnActivity() {
+  	$this->drupalGet('node/add/iati-activity');
+  	$this->assertNoFieldById('edit-preview-changes', 'View changes', t('View changes button is to showing on the iati-activity page'));
+  	$this->assertText(t('Create IATI Activity'), t('Create IATI Activity page is found'), 'Devtrac');
+  }
+  
+  //
+  public function testChangedViewChangesButtonOnBook() {
+  	$this->drupalGet('node/add/book');
+  	$this->assertNoFieldById('edit-preview-changes', 'View changes', t('View changes button is to showing on the iati-activity page'));
+  	$this->assertText('Create Book page', t('Create Book page is found'), 'Devtrac');
+  }
+
+  public function testAddBookFields() {
+  	$this->drupalGet('node/add/book');
+  	$this->assertField('title', 'Book titleb field is showing', 'Devtrac');
+  	$this->assertNoField('edit-body', 'Book content field is showing', 'Devtrac');
+  	$this->assertField('op', 'Save', 'Book save button is showing');
+  	$this->assertNoFieldById('edit-preview', 'Preview', 'Preview button is nolonger showing');
+  }
+  public function testAddBookEmptySubmit() {
+  	$this->drupalGet('node/add/book');
+    $book['title'] = '';
+    //$book['edit-body'] = ''; field it's name is hidden
+    $this->drupalPost(NULL, $book, t('Save'));
+  }
+  
+  //
+  public function testAddBookValidSubmit() {
+  	$this->drupalGet('node/add/book');
+  	$book['title'] = $this->randomString(10);
+  	//$book['edit-body'] = $this->randomString(300);
+  	$this->drupalPost(NULL, $book, t('Save'));
+  }
+  
+  //view changes button on the ftritem pages
+  public function testViewChangesButtonOnftritem() {
+  	$this->drupalGet('node/add/ftritem');
+  	$this->assertNoFieldById('edit-preview-changes', 'View changes', t('View changes button is to showing on the iati-activity page'));
+  }
+  
+  //view changes button on the action item pages
+  public function testViewChangesButtonOnActionItem() {
+  	$this->drupalGet('node/add/actionitem');
+  	$this->assertNoFieldById('edit-preview-changes', 'View changes', t('View changes button is to showing on the action item page'));
+  }
+  
+  //view changes button on the Iati-organisation pages
+  public function testViewChangesButtonOnAddOrganisation() {
+  	$this->drupalGet('node/add/iati-organisation');
+  	$this->assertNoFieldById('edit-preview-changes', 'View changes', t('View changes button is to showing on the iati-organisation page'));
+  }
+  
+  // additional tests for the iati-organisation  
+  public function testIatiOrganisationFields() {
+  	$this->drupalGet('node/add/iati-organisation');
+  	$this->assertNoFieldById('edit-preview-changes', 'View changes', t('View changes button is to showing on the iati-organisation page'));
+    $this->assertField('title', 'title field on the iat organisation page is found');
+    $this->assertField('field_iati_identifier[und][0][value]', 'identifier field on the iat organisation page is found');
+    $this->assertField('field_iati_org_type[und]', 'title field on the iat organisation page is found');
+    $this->assertField('field_iati_org_url[und][0][title]', 'title field on the iat organisation page is found');
+    $this->assertField('field_iati_org_url[und][0][url]', 'title field on the iat organisation page is found');
+    $this->assertField('field_langauge[und]', 'title field on the iat organisation page is found');
+    $this->assertField('field_iati_default_currency[und][0][value]', 'title field on the iat organisation page is found');
+    $this->assertField('field_organisation_name[und][0][value]', 'title field on the iat organisation page is found');
+    $this->assertNoFieldById('edit-preview', 'Preview', 'Preview button on iati-organisation add page is nolonger found');
+    $this->assertFieldById('edit-cancel', 'Cancel', 'Edit-cancel field on the iat organisation page is found');
+    $this->assertField('title', 'title field on the iat organisation page is found');
+    $this->assertField('title', 'title field on the iat organisation page is found');
+  }
+  
+  public function testEnptyIatiOrganisationSubmit() {
+  	$this->drupalGet('node/add/iati-organisation');
+  	$organisation['title'] = "";
+  	$organisation['field_iati_identifier[und][0][value]'] = "";
+  	//$organisation['field_iati_org_type[und]'] = "";
+  	$organisation['field_iati_org_url[und][0][title]'] = "";
+  	$organisation['field_iati_org_url[und][0][url]'] = "";
+  	//$organisation['field_langauge[und]'] = "";
+  	$organisation['field_iati_default_currency[und][0][value]'] = "";
+  	$organisation['field_organisation_name[und][0][value]'] = "";
+  	$organisation['files[field_org_logo_und_0]'] = "";
+  	$this->drupalPost(NULL, $organisation, t('Save'));
+  }
+  
+  public function testValidIatiOrganisationSubmit() {
+  	$this->drupalGet('node/add/iati-organisation');
+  	$vaorganisation['title'] = "";
+  	$vaorganisation['field_iati_identifier[und][0][value]'] = "";
+  	//$vaorganisation['field_iati_org_type[und]'] = "";
+  	$vaorganisation['field_iati_org_url[und][0][title]'] = "";
+  	$vaorganisation['field_iati_org_url[und][0][url]'] = "";
+  	//$vaorganisation['field_langauge[und]'] = "";
+  	$vaorganisation['field_iati_default_currency[und][0][value]'] = "";
+  	$vaorganisation['field_organisation_name[und][0][value]'] = "";
+  	$vaorganisation['files[field_org_logo_und_0]'] = "";
+  	$this->drupalPost(NULL, $vaorganisation, t('Save'));
+  }
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+}

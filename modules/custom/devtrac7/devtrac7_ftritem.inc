@@ -66,7 +66,7 @@ function devtrac7_ftritem_addplacetofieldtrip($node) {
  */
 function devtrac7_ftritem_placetypeset($node) {
   if (!empty($node->taxonomy_vocabulary_7) && isset($node->taxonomy_vocabulary_7[$node->language])) {
-    if ($node->taxonomy_vocabulary_7[$node->language][0]['tid'] == 210) {
+    if ($node->taxonomy_vocabulary_7[$node->language][0]['tid'] == _devtrac7_site_report_tid('Roadside Observation')) {
       // It's a Roadside Observation, it does not need it's own Place Type to be set
       return TRUE;
     }
@@ -78,7 +78,7 @@ function devtrac7_ftritem_placetypeset($node) {
 
 function devtrac7_ftritem_placetype_required($node) {
   if (!empty($node->taxonomy_vocabulary_7) && isset($node->taxonomy_vocabulary_7[$node->language])) {
-    return ($node->taxonomy_vocabulary_7[$node->language][0]['tid'] != 210);
+    return ($node->taxonomy_vocabulary_7[$node->language][0]['tid'] != _devtrac7_site_report_tid('Roadside Observation'));
   }
   return FALSE;
 }
@@ -90,7 +90,7 @@ function devtrac7_ftritem_placetype_required($node) {
  */
 function devtrac7_ftritem_districtset($node) {
   if (!empty($node->taxonomy_vocabulary_7) && isset($node->taxonomy_vocabulary_7[$node->language])) {
-    if ($node->taxonomy_vocabulary_7[$node->language][0]['tid'] == 210) {
+    if ($node->taxonomy_vocabulary_7[$node->language][0]['tid'] == _devtrac7_site_report_tid('Roadside Observation')) {
       // It's a Roadside Observation, it needs it's own District to be set
       if (!empty($node->taxonomy_vocabulary_6) && isset($node->taxonomy_vocabulary_6[$node->language])) {
         return (count($node->taxonomy_vocabulary_6[$node->language]) > 0);
@@ -105,7 +105,7 @@ function devtrac7_ftritem_districtset($node) {
 
 function devtrac7_ftritem_district_required($node) {
   if (!empty($node->taxonomy_vocabulary_7) && isset($node->taxonomy_vocabulary_7[$node->language])) {
-    return ($node->taxonomy_vocabulary_7[$node->language][0]['tid'] == 210);
+    return ($node->taxonomy_vocabulary_7[$node->language][0]['tid'] == _devtrac7_site_report_tid('Roadside Observation'));
   }
   return FALSE;
 }
@@ -153,7 +153,7 @@ function devtrac7_ftritem_fieldtripset($node) {
  */
 function devtrac7_ftritem_placeset($node) {
   if (!empty($node->taxonomy_vocabulary_7) && isset($node->taxonomy_vocabulary_7[$node->language])) {
-    if ($node->taxonomy_vocabulary_7[$node->language][0]['tid'] != 210) {
+    if ($node->taxonomy_vocabulary_7[$node->language][0]['tid'] != _devtrac7_site_report_tid('Roadside Observation')) {
       // It's either a Site Visit or a Human Interest Story, they need the Place to be set
       if (!empty($node->field_ftritem_place) && isset($node->field_ftritem_place[$node->language])) {
         return (count($node->field_ftritem_place[$node->language]) > 0);
@@ -168,7 +168,7 @@ function devtrac7_ftritem_placeset($node) {
 
 function devtrac7_ftritem_place_required($node) {
   if (!empty($node->taxonomy_vocabulary_7) && isset($node->taxonomy_vocabulary_7[$node->language])) {
-    return ($node->taxonomy_vocabulary_7[$node->language][0]['tid'] != 210);
+    return ($node->taxonomy_vocabulary_7[$node->language][0]['tid'] != _devtrac7_site_report_tid('Roadside Observation'));
   }
   return FALSE;
 }
@@ -252,7 +252,7 @@ function devtrac7_ftritem_imagesset($node) {
  */
 function devtrac7_ftritem_latlonset($node) {
   if (!empty($node->taxonomy_vocabulary_7) && isset($node->taxonomy_vocabulary_7[$node->language])) {
-    if ($node->taxonomy_vocabulary_7[$node->language][0]['tid'] == 210) {
+    if ($node->taxonomy_vocabulary_7[$node->language][0]['tid'] == _devtrac7_site_report_tid('Roadside Observation')) {
       // It's a Roadside Observation, it needs it's own Lat-Lon to be set
       if (!empty($node->field_ftritem_lat_long) && isset($node->field_ftritem_lat_long[$node->language])) {
         return (count($node->field_ftritem_lat_long[$node->language]) > 0);
@@ -267,7 +267,7 @@ function devtrac7_ftritem_latlonset($node) {
 
 function devtrac7_ftritem_latlon_required($node) {
   if (!empty($node->taxonomy_vocabulary_7) && isset($node->taxonomy_vocabulary_7[$node->language])) {
-    return ($node->taxonomy_vocabulary_7[$node->language][0]['tid'] == 210);
+    return ($node->taxonomy_vocabulary_7[$node->language][0]['tid'] == _devtrac7_site_report_tid('Roadside Observation'));
   }
   return FALSE;
 }
@@ -376,8 +376,8 @@ function devtrac7_ftritem_updatelatlon($node) {
     return TRUE;
   }
   // There is no place attached
-  if (isset($node->taxonomy_vocabulary_7[$node->language]) && (count($node->taxonomy_vocabulary_7[$node->language]) > 0) && ($node->taxonomy_vocabulary_7[$node->language][0]['tid'] == 210)) {
-    // It's a Roadside Observation (tid: 210)
+  if (isset($node->taxonomy_vocabulary_7[$node->language]) && (count($node->taxonomy_vocabulary_7[$node->language]) > 0) && ($node->taxonomy_vocabulary_7[$node->language][0]['tid'] == _devtrac7_site_report_tid('Roadside Observation'))) {
+    // It's a Roadside Observation (tid: _devtrac7_site_report_tid('Roadside Observation'))
     // It needs its Lat-Lon to be set
     watchdog('admin_feature', 'Lat-Lon needs to be set for Roadside Observation: ' . $node->nid);
     drupal_set_message('Please provide the Lat-Lon for the Site Report.', 'error');
@@ -440,8 +440,8 @@ function devtrac7_ftritem_updatedistrict($node) {
     return TRUE;
   }
   // There is no place attached
-  if (isset($node->taxonomy_vocabulary_7[$node->language]) && (count($node->taxonomy_vocabulary_7[$node->language]) > 0) && ($node->taxonomy_vocabulary_7[$node->language][0]['tid'] == 210)) {
-    // It's a Roadside Observation (tid: 210)
+  if (isset($node->taxonomy_vocabulary_7[$node->language]) && (count($node->taxonomy_vocabulary_7[$node->language]) > 0) && ($node->taxonomy_vocabulary_7[$node->language][0]['tid'] == _devtrac7_site_report_tid('Roadside Observation'))) {
+    // It's a Roadside Observation (tid: _devtrac7_site_report_tid('Roadside Observation'))
     // It needs its District to be set
     watchdog('admin_feature', 'District needs to be set for Roadside Observation: ' . $node->nid);
     drupal_set_message('Please provide the District for the Site Report.', 'error');
@@ -504,8 +504,8 @@ function devtrac7_ftritem_updateplacetype($node) {
     return TRUE;
   }
   // There is no place attached
-  if (isset($node->taxonomy_vocabulary_7[$node->language]) && (count($node->taxonomy_vocabulary_7[$node->language]) > 0) && ($node->taxonomy_vocabulary_7[$node->language][0]['tid'] == 210)) {
-    // It's a Roadside Observation (tid: 210)
+  if (isset($node->taxonomy_vocabulary_7[$node->language]) && (count($node->taxonomy_vocabulary_7[$node->language]) > 0) && ($node->taxonomy_vocabulary_7[$node->language][0]['tid'] == _devtrac7_site_report_tid('Roadside Observation'))) {
+    // It's a Roadside Observation (tid: _devtrac7_site_report_tid('Roadside Observation'))
     // It needs its Place Type to be set
 //    watchdog('admin_feature', 'Place Type needs to be set for Roadside Observation: ' . $node->nid);
 //    drupal_set_message('Please provide the Place Type for the Site Report.', 'error');
@@ -565,13 +565,13 @@ function devtrac7_ftritem_updateoecdcodes($node) {
     // There is a place attached so copy it
     $place = node_load($node->field_ftritem_place[$node->language][0]['target_id']);
     $node->taxonomy_vocabulary_1 = $place->taxonomy_vocabulary_1;
-    watchdog('admin_feature', 'Copied Place Type on Site Report: ' . $node->nid);
+    watchdog('admin_feature', 'Copied Location Type from Location to Site Report.');
     // drupal_set_message('Place Type copied.', 'status');
     return TRUE;
   }
   // There are no action items attached
-  if (isset($node->taxonomy_vocabulary_7[$node->language]) && (count($node->taxonomy_vocabulary_7[$node->language]) > 0) && ($node->taxonomy_vocabulary_7[$node->language][0]['tid'] == 210)) {
-    // It's a Roadside Observation (tid: 210)
+  if (isset($node->taxonomy_vocabulary_7[$node->language]) && (count($node->taxonomy_vocabulary_7[$node->language]) > 0) && ($node->taxonomy_vocabulary_7[$node->language][0]['tid'] == _devtrac7_site_report_tid('Roadside Observation'))) {
+    // It's a Roadside Observation (tid: _devtrac7_site_report_tid('Roadside Observation'))
     // It needs its Place Type to be set
 //    watchdog('admin_feature', 'Place Type needs to be set for Roadside Observation: ' . $node->nid);
 //    drupal_set_message('Please provide the Place Type.', 'error');

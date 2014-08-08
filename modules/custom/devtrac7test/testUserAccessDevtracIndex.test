@@ -1,0 +1,109 @@
+<?php
+/**
+ * @file
+ * testing the index page of Devtrac
+ */
+
+
+module_load_include('test', 'simpletest_clone');
+
+class IndexAccessTestCase extends SimpleTestCloneTestCase {
+  public static function getInfo() {
+    return array(
+      'name' => 'Devtrac7 index access',
+      'description' => t('User directly accessing the index page'),
+      'group' => 'Devtrac',
+    );
+  }
+
+  /**
+   * User directly acesses the devtrac home page.
+   * All index page links should show
+   */
+  
+  
+   public function testDevtrac7UserIndexAccesstest() {
+     $this->drupalGet(NULL);
+     $this->assertText(t('Real time reporting on public services in Uganda'), t('Devtrac description found on the index page'), 'Devtrac');
+     $this->assertLink(t('Statistics'), 0 ,t('Link to site statistics found'));
+     $this->assertLink(t('Site Reports'), 0 ,t('Link to site reports found'));
+     $this->assertLink(t('Contact Us'), 0 ,t('Link to site reports found'));
+     $this->assertRaw('<title>' . t('DevTrac | Real time reporting on public services in Uganda')  . '</title>');
+     $this->assertNoLink(t('Action Items'), 0 ,t('Link to site action items is not shown to the anonymous user'));
+  }
+  /**
+   * anonymous user accesses the help page & frequently asked questions
+   * 
+   */
+  
+  public function testDevtracFaqsAccesstest() {
+    $this->drupalGet('node/137');
+    $this->assertText(t('This section of the website describes its functionality.'), t('Help page is accessed content is read'), 'Devtrac');
+    $this->assertText(t('Real time reporting on public services in Uganda'), t('Devtrac index page title is found'), 'Devtrac');
+    $this->assertLink(t('Site Reports'), 0 ,t('Link to site reports found'));
+    $this->assertLink(t('Contact Us'), 0 ,t('Link to site reports found'));
+    $this->drupalGet('node/add/book');
+    $this->assertText(t('You are not authorized to access this page.'), t('Anonymous is bared from accessing add book option'), 'Devtrac');
+    $this->assertText(t('Access denied'), t('anonymous cant access the add book page'), 'Devtrac');
+  }
+  
+  /**
+   * testing the availability of facets and the different facets items(links) on FAQs by us anonymous user
+   */
+  
+   
+   public function testDevtracAnonymousFaqsFacet() {
+   	
+   	$this->drupalGet('node/137');
+   	$this->assertText(t('Book navigation'), t('facets link DevTrac Help Pages is found on the Faqs'));
+   	
+   	
+  }
+  
+  /**
+   * testing the availability of DevTrac Help Pages and search Field trip
+   */
+  public function testDevtracAnonymousFaqsFacetLinkstest() {
+  
+  	$this->drupalGet('node/137');
+  	$this->assertText(t('DevTrac Help Pages'), t('DevTrac Help Pages'), 'Devtrac');
+  	$this->assertLink(t('DevTrac Help Pages'), 0, t('facets block link is found'), 'Devtrac');
+  	$this->assertText(t('Book navigation'), t('facets link DevTrac Help Pages is found on the Faqs'));
+  	$this->assertLink(t('Field Trip'), 0, t('facets block link found on the Faqs page'));
+  }
+  /**
+   * testing the availability of my profile and hope page by links and raw html
+   *
+   */
+    
+  public function testDevtracAnonymousFaqsFacetLinks2test() {
+  
+  	$this->drupalGet('node/137');
+  	$this->assertLink(t('Homepage'), 0, t('facets block link Homepage is found'));
+  	$this->assertText(t('Book navigation'), t('facets link DevTrac Help Pages is found on the Faqs'), 'Devtrac');
+  	$this->assertLink(t('My Profile Page'), 0, t('facets block link  My Profile Page found on the Faqs page'));
+  }
+  /**
+   * testing the availability of the map and search page by links and raw html 
+   * 
+   */
+  //
+  
+  public function testDevtracAnonymousFaqsFacetLinks3test() {
+  
+  	$this->drupalGet('node/137');
+  	$this->assertLink(t('The Map'), 0, t('facets block link The Map is found'));
+  	$this->assertText(t('Book navigation'), t('facets link DevTrac Help Pages is found on the Faqs'), 'Devtrac');
+  	$this->assertLink(t('Search'), 0, t('facets block link Search found on the Faqs page'));
+  }
+  
+  public function testFolowFieldtripLinkOnfacet() {
+  	
+  	$this->drupalGet('node/137');
+  	$this->clickLink('Field Trip', 0, t('folow the fieldtrip link should return fieldtrip page discription page'));
+  	$this->assertText(t('Field Trip'), t('fieldtrip discrption page is returned'), 'Devtrac');
+
+  	
+  }
+
+}

@@ -169,7 +169,7 @@ function devtrac7_update_7022() {
 }
 
 /**
- * Add new taxonomy access rules for unicef users so they will not be denied
+ * Add new taxonomy access rules for field workers so they will not be denied
  * access to organisations and activities that are tagged with them.
  */
 function devtrac7_update_7025() {

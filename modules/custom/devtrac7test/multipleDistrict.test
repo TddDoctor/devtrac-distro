@@ -1,0 +1,357 @@
+<?php
+
+ module_load_include('test', 'simpletest_clone');
+ 
+/**
+ * Functional tests for authenticated (permitted) Fieldtrip multiple district creation.
+ */
+class FieldtripCreateMultipleDistrictsTest1Case extends SimpleTestCloneTestCase {
+  protected $unicef_user;
+  public static function getInfo() {
+    return array(
+      'name' => 'Create multiple district',
+      'description' => 'Unicef User create multiple district',
+      'group' => 'Devtrac',
+
+    );
+  }
+
+  /**
+   * Log in a user with the internal browser.
+   *s
+   * If a user is already logged in, then the current user is logged out before
+   * logging in the specified user.
+   *
+   * Please note that neither the global $user nor the passed in user object is
+   * populated with data of the logged in user. If you need full access to the
+   * user object after logging in, it must be updated manually. If you also need
+   * access to the plain-text password of the user (set by drupalCreateUser()),
+   * e.g. to login the same user again, then it must be re-assigned manually.
+   * For example:
+   * @code
+   *   // Create a user.
+   *   $account = $this->drupalCreateUser(array());
+   *   $this->drupalLogin($account);
+   *   // Load real user object.
+   *   $pass_raw = $account->pass_raw;
+   *   $account = user_load($account->uid);
+   *   $account->pass_raw = $pass_raw;
+   * @endcode
+   *
+   * @param $user
+   *   User object representing the user to login.
+   *
+   * @see drupalCreateUser()
+   */
+  protected function drupalLogin(stdClass $user) {
+  	if ($this->loggedInUser) {
+  		$this->drupalLogout();
+  	}
+  
+  	$edit = array(
+  			'name' => $user->name,
+  			'pass' => $user->pass_raw
+  	);
+  	$this->drupalPost('user', $edit, t('Log in'));
+  
+  	// If a "log out" link appears on the page, it is almost certainly because
+  	// the login was successful.
+  	$pass = $this->assertLink(t('Sign out'), 0, t('User %name successfully logged in.', array('%name' => $user->name)), t('User login'));
+  
+  	if ($pass) {
+  		$this->loggedInUser = $user;
+  	}
+  }
+
+
+  public function setUp() {
+	parent::setUp('devtrac7test');
+	// Create and log in a permitted user.
+  $this->unicef_user = $this->drupalCreateUser(array('administer users', 'administer permissions', 'access user profiles', 'administer site configuration', 'administer modules', 'create taxonomy_vocabulary_6', 'create taxonomy_vocabulary_8'));
+  $this->drupalLogin($this->unicef_user);
+    //
+  $this->drupalPost('user/' . $this->unicef_user->uid . '/edit', array("roles[5]" => 5, 'taxonomy_vocabulary_5[und]' => 30, 'taxonomy_vocabulary_4[und]' => 26, 'field_user_firstname[und][0][value]' => 'firstname', 'field_user_surname[und][0][value]' => 'lname', 'field_user_aboutme[und][0][value]' => 'aboutjan', 'name' =>'tester', 'field_user_superior[und][0][target_id]' => 'Jan van Diepen (3)'), t('Save'));
+  
+  }
+
+
+  public function testHelppageLinks() {
+	  $this->drupalGet('node/137');
+	  $this->assertText(t('This section of the website describes its functionality.'), t('This section of the website describes its functionality.'), 'Devtrac');
+	  $this->assertLink('Homepage', 0, t('Link to home page help page is showing on the facet'));
+	  $this->assertLink('Field Trip', 0, t('Link to fieldtrip help page is showing on the facet'));
+	  $this->assertLink('My Profile Page', 0, t('Link to My Profile Page help page is showing on the facet'));
+	  $this->assertLink('The Map', 0, t('Link to The Map Page help page is showing on the facet'));
+	  $this->assertLink('Search', 0, t('Link to Search help page is showing on the facet'));
+
+  } 
+  public function testFollowLinkHomepagetest() {
+	  $this->drupalGet('node/137');
+	  $this->clickLink('Homepage', 0, t('Link to home page help page facet is clicked'));
+	  $this->assertText(t('The map on the public homepage of DevTrac shows the last 50 places that users have written a report about.'), t('Content about home page on the home page helper page'), 'Devtrac');
+
+  }
+  public function testFollowLinkFieldtrip() {
+	  $this->drupalGet('node/137');
+	  $this->clickLink('Field Trip', 0, t('Fieldtrip link is followed'));
+	  $this->assertText(t('Title, Every page on Devtrac has a title.'), t('content is found on the helper page'), 'devtrac');
+	  $this->assertText(t('Start Date'), t('extra textis found on the field trip help page '), 'Devtarc');	
+  } 
+
+  public function testFieldtripSectionLinks() {
+	  $this->drupalGet('node/282');
+	  $this->assertLink('Blackberry', 0, t('link to blackberry help page is found'), 'Devtrac');
+	  $this->assertLink('Field Trip Status', 0, st('link to Field Trip Status help page is showing'));
+  }
+
+  public  function testFieldtripSectionLinks1() {
+	  $this->drupalGet('node/282');
+	  $this->assertLink('Image Gallery', 0, t('link to Image Gallery in the fieldtrip help page section is showing'));
+    $this->assertLink('OECD Sector Codes', 0, t('link to OECD Sector Codes help page is showing'));
+  }
+
+  public function testLinkProfilePagetest() {
+	  $this->drupalGet('node/137');
+	  $this->assertLink('My Profile Page', 0, t('link to profile page help page is found'));
+	  $this->clickLink('My Profile Page', 0, t('User follows the My Profile Page link'));
+	  $this->assertText(t('The menu on the left is a vital navigational help'), t('content on the profile help page is found'), 'Devtrac');
+  }
+  public function testLinkTheMaptest() {
+	  $this->drupalGet('node/137');
+	  $this->assertLink('The Map', 0, t('A link to The Map help page is showing'));
+	  $this->clickLink('The Map', 0, t('User follows the The Map link'));
+	  $this->assertText(t('The map constitutes of a lot of different layers'), t('content about the map on the map help page is found'), 'Devtrac');
+  }
+
+  public function testTheMapSubLinkstest() {
+	  $this->drupalGet('node/137');
+    $this->clickLink('The Map', 0, t('A link to The Map help page is showing'));
+	  $this->assertLink('Districts and Administrative Boundaries', 0, t('Districts and Administrative Boundaries  sub link is found'));
+	  $this->clickLink('Districts and Administrative Boundaries', 0, t('User clicks the sub link'));
+	  $this->assertText(t('The administrative boundaries for Districts are a non-official version of the 112 districts that were announced june 2010.'), t('sublink Districts and Administrative Boundaries content is showing'),'Devtrac');
+  }
+
+  public function testMapSubLinks1test() {
+	  $this->drupalGet('node/137');
+	  $this->clickLink('The Map', 0, t('A link to The Map help page is showing'));
+	  $this->assertLink('Map Navigation Tools', 0, t('Sublink Map Navigation Tools is found'));
+	  $this->clickLink('Map Navigation Tools', 0, t('Map Navigation Tools is clicked'));
+	  $this->assertText(t('The bar on the extreme left is the zoom bar'), t(' User reads the Map Navigation Tools help content'), 'Devtrac');	
+  }
+
+  public function testMapSublinks2test() {
+	  $this->drupalGet('node/137');
+	  $this->clickLink('The Map', 0, t('A link to The Map help page is showing'));
+	  $this->assertLink('Map Symbols', 0, t('Sublink Map Symbols is showing on the map help page'));
+	  $this->clickLink('Map Symbols', 0, t('Map Symbols sublink is clicked'));
+	  $this->assertText(t('Administrative Boundaries'), t('Administrative Boundaries content is found'), 'Devtrac');
+
+  }
+
+  public function testmapSublinks3test() {
+	  $this->drupalGet('node/137');
+	  $this->clickLink('The Map', 0, t('A link to The Map help page is showing'));
+	  $this->assertLink('Location Types', 0, t('Sublink Location Types is showing on the map help page'));
+	  $this->clickLink('Location Types', 0, t('Location Types sublink is clicked'));
+	  $this->assertText(t('Every location that is visited is characterized by a Location Type'), t('Location Types content is found'), 'Devtrac');
+  }
+  
+  public function testmapSublinks4test() {
+	  $this->drupalGet('node/137');
+	  $this->clickLink('The Map', 0, t('A link to The Map help page is showing'));
+	  $this->assertLink('Location Selection Page', 0, t('Location Selection Page is showing on the map help page'));
+	  $this->clickLink('Location Selection Page', 0, t('Location Selection Page sublink is clicked'));
+	  $this->assertText(t('This map allows you to search and add places to your Trip Report.'), t('Location Selection Page content is found'), 'Devtrac');	
+
+  }
+  
+/**
+ * Unicef user creates field trip, action item, and a site
+ * report. doing this with multiple districts selection
+ * and the admin must allow or turn down the created fieldtrip
+ * 
+ * 
+ * 
+ */
+  public function testMultipleDistrictxstest() {
+	  $this->drupalGet('node/add/fieldtrip', array('query' => array('field_fieldtrip_user' => $this->unicef_user->uid, 'field_fieldtrip_places' => '')));
+	  $this->assertText(t('TA Number'), t('TA number field is found'), 'DevTrac');
+	  // populating the fieldtrip create form
+	  //$fullReportSubmitozyq['taxonomy_vocabulary_6[und][]'] = array(80, 81, 82, 83);
+	  $this->assertNoField('taxonomy_vocabulary_6[und][]', 'District field is removed');
+	  $fullReportSubmitozyq['title'] = 'YES WE CAN';
+	  $fullReportSubmitozyq['field_fieldtrip_fc_purpose[und][0][field_fieldtrip_purpose_descr][und][0][value]'] = $this->randomName(32);
+	  $fullReportSubmitozyq['field_fieldtrip_proms_ta_id[und][0][value]'] = 76;
+	  $fullReportSubmitozyq['field_fieldtrip_fc_purpose[und][0][field_fieldtrip_fc_purpose_purps][und]'] = 236;
+	  $fullReportSubmitozyq['field_fieldtrip_fc_purpose[und][0][field_fieldtrip_purpose_percent][und][0][value]'] = 100;
+	  $fullReportSubmitozyq['field_fieldtrip_start_end_date[und][0][value][date]'] = '26/09/2012';
+	  $fullReportSubmitozyq['field_fieldtrip_start_end_date[und][0][value2][date]'] = '26/10/2012';
+	  $this->drupalPost(NULL, $fullReportSubmitozyq, t('Save'), array('query' => array('field_fieldtrip_user' => $this->unicef_user->uid, 'field_fieldtrip_places' => '')));
+	//
+	  $this->assertText(t('has been created.'), ('field trip is created successifuly'), 'DevTrac');
+	  $nodeAddreportfullSubmitozyq = $this->drupalGetNodeByTitle($fullReportSubmitozyq["title"]);
+	  $this->assertNotNull($nodeAddreportfullSubmitozyq, t('node loaded'));
+	  $this->assertNoLink('Add a location to the Field Trip.', 0, t('link Add Location to fieldtrip is changed to add site reports'));
+	  $this->drupalGet('node/'.$nodeAddreportfullSubmitozyq->nid.'/addplaceform/ajax/nojs/go', array('query' => array('destination' => 'node/' . $nodeAddreportfullSubmitozyq->nid)));
+	  $formSubmitreportsozyq['reporttype'] = 1;
+	  $formSubmitreportsozyq['district'] = 80;
+	  //$formSubmitreportsozyq['placetype'] = 1;
+	  $this->drupalPost(NULL, $formSubmitreportsozyq, t('Submit'), array('query' => array('destination' => 'node/' . $nodeAddreportfullSubmitozyq->nid)));
+	//name field
+	  //now we access edit the site report submission form
+	  // now fill in the Edit Field Trip Report Item Site Visit form
+	  $this->assertNoLink('Change the narrative of the Site Report.', 0, t('Clicked the change narrative of the site Report '));
+	  $this->drupalGet('node/add/ftritem/'.$formSubmitreportsozyq['district'], array('query' => array('destination' => 'node/'.$nodeAddreportfullSubmitozyq->nid)));
+	  $ditnarrativeozyq['taxonomy_vocabulary_7[und]'] = _devtrac7_site_report_tid('Roadside Observation');
+	  $ditnarrativeozyq['title'] = 'YES THAT IS IT FOR NOW!';
+	  $ditnarrativeozyq['field_ftritem_narrative[und][0][value]'] = 'jhfjkdjkcbxcb';
+	  //$ditnarrativeozyq['field_ftritem_public_summary[und][0][value]'] = $this->randomName(15);
+	  $ditnarrativeozyq['taxonomy_vocabulary_6[und]'] =  $formSubmitreportsozyq['district'];
+	  $ditnarrativeozyq['taxonomy_vocabulary_8[und][]'] = array(326);
+      $ditnarrativeozyq['field_ftritem_lat_long[und][0][geom]'] = 'POINT(31.768699645996 3.228319883347)';
+	  $ditnarrativeozyq['files[field_ftritem_images_und_0]'] = 'sites/default/themes/devtrac7_theme/images/ws_pandas_in_love_1920x1200.jpg';
+	 
+	  $this->drupalPost(NULL, $ditnarrativeozyq, t('Save'), array('query' => array('destination' => 'node/'.$nodeAddreportfullSubmitozyq->nid)));
+	  //changed the flow of the structure
+	  $this->assertText('Public Summary field is required.', 'Public Summary field is required, left empty');
+	  $this->assertNoText(t('Copied Lat-Lon to the Site Report.'), t('User Added the location on the map'), 'Devtrac');
+	  $this->assertNoText(t('Copied District on the Site Report.'), t('User Added the location on the map'), 'Devtrac');
+	  $this->assertNoText(t('Copied Place Type to Site Report.'), t('User Copied Place Type to Site Report.'), 'Devtrac');
+	  $this->assertNoText(t('has been created.'), t('Place has been created.'), 'Devtrac');
+	  $this->assertNoText(t('Defaulted Date Visited to Start Date of Field Trip.'), t('Defaulted Date Visited to Start Date of Field Trip.'), 'Devtrac');
+	  //directly connected to the frtitem
+	  $this->assertNoText(t('Public Summary cannot be longer than 600 characters but is currently 650 characters long.'), t('assertive messages are removed'), 'Devtrac');
+	  $this->assertNoText(t('Copied Lat-Lon to the Site Report.'), t('assertive messages are removed'), 'Devtrac');
+	  $this->assertNoText(t('Subjects set.'), t('Subjects set assertive messages are removed.'), 'Devtrac');
+	  $this->assertNoText(t('Field Trip Report Item YES THAT IS IT FOR NOW! has been updated.'), t('Subjects assertive messages are removed'), 'Devtrac');
+	  $this->assertNoLink('Submit', 0, t('link to submit the site report is not found'), 'Devtrac');
+	  $this->assertNoLink('Submit the Field Trip to the manager', 0, 'link Submit the Field Trip to the manager is showing');
+	//now follow the submit link to submit the site report. the manager
+	  $this->drupalGet('node/'.$nodeAddreportfullSubmitozyq->nid.'/setstatus/submit', array('query' => array('destination' => 'user/'.$this->unicef_user->uid)));
+	  $this->assertLink('YES WE CAN', 0, 'field trip YES WE CAN is found in the manager inbox');
+	//log out the authenticated user
+	  $this->drupalGet('node/'.$nodeAddreportfullSubmitozyq->nid.'/approve/fieldtripcommentform/ajax/nojs/go?', array('query'=> array('destination' => 'user/'.$this->unicef_user->uid)));
+	//Now login the manager to approve the site report
+	  $this->assertText(t('submitted fieldtrip YES WE CAN for your approval.'), t('manager finds the field trip to approve'), 'DevTrac');
+	  $this->assertLink('Needs your approval', 0, 'link to field trip to approve found');
+	  $this->assertLink('reply', 0, t('link to field trip to approve found'), 'DevTrac');
+	  $commentq['comment_body[und][0][value]'] = $this->randomName(12);
+		//commenting on the submitted fieldtrip
+	  $this->drupalPost(NULL,$commentq, t('Save'), array('query'=> array('destination' => 'user/'.$this->unicef_user->uid)));
+	  $this->assertText(t('Your comment has been posted.'), t('manager message is posted successifuly'), 'DevTrac');
+   
+}
+
+}
+
+/**
+ * Creating an admin, an editor, 
+ * once an editor is created, the admin must be 
+ * notified about the new team member on board
+ * therefore testing the interdependence between top level users
+ * 
+ * @author ishmael
+ *
+ */
+
+class FieldtripUserInterdependenceTestCase extends SimpleTestCloneTestCase {
+  public static function getInfo() {
+    return array(
+      'name' => 'Testing User interdependence',
+      'description' => "Unicef User roles and interdependence testing",
+      'group' => 'Devtrac',
+    );
+  }
+
+	/**
+	 * Log in a user with the internal browser.
+	 *
+	 * If a user is already logged in, then the current user is logged out before
+	 * logging in the specified user.
+	 *
+	 * Please note that neither the global $user nor the passed in user object is
+	 * populated with data of the logged in user. If you need full access to the
+	 * user object after logging in, it must be updated manually. If you also need
+	 * access to the plain-text password of the user (set by drupalCreateUser()),
+	 * e.g. to login the same user again, then it must be re-assigned manually.
+	 * For example:
+	 * @code
+	 *   // Create a user.
+	 *   $account = $this->drupalCreateUser(array());
+	 *   $this->drupalLogin($account);
+	 *   // Load real user object.
+	 *   $pass_raw = $account->pass_raw;
+	 *   $account = user_load($account->uid);
+	 *   $account->pass_raw = $pass_raw;
+	 * @endcode
+	 *
+	 * @param $user
+	 *   User object representing the user to login.
+	 *
+	 * @see drupalCreateUser()
+	 */
+	protected function drupalLogin(stdClass $user) {
+		if ($this->loggedInUser) {
+			$this->drupalLogout();
+		}
+	
+		$edit = array(
+				'name' => $user->name,
+				'pass' => $user->pass_raw
+		);
+		$this->drupalPost('user', $edit, t('Log in'));
+	
+		// If a "log out" link appears on the page, it is almost certainly because
+		// the login was successful.
+		$pass = $this->assertLink(t('Sign out'), 0, t('User %name successfully logged in.', array('%name' => $user->name)), t('User login'));
+	
+		if ($pass) {
+			$this->loggedInUser = $user;
+		}
+	}
+	
+	public function setUp() {
+		parent::setUp();
+		// Create and log in a permitted user.
+		$this->unicef_user = $this->drupalCreateUser(array('administer users', 'administer permissions', 'access user profiles', 'administer site configuration', 'administer modules'));
+		$this->editor_user = $this->drupalCreateUser(array('create field_fieldtrip_user', 'edit field_fieldtrip_user'));
+		$this->drupalLogin($this->unicef_user);
+		$this->drupalPost('user/' . $this->unicef_user->uid . '/edit', array("roles[3]" => 5, 'taxonomy_vocabulary_5[und]' => 30, 'taxonomy_vocabulary_4[und]' => 26, 'field_user_firstname[und][0][value]' => 'Admino', 'field_user_surname[und][0][value]' => 'Adminol', 'field_user_aboutme[und][0][value]' => 'aboutAdmin', 'field_user_superior[und][0][target_id]' => 'Jan van Diepen (3)'), t('Save'));
+		$this->unicef_user = $this->drupalCreateUser(array('create field_fieldtrip_user', 'edit field_fieldtrip_user'));
+		//
+		$this->drupalPost('user/' . $this->editor_user->uid . '/edit', array("roles[4]" => 4, 'field_user_firstname[und][0][value]' => 'firstname', 'field_user_surname[und][0][value]' => 'lname', 'field_user_aboutme[und][0][value]' => 'aboutjan', 'field_user_superior[und][0][target_id]' => $this->unicef_user->uid), t('Save'));
+		$this->drupalLogout();
+		$this->drupalLogin($this->editor_user);
+		$this->assertNoText(t('Overview'), t('User is successifuly logged in'), 'Devtrac');
+	
+	}
+	
+	
+	public function testEditorAccessesIndex() {
+		$this->drupalGet(NULL);
+		$this->assertNoLink('More', 0, t('More is not a Menu link Item'));
+		$this->assertNoLink('Districts', 0, t('Link to district menu item is not showing'));
+		$this->assertLink('Activities', 0, t('Link to activities menu item is showing'));
+		$this->clickLink('Activities', 0, t('User follows the Activities link'));
+		$this->assertLink('Organisations', 0, t('Link to Organisations on menu item is showing'));
+		$this->clickLink('Organisations', 0, t('User follows the Organisations link'));	
+		
+	}
+	
+	public function testAdminSeenEditorTeamMemberProvision() {
+		// untill we get a valid admin(not Jan)
+		$this->drupalLogin($this->unicef_user);
+		$this->assertNoLink('Team Members', 0, t('Link to view Team Members is found'));
+		$this->assertNoText(t('Team Members'), t('admin follows the link to view the Team Members'), 'Devtrac');
+		$this->assertNoLink('firstname lname', 0, t('Team member is not yet found'));
+			
+	}
+	
+	
+}
+
+
+
+
+
+

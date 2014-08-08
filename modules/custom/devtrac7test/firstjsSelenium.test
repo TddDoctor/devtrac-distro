@@ -1,0 +1,44 @@
+<?php
+
+/**
+ * @file
+ *
+ * Test case for Drupal core misc/states.js javascript.
+ */
+
+if (!class_exists('DrupalSeleniumWebTestCase')) {
+  drupal_set_message(t('Selenium tests are not displayed because the selenium module is not enabled.'), 'warning', FALSE);
+  return;
+}
+
+class StatesTestCase extends DrupalSeleniumWebTestCase {
+
+  public static function getInfo() {
+    return array(
+      'name' => 'devselenium',
+      'description' => 'Tests for devtarc states javascript.',
+      'group' => 'Selenium',
+      'browsers' => array('firefox'),
+    );
+  }
+
+  /**
+   * Test states javascript functionality on article node form.
+   */
+  function testCreateArticle1() {
+    // Login user.
+    $user = $this->drupalCreateUser(array('administer nodes', 'bypass node access', 'administer menu'));
+    $this->drupalLogin($user);
+
+    $this->drupalGet(NULL);
+
+    $this->verboseScreenshot();
+    
+    $this->drupalGet('user/login');
+    
+    $this->driver->getElement('id=edit-name');
+    $this->verboseScreenshot();
+  }
+  
+}
+ 

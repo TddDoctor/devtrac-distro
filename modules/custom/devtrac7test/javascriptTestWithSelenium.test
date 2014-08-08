@@ -1,0 +1,28 @@
+<?php
+
+/**
+ * @file
+ *
+ * Test case for Drupal core misc/textarea.js javascript.
+ */
+
+class TextareaTestCase extends DrupalSeleniumWebTestCase {
+  public static function getInfo() {
+    return array(
+      'name' => 'Textarea',
+      'description' => 'Tests for textarea javascript.',
+      'group' => 'Selenium',
+      'browsers' => array('firefox', 'chrome'),
+    );
+  }
+
+  /**
+   * Test textarea functionality on article node form.
+   */
+  function testCreateArticle() {
+    // Login user.
+    $user = $this->drupalCreateUser(array('administer nodes', 'bypass node access'));
+    $this->drupalLogin($user);
+  }
+  
+}

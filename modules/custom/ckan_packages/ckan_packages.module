@@ -5,8 +5,34 @@
  * Handles routing to list and retrieve package metadata.
  */
 
+/** @mainpage CKAN API
+ * 
+ * If your website has any data available that should be shared on a CKAN/DKAN based 
+ * open data platform and you do not want to write a full API on your Drupal website
+ * then this API module can help you.
+ * 
+ * This module will implement the part of the CKAN API that is needed to harvest 
+ * the metadata of your (csv) datasets by any remote CKAN/DKAN installation.
+ * 
+ * Once CKAN knows the URL of your CSV datasources, it can even harvest your data
+ * using the @link http://docs.ckan.org/projects/datapusher/en/latest/ datapusher @endlink. At that point your users can use the CKAN datastore API
+ * to retrieve your data, and you dont have to build an API anymore.
+ * 
+ * So, by implementing the @link http://docs.ckan.org/en/latest/api/legacy-api.html CKAN API 2.0@endlink
+ * CKAN is able to harvest Drupal data as datasets. The @link https://github.com/ckan/ckanext-harvest CKAN Harvester @endlink
+ * extention is depending on the legacy V2 of the API. This module has no aspiration
+ * to implement the V3 version of the CKAN API.
+ * 
+ * Consecutive data queries into your data can then
+ * be done through the @link http://docs.ckan.org/en/latest/maintaining/datastore.html#the-datastore-api CKAN Datastore API@endlink
+ */
+
 /**
- * Implements hook_services_resources 
+ * Implements hook_services_resources()
+ * 
+ * Returns the only 2 calls/endpoints on the full CKAN API that is implemented
+ * dataset for retrieving an individual dataset and index to retrieve a list
+ * of datasets.
  */
 function ckan_packages_services_resources() {
   return array(
@@ -74,7 +100,7 @@ function _ckan_packages_access($op, $args = array()) {
 }
 
 /**
- * Internal function to rerieve lists, or individual plugins.
+ * Internal function to retrieve lists, or individual plugins.
  */
 function _ckan_packages_get_plugin($name, $id) {
   static $cache = array();

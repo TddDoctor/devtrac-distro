@@ -1,8 +1,8 @@
 <?php
 
-/*
+/**
  *  Implementents hook_ctools_plugin_api
-*/
+ */
 function devtrac7_views_ctools_plugin_api() {
   list($module, $api) = func_get_args();
   if ($module == "feeds" && $api == "feeds_importer_default") {
@@ -14,23 +14,31 @@ function devtrac7_views_ctools_plugin_api() {
   }
 }
 
+/**
+ * Implements hook_views_query_alter().
+ *
+ * Alters the query on the action items (block_12)
+ * so that site reports and other reports can show after filtering by status
+ * TODO Could this be related to the inbox functionality? This is unclear. And please rename block_12 to something more semantic at the same time
+ * TODO also document what happens to the dvtrc_field_trip block_12 query and rename block_12 into something that means something
+ */
 function devtrac7_views_views_query_alter(&$view, &$query) {
-  //Alter the query so that site reports and other reports can show after filtering by status      
+  //Alter the query so that site reports and other reports can show after filtering by status
   if ($view->name == 'dvtrc_action_items' && $view->current_display == 'block_12') {
     $account = menu_get_object('user');
     $query->table_queue['history']['join']->extra[0]['value'] = $account->uid;
     $query->table_queue['history']['join']->definition['extra'][0]['value'] = $account->uid;
     if (isset($query->table_queue['field_data_field_actionitem_status']['join'])) {
       $query->table_queue['field_data_field_actionitem_status']['join']->type = 'LEFT';
-    }   
+    }
     if (isset($query->table_queue['field_data_field_fieldtrip_status']['join'])) {
       $query->table_queue['field_data_field_fieldtrip_status']['join']->type = 'LEFT';
-    }   
+    }
 //    if (isset($query->table_queue['node_comment_statistics']['join'])) {
 //      $query->table_queue['node_comment_statistics']['join']->type = 'LEFT';
-//    }   
+//    }
   }
-  
+
   if ($view->name == 'dvtrc_field_trip' && $view->current_display == 'block_12') {
 
     $tid = $view->args[0];
@@ -44,18 +52,19 @@ function devtrac7_views_views_query_alter(&$view, &$query) {
             'field_data_taxonomy_vocabulary_1.taxonomy_vocabulary_1_tid',
             $value->tid,
             '='
-        );        
-      }     
-    }    
+        );
+      }
+    }
     $query->set_where_group("OR",$group);
   }
-  
+
 }
 
 /*  
  *  Implementents hook_views_pre_view()
  * 
  * Provides additional filtering on views that are used in the services api
+ * 
  *
  *  @ingroup devtrac_services_api
  */
@@ -73,6 +82,9 @@ function devtrac7_views_views_pre_view(&$view, &$display_id, &$args){
    */
   if ($view->name === 'api_fieldtrips' && $view->current_display === 'actionitems') {
     $activetrip = NULL;
+    /*
+     * First determine if a nid for fieldtrip is given. If not, calculate the current trip
+     */
     if (!isset($view->args['nid'])) {
       if ($currenttrip = devtrac7_getcurrentfieldtrip()) {
         $view->display['actionitems']->handler->options['filters']['nid']['value']['value'] = $currenttrip;
@@ -87,8 +99,11 @@ function devtrac7_views_views_pre_view(&$view, &$display_id, &$args){
       watchdog("devtrac7_views.devtrac7_views_views_pre_view", t("There is no Current Field Trip Found"));
     }
     unset($view->display['actionitems']->handler->options['arguments']['nid']);
-
-
+    /*
+     * Calculate the places from the active or given field trip so that the list of actionitems can be 
+     * filtered based on these places.
+     * This makes sure only relevant action items are downloaded to the device.
+     */
     if ($activetrip) {
       $trip = node_load($activetrip);
       $tplaces = Array();
@@ -104,6 +119,7 @@ function devtrac7_views_views_pre_view(&$view, &$display_id, &$args){
     }
     /*
      *  It is optional to filter the list of actionitems on a specific ftritem
+     *  If the ftritem nid is not provided the filter needs to be unset to prevent errors
      */
     if (isset($view->args['field_actionitem_ftreportitem_target_id'])) {
       $view->display['actionitems']->handler->options['arguments']['field_actionitem_ftreportitem_target_id']['default_argument_options']['argument'] = $view->args['field_actionitem_ftreportitem_target_id'];
@@ -112,24 +128,25 @@ function devtrac7_views_views_pre_view(&$view, &$display_id, &$args){
     }
     unset($view->args['field_actionitem_ftrreportitem_target_id']);
   }
-  
-  
-  
+
+   /*
+    * This seems to make sure you only see your own things in your inbox
+    * TODO make this more clear, and as mentioned in the previous function rename block_12
+    */
    if ($view->name === 'dvtrc_action_items' && $view->current_display === 'block_12'){
      $account = menu_get_object('user');
      //global $user;
-     if(isset($account )) {    
+     if(isset($account )) {
        $view->display['block_12']->handler->options['filters']['uid_raw']['value']['value'] = $account->uid;
        $view->display['block_12']->handler->options['filters']['field_user_superior_target_id']['value']['value'] = $account->uid;
        $view->display['block_12']->handler->options['filters']['uid_raw_1']['value']['value']  = $account->uid;
 //       $view->display['block_12']->handler->options['filters']['uid_raw_2']['value']['value'] = $account->uid;
-       $view->display['block_12']->handler->options['filters']['uid_raw_3']['value']['value'] = $account->uid; 
-     
+       $view->display['block_12']->handler->options['filters']['uid_raw_3']['value']['value'] = $account->uid;
+
      }
-    
    }
   /*
-   *  Filter the right Field Trip
+   *  Filter the right (current) Field Trip
   */
   if ($view->name === 'api_fieldtrips' && $view->current_display === 'current_trip'){
     if (isset($view->display['current_trip']->handler->options['filters']['field_fieldtrip_status_value']['value']['In Progress'])) {
@@ -149,20 +166,8 @@ function devtrac7_views_views_pre_view(&$view, &$display_id, &$args){
   }
 
   /*
-   *  On map views, limit the amount of dots to 50 for Internet Exploder
-   */
-  if (get_class($view->display_handler) == 'openlayers_views_plugin_display_openlayers') {
-//    $view->set_items_per_page(112);
-    // Max 30 items on homepage map
-//    if (_devtrac7_isinternetexplorer()) {
-//      $view->set_items_per_page(50);
-//    }
-  }
-
-  /*
    *  On solr list view for sitereports, remove the User column for anonymous users
-  */
-
+   */
   if ($view->name === 'devtrac_solr_view_sitevisits' && $view->current_display === 'map'){
     if ($user->uid == 0) {
       unset ($view->display['list']->handler->options['fields']['author']);
@@ -170,9 +175,6 @@ function devtrac7_views_views_pre_view(&$view, &$display_id, &$args){
       unset ($view->display['default']->handler->options['fields']['author']);
     }
   }
-
-
-
 }
 
 /*
