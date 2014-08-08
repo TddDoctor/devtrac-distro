@@ -246,6 +246,8 @@ function devtrac7_solr_search_feature_facetapi_default_facet_settings() {
     'default_true' => '1',
     'facet_search_ids' => array(),
     'exclude' => 0,
+    'individual_parent' => 0,
+ 	 	'limit_active_items' => 0,
   );
   $export['search_api@devtrac_solr_site_visits_index::taxonomy_vocabulary_1'] = $facet;
 
@@ -1153,7 +1155,7 @@ function devtrac7_solr_search_feature_facetapi_default_facet_settings() {
   $facet->enabled = TRUE;
   $facet->settings = array(
     'weight' => 0,
-    'widget' => 'facetapi_links',
+    'widget' => 'search_api_swatches',
     'filters' => array(
       'active_items' => array(
         'status' => 0,
@@ -1247,16 +1249,18 @@ function devtrac7_solr_search_feature_facetapi_default_facet_settings() {
     'graphs_comboseries_colours' => NULL,
     'graphs_comboshowlegend' => 1,
     'tagcloud_levels' => '6',
-    'swatch_field' => '',
-    'swatch_imagestyle' => 'devtrac_oecd_icons_bw',
-    'swatch_showtext' => 0,
+    'swatch_field' => 'field_term_icon',
+    'swatch_imagestyle' => 'map_icon_bw',
+    'swatch_showtext' => 1,
     'swatch_shownoimage' => 1,
-    'swatch_imagestyle_select' => 'devtrac_oecd_icons_bw',
+    'swatch_imagestyle_select' => 'map_icon',
     'graphsflot' => 'point',
     'exclude' => 'Other Locations, 49, Pabolo, 235',
     'regex' => 0,
     'show_minimum_items' => 2,
     'yfacet' => '',
+    'facet_more_text' => 'Show more',
+ 	 	'facet_fewer_text' => 'Show fewer',
   );
   $export['search_api@devtrac_solr_site_visits_index:block:taxonomy_vocabulary_1'] = $facet;
 

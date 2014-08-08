@@ -527,7 +527,7 @@ function devtrac7_solr_search_feature_views_default_views() {
   $handler->display->display_options['fields']['site_info_1']['alter']['alter_text'] = TRUE;
   $handler->display->display_options['fields']['site_info_1']['alter']['text'] = '[site_info]/uuid/node/[field_ftritem_place_uuid]';
   $handler->display->display_options['fields']['site_info_1']['site_info'] = 'base_url';
-  $handler->display->display_options['path'] = 'sitevisits/analyse/csv';
+  $handler->display->display_options['path'] = 'sitereports/analyse/csv';
   $handler->display->display_options['displays'] = array(
     'default' => 'default',
     'map' => 'map',
@@ -604,7 +604,7 @@ function devtrac7_solr_search_feature_views_default_views() {
   $handler->display->display_options['filters']['field_ftritem_lat_long_geom']['table'] = 'search_api_index_devtrac_solr_site_visits_index';
   $handler->display->display_options['filters']['field_ftritem_lat_long_geom']['field'] = 'field_ftritem_lat_long_geom';
   $handler->display->display_options['filters']['field_ftritem_lat_long_geom']['value'] = 'POINT';
-  $handler->display->display_options['path'] = 'sitevisits/analyse/kml';
+  $handler->display->display_options['path'] = 'sitereports/analyse/kml';
   $handler->display->display_options['displays'] = array(
     'map' => 'map',
     'default' => 0,
@@ -799,7 +799,7 @@ function devtrac7_solr_search_feature_views_default_views() {
   $handler->display->display_options['fields']['site_info_1']['field'] = 'site_info';
   $handler->display->display_options['fields']['site_info_1']['ui_name'] = 'Site Name (Used as Publisher)';
   $handler->display->display_options['fields']['site_info_1']['element_label_colon'] = FALSE;
-  $handler->display->display_options['path'] = 'sitevisits/analyse/feed';
+  $handler->display->display_options['path'] = 'sitereports/analyse/feed';
   $handler->display->display_options['displays'] = array(
     'map' => 'map',
     'default' => 0,

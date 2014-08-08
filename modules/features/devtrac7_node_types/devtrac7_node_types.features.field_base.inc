@@ -826,13 +826,13 @@ function devtrac7_node_types_field_default_field_bases() {
     'type' => 'entityreference',
   );
 
-  // Exported field_base: 'field_fieldtrip_proms_ta_id'
-  $field_bases['field_fieldtrip_proms_ta_id'] = array(
+  // Exported field_base: 'field_fieldtrip_internal_id'
+  $field_bases['field_fieldtrip_internal_id'] = array(
     'active' => 1,
     'cardinality' => 1,
     'deleted' => 0,
     'entity_types' => array(),
-    'field_name' => 'field_fieldtrip_proms_ta_id',
+    'field_name' => 'field_fieldtrip_internal_id',
     'field_permissions' => array(
       'type' => 2,
     ),

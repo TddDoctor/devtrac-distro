@@ -13,6 +13,25 @@ function devtrac7_site_configuration_feature_strongarm() {
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
+  $strongarm->name = 'autoassignrole_auto_active';
+  $strongarm->value = '1';
+  $export['autoassignrole_auto_active'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'autoassignrole_auto_roles';
+  $strongarm->value = array(
+    4 => '4',
+    3 => 0,
+    5 => 0,
+    6 => 0,
+  );
+  $export['autoassignrole_auto_roles'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
   $strongarm->name = 'cron_safe_threshold';
   $strongarm->value = '0';
   $export['cron_safe_threshold'] = $strongarm;
@@ -1132,6 +1151,13 @@ Disallow: /?q=sitereports
 Disallow /statistics/answers
 Disallow: /?q=statistics/answers';
   $export['robotstxt'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'special_menu_items_nolink_tag';
+  $strongarm->value = '<a href="#">';
+  $export['special_menu_items_nolink_tag'] = $strongarm;
 
   return $export;
 }

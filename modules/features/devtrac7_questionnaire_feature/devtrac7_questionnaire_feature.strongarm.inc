@@ -97,5 +97,33 @@ function devtrac7_questionnaire_feature_strongarm() {
   $strongarm->value = 0;
   $export['node_submitted_questionnaire_question'] = $strongarm;
 
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'questionnaire_question_context_ftritem';
+  $strongarm->value = '52';
+  $export['questionnaire_question_context_ftritem'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'questionnaire_question_copy_termfields_from_context_ftritem';
+  $strongarm->value = 1;
+  $export['questionnaire_question_copy_termfields_from_context_ftritem'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'questionnaire_question_isquestionnaire_ftritem';
+  $strongarm->value = 1;
+  $export['questionnaire_question_isquestionnaire_ftritem'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'questionnaire_question_vocabulary_ftritem';
+  $strongarm->value = '6';
+  $export['questionnaire_question_vocabulary_ftritem'] = $strongarm;
+
   return $export;
 }

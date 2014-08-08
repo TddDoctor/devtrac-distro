@@ -429,7 +429,7 @@ function devtrac7_solr_search_fieldtrip_feature_views_default_views() {
   $handler->display->display_options['fields']['url']['field'] = 'url';
   $handler->display->display_options['fields']['url']['display_as_link'] = FALSE;
   $handler->display->display_options['fields']['url']['link_to_entity'] = 0;
-  $handler->display->display_options['path'] = 'fieldtrip/analyse/csv';
+  $handler->display->display_options['path'] = 'fieldtrips/analyse/csv';
   $handler->display->display_options['displays'] = array(
     'default' => 'default',
     'list' => 'list',
@@ -499,7 +499,7 @@ function devtrac7_solr_search_fieldtrip_feature_views_default_views() {
   $handler->display->display_options['filters']['taxonomy_vocabulary_6_field_district_geo_geom']['table'] = 'search_api_index_devtrac_solr_field_trip_index';
   $handler->display->display_options['filters']['taxonomy_vocabulary_6_field_district_geo_geom']['field'] = 'taxonomy_vocabulary_6_field_district_geo_geom';
   $handler->display->display_options['filters']['taxonomy_vocabulary_6_field_district_geo_geom']['value'] = 'POLYGON';
-  $handler->display->display_options['path'] = 'fieldtrip/analyse/kml';
+  $handler->display->display_options['path'] = 'fieldtrips/analyse/kml';
   $handler->display->display_options['displays'] = array(
     'default' => 'default',
     'list' => 'list',
@@ -647,7 +647,7 @@ function devtrac7_solr_search_fieldtrip_feature_views_default_views() {
   $handler->display->display_options['fields']['field_fieldtrip_user']['field'] = 'field_fieldtrip_user';
   $handler->display->display_options['fields']['field_fieldtrip_user']['link_to_entity'] = 1;
   $handler->display->display_options['fields']['field_fieldtrip_user']['view_mode'] = 'full';
-  $handler->display->display_options['path'] = 'fieldtrip/analyse/rss';
+  $handler->display->display_options['path'] = 'fieldtrips/analyse/rss';
   $handler->display->display_options['displays'] = array(
     'default' => 'default',
     'list' => 'list',

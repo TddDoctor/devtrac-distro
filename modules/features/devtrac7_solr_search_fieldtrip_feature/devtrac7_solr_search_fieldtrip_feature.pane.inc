@@ -36,7 +36,7 @@ function devtrac7_solr_search_fieldtrip_feature_default_pane_data() {
   $template->container = 'field_trips_info';
   $template->lang = 'und';
   $template->data = array(
-    'value' => 'A field trip is a detail of a trip by a UNICEF Devtrac user to the field. It details the purpose of the field trip, the start and end date, the TA number and any tags the user may be interested in labelling the Field trip with. The field trip page contains a dynamic list that can be filtered on many types of fields e.g Status, Date, etc.',
+    'value' => 'A field trip is a detail of a trip by a UNICEF Devtrac user to the field. It details the purpose of the field trip, the start and end date, the internal ID and any tags the user may be interested in labelling the Field trip with. The field trip page contains a dynamic list that can be filtered on many types of fields e.g Status, Date, etc.',
     'format' => '1',
     'title' => '',
   );

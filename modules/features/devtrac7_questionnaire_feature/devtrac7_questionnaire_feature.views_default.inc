@@ -40,12 +40,12 @@ function devtrac7_questionnaire_feature_views_default_views() {
   $handler->display->display_options['empty']['area']['empty'] = TRUE;
   $handler->display->display_options['empty']['area']['content'] = 'Your search did not return any results. Making your search less specific give you a higher chance of finding what you are looking for.';
   $handler->display->display_options['empty']['area']['format'] = '1';
-  /* Relationship: Entity Reference: Referenced Entity */
+  /* Relationship: Broken/missing handler */
   $handler->display->display_options['relationships']['questionnaire_answer_question_target_id']['id'] = 'questionnaire_answer_question_target_id';
   $handler->display->display_options['relationships']['questionnaire_answer_question_target_id']['table'] = 'field_data_questionnaire_answer_question';
   $handler->display->display_options['relationships']['questionnaire_answer_question_target_id']['field'] = 'questionnaire_answer_question_target_id';
   $handler->display->display_options['relationships']['questionnaire_answer_question_target_id']['required'] = TRUE;
-  /* Field: Answer: Answer */
+  /* Field: Answer: Answer Text */
   $handler->display->display_options['fields']['answertext_2']['id'] = 'answertext_2';
   $handler->display->display_options['fields']['answertext_2']['table'] = 'questionnaire_answer';
   $handler->display->display_options['fields']['answertext_2']['field'] = 'answertext';
@@ -55,7 +55,7 @@ function devtrac7_questionnaire_feature_views_default_views() {
   $handler->display->display_options['fields']['created']['field'] = 'created';
   $handler->display->display_options['fields']['created']['date_format'] = 'custom';
   $handler->display->display_options['fields']['created']['custom_date_format'] = 'U';
-  /* Field: Answer: Answer */
+  /* Field: Answer: Answer Text */
   $handler->display->display_options['fields']['answertext_1']['id'] = 'answertext_1';
   $handler->display->display_options['fields']['answertext_1']['table'] = 'questionnaire_answer';
   $handler->display->display_options['fields']['answertext_1']['field'] = 'answertext';
@@ -70,7 +70,7 @@ function devtrac7_questionnaire_feature_views_default_views() {
   $handler->display->display_options['arguments']['question']['summary']['number_of_records'] = '0';
   $handler->display->display_options['arguments']['question']['summary']['format'] = 'default_summary';
   $handler->display->display_options['arguments']['question']['summary_options']['items_per_page'] = '25';
-  /* Contextual filter: Answer: Context */
+  /* Contextual filter: Broken/missing handler */
   $handler->display->display_options['arguments']['context']['id'] = 'context';
   $handler->display->display_options['arguments']['context']['table'] = 'questionnaire_answer';
   $handler->display->display_options['arguments']['context']['field'] = 'context';
@@ -117,7 +117,7 @@ function devtrac7_questionnaire_feature_views_default_views() {
   $handler->display->display_options['row_plugin'] = 'fields';
   $handler->display->display_options['defaults']['row_options'] = FALSE;
   $handler->display->display_options['defaults']['fields'] = FALSE;
-  /* Field: Answer: Answer */
+  /* Field: Answer: Answer Text */
   $handler->display->display_options['fields']['answertext_2']['id'] = 'answertext_2';
   $handler->display->display_options['fields']['answertext_2']['table'] = 'questionnaire_answer';
   $handler->display->display_options['fields']['answertext_2']['field'] = 'answertext';
@@ -127,23 +127,17 @@ function devtrac7_questionnaire_feature_views_default_views() {
   $handler->display->display_options['fields']['created']['field'] = 'created';
   $handler->display->display_options['fields']['created']['date_format'] = 'custom';
   $handler->display->display_options['fields']['created']['custom_date_format'] = 'U';
-  /* Field: Answer: Answer */
+  /* Field: Answer: Answer Text */
   $handler->display->display_options['fields']['answertext_1']['id'] = 'answertext_1';
   $handler->display->display_options['fields']['answertext_1']['table'] = 'questionnaire_answer';
   $handler->display->display_options['fields']['answertext_1']['field'] = 'answertext';
   $handler->display->display_options['fields']['answertext_1']['label'] = '';
   $handler->display->display_options['fields']['answertext_1']['element_label_colon'] = FALSE;
-  /* Field: Answer: Numeric Answers. */
+  /* Field: Broken/missing handler */
   $handler->display->display_options['fields']['questionnaire_answer_number']['id'] = 'questionnaire_answer_number';
   $handler->display->display_options['fields']['questionnaire_answer_number']['table'] = 'field_data_questionnaire_answer_number';
   $handler->display->display_options['fields']['questionnaire_answer_number']['field'] = 'questionnaire_answer_number';
   $handler->display->display_options['fields']['questionnaire_answer_number']['label'] = 'Answer';
-  $handler->display->display_options['fields']['questionnaire_answer_number']['settings'] = array(
-    'thousand_separator' => '',
-    'decimal_separator' => '.',
-    'scale' => '0',
-    'prefix_suffix' => 1,
-  );
   $export['devtrac_answers_barcharts'] = $view;
 
   $view = new view();
@@ -195,7 +189,7 @@ function devtrac7_questionnaire_feature_views_default_views() {
   $handler->display->display_options['style_options']['background_colour'] = '';
   $handler->display->display_options['style_options']['series_colours'] = '';
   $handler->display->display_options['row_plugin'] = 'fields';
-  /* Relationship: Entity Reference: Referenced Entity */
+  /* Relationship: Broken/missing handler */
   $handler->display->display_options['relationships']['questionnaire_answer_question_target_id']['id'] = 'questionnaire_answer_question_target_id';
   $handler->display->display_options['relationships']['questionnaire_answer_question_target_id']['table'] = 'field_data_questionnaire_answer_question';
   $handler->display->display_options['relationships']['questionnaire_answer_question_target_id']['field'] = 'questionnaire_answer_question_target_id';
@@ -208,7 +202,7 @@ function devtrac7_questionnaire_feature_views_default_views() {
   $handler->display->display_options['fields']['answertext']['ui_name'] = 'Answer (Count)';
   $handler->display->display_options['fields']['answertext']['label'] = '';
   $handler->display->display_options['fields']['answertext']['element_label_colon'] = FALSE;
-  /* Field: Answer: Answer */
+  /* Field: Answer: Answer Text */
   $handler->display->display_options['fields']['answertext_1']['id'] = 'answertext_1';
   $handler->display->display_options['fields']['answertext_1']['table'] = 'questionnaire_answer';
   $handler->display->display_options['fields']['answertext_1']['field'] = 'answertext';
@@ -223,7 +217,7 @@ function devtrac7_questionnaire_feature_views_default_views() {
   $handler->display->display_options['arguments']['question']['summary']['number_of_records'] = '0';
   $handler->display->display_options['arguments']['question']['summary']['format'] = 'default_summary';
   $handler->display->display_options['arguments']['question']['summary_options']['items_per_page'] = '25';
-  /* Contextual filter: Answer: Context */
+  /* Contextual filter: Broken/missing handler */
   $handler->display->display_options['arguments']['context']['id'] = 'context';
   $handler->display->display_options['arguments']['context']['table'] = 'questionnaire_answer';
   $handler->display->display_options['arguments']['context']['field'] = 'context';
@@ -281,7 +275,7 @@ function devtrac7_questionnaire_feature_views_default_views() {
   $handler->display->display_options['fields']['answertext']['ui_name'] = 'Answer (Count)';
   $handler->display->display_options['fields']['answertext']['label'] = '';
   $handler->display->display_options['fields']['answertext']['element_label_colon'] = FALSE;
-  /* Field: Answer: Answer */
+  /* Field: Answer: Answer Text */
   $handler->display->display_options['fields']['answertext_1']['id'] = 'answertext_1';
   $handler->display->display_options['fields']['answertext_1']['table'] = 'questionnaire_answer';
   $handler->display->display_options['fields']['answertext_1']['field'] = 'answertext';
@@ -321,7 +315,7 @@ function devtrac7_questionnaire_feature_views_default_views() {
   $handler->display->display_options['filters']['questionnaire_question_type_value']['value'] = array(
     'radios' => 'radios',
   );
-  /* Filter criterion: Answer: Answer */
+  /* Filter criterion: Answer: Answer Text */
   $handler->display->display_options['filters']['answertext']['id'] = 'answertext';
   $handler->display->display_options['filters']['answertext']['table'] = 'questionnaire_answer';
   $handler->display->display_options['filters']['answertext']['field'] = 'answertext';
@@ -391,7 +385,7 @@ function devtrac7_questionnaire_feature_views_default_views() {
   $handler->display->display_options['filters']['questionnaire_question_type_value']['value'] = array(
     'radios' => 'radios',
   );
-  /* Filter criterion: Answer: Answer */
+  /* Filter criterion: Answer: Answer Text */
   $handler->display->display_options['filters']['answertext']['id'] = 'answertext';
   $handler->display->display_options['filters']['answertext']['table'] = 'questionnaire_answer';
   $handler->display->display_options['filters']['answertext']['field'] = 'answertext';
@@ -461,7 +455,7 @@ function devtrac7_questionnaire_feature_views_default_views() {
   $handler->display->display_options['fields']['answertext']['ui_name'] = 'Answer (Count)';
   $handler->display->display_options['fields']['answertext']['label'] = '';
   $handler->display->display_options['fields']['answertext']['element_label_colon'] = FALSE;
-  /* Field: Answer: Answer */
+  /* Field: Answer: Answer Text */
   $handler->display->display_options['fields']['answertext_1']['id'] = 'answertext_1';
   $handler->display->display_options['fields']['answertext_1']['table'] = 'questionnaire_answer';
   $handler->display->display_options['fields']['answertext_1']['field'] = 'answertext';
@@ -501,7 +495,7 @@ function devtrac7_questionnaire_feature_views_default_views() {
   $handler->display->display_options['filters']['questionnaire_question_type_value']['value'] = array(
     'radios' => 'radios',
   );
-  /* Filter criterion: Answer: Answer */
+  /* Filter criterion: Answer: Answer Text */
   $handler->display->display_options['filters']['answertext']['id'] = 'answertext';
   $handler->display->display_options['filters']['answertext']['table'] = 'questionnaire_answer';
   $handler->display->display_options['filters']['answertext']['field'] = 'answertext';
@@ -563,7 +557,6 @@ function devtrac7_questionnaire_feature_views_default_views() {
   $handler->display->display_options['fields']['view']['view'] = 'devtrac_sitevisit_answers';
   $handler->display->display_options['fields']['view']['display'] = 'block';
   $handler->display->display_options['fields']['view']['arguments'] = '[!tid]';
-  $handler->display->display_options['fields']['view']['query_aggregation'] = 0;
   /* Field: Global: View */
   $handler->display->display_options['fields']['view_1']['id'] = 'view_1';
   $handler->display->display_options['fields']['view_1']['table'] = 'views';
@@ -607,7 +600,6 @@ function devtrac7_questionnaire_feature_views_default_views() {
   $handler->display->display_options['fields']['view_1']['view'] = 'devtrac_sitevisit_answers';
   $handler->display->display_options['fields']['view_1']['display'] = 'block_1';
   $handler->display->display_options['fields']['view_1']['arguments'] = '[!tid]';
-  $handler->display->display_options['fields']['view_1']['query_aggregation'] = 0;
   /* Field: Extended View (Radio &amp; Select) */
   $handler->display->display_options['fields']['view_5']['id'] = 'view_5';
   $handler->display->display_options['fields']['view_5']['table'] = 'views';
@@ -618,7 +610,6 @@ function devtrac7_questionnaire_feature_views_default_views() {
   $handler->display->display_options['fields']['view_5']['view'] = 'devtrac_sitevisit_answers';
   $handler->display->display_options['fields']['view_5']['display'] = 'block';
   $handler->display->display_options['fields']['view_5']['arguments'] = '[!tid]';
-  $handler->display->display_options['fields']['view_5']['query_aggregation'] = 0;
   /* Field: Numeric Barcharts */
   $handler->display->display_options['fields']['view_2']['id'] = 'view_2';
   $handler->display->display_options['fields']['view_2']['table'] = 'views';
@@ -629,7 +620,6 @@ function devtrac7_questionnaire_feature_views_default_views() {
   $handler->display->display_options['fields']['view_2']['view'] = 'devtrac_sitevisit_answers';
   $handler->display->display_options['fields']['view_2']['display'] = 'block_4';
   $handler->display->display_options['fields']['view_2']['arguments'] = '[!tid]';
-  $handler->display->display_options['fields']['view_2']['query_aggregation'] = 0;
   /* Field: Sidebar (Numbers) */
   $handler->display->display_options['fields']['view_3']['id'] = 'view_3';
   $handler->display->display_options['fields']['view_3']['table'] = 'views';
@@ -640,7 +630,6 @@ function devtrac7_questionnaire_feature_views_default_views() {
   $handler->display->display_options['fields']['view_3']['view'] = 'devtrac_sitevisit_answers';
   $handler->display->display_options['fields']['view_3']['display'] = 'sidebar';
   $handler->display->display_options['fields']['view_3']['arguments'] = '[!tid]';
-  $handler->display->display_options['fields']['view_3']['query_aggregation'] = 0;
   /* Field: Points */
   $handler->display->display_options['fields']['view_4']['id'] = 'view_4';
   $handler->display->display_options['fields']['view_4']['table'] = 'views';
@@ -651,7 +640,6 @@ function devtrac7_questionnaire_feature_views_default_views() {
   $handler->display->display_options['fields']['view_4']['view'] = 'devtrac_sitevisit_answers';
   $handler->display->display_options['fields']['view_4']['display'] = 'block_3';
   $handler->display->display_options['fields']['view_4']['arguments'] = '[!tid]';
-  $handler->display->display_options['fields']['view_4']['query_aggregation'] = 0;
   $export['devtrac_sitevisit_answer_subjects'] = $view;
 
   $view = new view();
@@ -721,7 +709,7 @@ function devtrac7_questionnaire_feature_views_default_views() {
       'empty_column' => 0,
     ),
   );
-  /* Relationship: Entity Reference: Referenced Entity */
+  /* Relationship: Broken/missing handler */
   $handler->display->display_options['relationships']['questionnaire_answer_question_target_id']['id'] = 'questionnaire_answer_question_target_id';
   $handler->display->display_options['relationships']['questionnaire_answer_question_target_id']['table'] = 'field_data_questionnaire_answer_question';
   $handler->display->display_options['relationships']['questionnaire_answer_question_target_id']['field'] = 'questionnaire_answer_question_target_id';
@@ -731,7 +719,7 @@ function devtrac7_questionnaire_feature_views_default_views() {
   $handler->display->display_options['fields']['id']['table'] = 'questionnaire_answer';
   $handler->display->display_options['fields']['id']['field'] = 'id';
   $handler->display->display_options['fields']['id']['separator'] = '';
-  /* Field: Answer: Answer */
+  /* Field: Answer: Answer Text */
   $handler->display->display_options['fields']['answertext']['id'] = 'answertext';
   $handler->display->display_options['fields']['answertext']['table'] = 'questionnaire_answer';
   $handler->display->display_options['fields']['answertext']['field'] = 'answertext';
@@ -757,7 +745,7 @@ function devtrac7_questionnaire_feature_views_default_views() {
   $handler->display->display_options['arguments']['field_question_subject_tid']['summary']['number_of_records'] = '0';
   $handler->display->display_options['arguments']['field_question_subject_tid']['summary']['format'] = 'default_summary';
   $handler->display->display_options['arguments']['field_question_subject_tid']['summary_options']['items_per_page'] = '25';
-  /* Contextual filter: Answer: Context */
+  /* Contextual filter: Broken/missing handler */
   $handler->display->display_options['arguments']['context']['id'] = 'context';
   $handler->display->display_options['arguments']['context']['table'] = 'questionnaire_answer';
   $handler->display->display_options['arguments']['context']['field'] = 'context';
@@ -792,12 +780,11 @@ function devtrac7_questionnaire_feature_views_default_views() {
   $handler->display->display_options['row_plugin'] = 'fields';
   $handler->display->display_options['defaults']['row_options'] = FALSE;
   $handler->display->display_options['defaults']['fields'] = FALSE;
-  /* Field: Answer: Context */
+  /* Field: Broken/missing handler */
   $handler->display->display_options['fields']['context']['id'] = 'context';
   $handler->display->display_options['fields']['context']['table'] = 'questionnaire_answer';
   $handler->display->display_options['fields']['context']['field'] = 'context';
   $handler->display->display_options['fields']['context']['exclude'] = TRUE;
-  $handler->display->display_options['fields']['context']['separator'] = '';
   /* Field: Answer: Question */
   $handler->display->display_options['fields']['question']['id'] = 'question';
   $handler->display->display_options['fields']['question']['table'] = 'questionnaire_answer';
@@ -814,7 +801,6 @@ function devtrac7_questionnaire_feature_views_default_views() {
   $handler->display->display_options['fields']['view']['view'] = 'devtrac_answers_piecharts';
   $handler->display->display_options['fields']['view']['display'] = 'block';
   $handler->display->display_options['fields']['view']['arguments'] = '[!question]/[!context] ';
-  $handler->display->display_options['fields']['view']['query_aggregation'] = 0;
   /* Field: Content: Title */
   $handler->display->display_options['fields']['title']['id'] = 'title';
   $handler->display->display_options['fields']['title']['table'] = 'node';
@@ -881,11 +867,11 @@ function devtrac7_questionnaire_feature_views_default_views() {
   $handler->display->display_options['fields']['title_1']['alter']['path'] = 'statistics/answers?f[0]=questionnaire_answer_question:[question]';
   $handler->display->display_options['fields']['title_1']['alter']['alt'] = 'See results for this question on national level';
   $handler->display->display_options['fields']['title_1']['link_to_node'] = FALSE;
-  /* Field: Answer: Answer */
+  /* Field: Answer: Answer Text */
   $handler->display->display_options['fields']['answertext_1']['id'] = 'answertext_1';
   $handler->display->display_options['fields']['answertext_1']['table'] = 'questionnaire_answer';
   $handler->display->display_options['fields']['answertext_1']['field'] = 'answertext';
-  /* Field: Answer: Answer */
+  /* Field: Answer: Answer Text */
   $handler->display->display_options['fields']['answertext']['id'] = 'answertext';
   $handler->display->display_options['fields']['answertext']['table'] = 'questionnaire_answer';
   $handler->display->display_options['fields']['answertext']['field'] = 'answertext';
@@ -945,13 +931,13 @@ function devtrac7_questionnaire_feature_views_default_views() {
   $handler->display->display_options['defaults']['row_plugin'] = FALSE;
   $handler->display->display_options['defaults']['row_options'] = FALSE;
   $handler->display->display_options['defaults']['fields'] = FALSE;
-  /* Field: Answer: Answer */
+  /* Field: Answer: Answer Text */
   $handler->display->display_options['fields']['answertext']['id'] = 'answertext';
   $handler->display->display_options['fields']['answertext']['table'] = 'questionnaire_answer';
   $handler->display->display_options['fields']['answertext']['field'] = 'answertext';
   $handler->display->display_options['fields']['answertext']['group_type'] = 'count_distinct';
   $handler->display->display_options['fields']['answertext']['label'] = 'Answertext';
-  /* Field: Answer: Answer */
+  /* Field: Answer: Answer Text */
   $handler->display->display_options['fields']['answertext_1']['id'] = 'answertext_1';
   $handler->display->display_options['fields']['answertext_1']['table'] = 'questionnaire_answer';
   $handler->display->display_options['fields']['answertext_1']['field'] = 'answertext';
@@ -987,12 +973,11 @@ function devtrac7_questionnaire_feature_views_default_views() {
   $handler->display->display_options['row_options']['hide_empty'] = TRUE;
   $handler->display->display_options['defaults']['row_options'] = FALSE;
   $handler->display->display_options['defaults']['fields'] = FALSE;
-  /* Field: Answer: Context */
+  /* Field: Broken/missing handler */
   $handler->display->display_options['fields']['context']['id'] = 'context';
   $handler->display->display_options['fields']['context']['table'] = 'questionnaire_answer';
   $handler->display->display_options['fields']['context']['field'] = 'context';
   $handler->display->display_options['fields']['context']['exclude'] = TRUE;
-  $handler->display->display_options['fields']['context']['separator'] = '';
   /* Field: Answer: Question */
   $handler->display->display_options['fields']['question']['id'] = 'question';
   $handler->display->display_options['fields']['question']['table'] = 'questionnaire_answer';
@@ -1009,7 +994,6 @@ function devtrac7_questionnaire_feature_views_default_views() {
   $handler->display->display_options['fields']['view']['view'] = 'devtrac_answers_barcharts';
   $handler->display->display_options['fields']['view']['display'] = 'block';
   $handler->display->display_options['fields']['view']['arguments'] = '[!question]/[!context] ';
-  $handler->display->display_options['fields']['view']['query_aggregation'] = 0;
   /* Field: Content: Title */
   $handler->display->display_options['fields']['title']['id'] = 'title';
   $handler->display->display_options['fields']['title']['table'] = 'node';
@@ -1121,7 +1105,7 @@ function devtrac7_questionnaire_feature_views_default_views() {
   $handler->display->display_options['fields']['title']['alter']['path'] = 'statistics/answers?f[0]=questionnaire_answer_question:[question]';
   $handler->display->display_options['fields']['title']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['title']['link_to_node'] = FALSE;
-  /* Field: Answer: Answer */
+  /* Field: Answer: Answer All */
   $handler->display->display_options['fields']['answer']['id'] = 'answer';
   $handler->display->display_options['fields']['answer']['table'] = 'questionnaire_answer';
   $handler->display->display_options['fields']['answer']['field'] = 'answer';
@@ -1171,7 +1155,7 @@ function devtrac7_questionnaire_feature_views_default_views() {
   $handler->display->display_options['row_plugin'] = 'fields';
   $handler->display->display_options['defaults']['row_options'] = FALSE;
   $handler->display->display_options['defaults']['fields'] = FALSE;
-  /* Field: Answer: Answer */
+  /* Field: Answer: Answer All */
   $handler->display->display_options['fields']['answer']['id'] = 'answer';
   $handler->display->display_options['fields']['answer']['table'] = 'questionnaire_answer';
   $handler->display->display_options['fields']['answer']['field'] = 'answer';
@@ -1268,20 +1252,17 @@ function devtrac7_questionnaire_feature_views_default_views() {
   $handler->display->display_options['fields']['title']['alter']['path'] = 'statistics/answers?f[0]=questionnaire_answer_question%3A[nid]&display=default';
   $handler->display->display_options['fields']['title']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['title']['link_to_node'] = FALSE;
-  /* Field: Answer: Answer */
+  /* Field: Answer: Answer All */
   $handler->display->display_options['fields']['answer']['id'] = 'answer';
   $handler->display->display_options['fields']['answer']['table'] = 'questionnaire_answer';
   $handler->display->display_options['fields']['answer']['field'] = 'answer';
-  /* Field: Answer: Questionnaire */
+  /* Field: Broken/missing handler */
   $handler->display->display_options['fields']['questionnaire_answer_qnnaire']['id'] = 'questionnaire_answer_qnnaire';
   $handler->display->display_options['fields']['questionnaire_answer_qnnaire']['table'] = 'field_data_questionnaire_answer_qnnaire';
   $handler->display->display_options['fields']['questionnaire_answer_qnnaire']['field'] = 'questionnaire_answer_qnnaire';
   $handler->display->display_options['fields']['questionnaire_answer_qnnaire']['exclude'] = TRUE;
-  $handler->display->display_options['fields']['questionnaire_answer_qnnaire']['settings'] = array(
-    'link' => 1,
-  );
   $handler->display->display_options['defaults']['arguments'] = FALSE;
-  /* Contextual filter: Answer: Questionnaire (questionnaire_answer_qnnaire) */
+  /* Contextual filter: Broken/missing handler */
   $handler->display->display_options['arguments']['questionnaire_answer_qnnaire_target_id']['id'] = 'questionnaire_answer_qnnaire_target_id';
   $handler->display->display_options['arguments']['questionnaire_answer_qnnaire_target_id']['table'] = 'field_data_questionnaire_answer_qnnaire';
   $handler->display->display_options['arguments']['questionnaire_answer_qnnaire_target_id']['field'] = 'questionnaire_answer_qnnaire_target_id';

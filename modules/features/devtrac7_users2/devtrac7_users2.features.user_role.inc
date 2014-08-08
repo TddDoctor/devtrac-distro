@@ -22,19 +22,13 @@ function devtrac7_users2_user_default_roles() {
     'weight' => 0,
   );
 
-  // Exported role: unicef user.
-  $roles['unicef user'] = array(
-    'name' => 'unicef user',
+  // Exported role: field worker.
+  $roles['field worker'] = array(
+    'name' => 'field worker',
     'weight' => 0,
   );
 
-  // Exported role: unicef user (Mobile).
-//  $roles['unicef user (Mobile)'] = array(
-//    'name' => 'unicef user (Mobile)',
-//    'weight' => 0,
-//  );
-
-  // Exported role: unicef user.
+  // Exported role: usaid editor.
   $roles['usaid editor'] = array(
     'name' => 'usaid editor',
     'weight' => 0,

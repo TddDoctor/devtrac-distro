@@ -301,179 +301,22 @@ function devtrac7_menu_menu_default_menu_links() {
     'weight' => -50,
     'customized' => 1,
   );
-/*
-  // Exported menu link: menu-my-profile_add-field-trip:node/add/fieldtrip
-  $menu_links['menu-my-profile_add-field-trip:node/add/fieldtrip'] = array(
-    'menu_name' => 'menu-my-profile',
-    'link_path' => 'node/add/fieldtrip',
-    'router_path' => 'node/add/fieldtrip',
-    'link_title' => 'Add Field Trip',
-    'options' => array(
-      'menu_token_link_path' => 'node/add/fieldtrip?field_fieldtrip_user=[current-user:uid]&field_fieldtrip_places=',
-      'menu_token_data' => array(),
-      'menu_token_options' => array(
-        'clear' => 0,
-      ),
-      'attributes' => array(
-        'title' => '',
-      ),
-      'alter' => FALSE,
-      'query' => array(
-        'field_fieldtrip_user' => 3,
-        'field_fieldtrip_places' => '',
-      ),
-      'identifier' => 'menu-my-profile_add-field-trip:node/add/fieldtrip',
-    ),
-    'module' => 'menu',
-    'hidden' => 0,
-    'external' => 0,
-    'has_children' => 0,
-    'expanded' => 0,
-    'weight' => -49,
-    'customized' => 1,
-  );
-  // Exported menu link: menu-my-profile_admin:admin
-  $menu_links['menu-my-profile_admin:admin'] = array(
-    'menu_name' => 'menu-my-profile',
-    'link_path' => 'admin',
-    'router_path' => 'admin',
-    'link_title' => 'Admin',
-    'options' => array(
-      'attributes' => array(
-        'title' => '',
-      ),
-      'identifier' => 'menu-my-profile_admin:admin',
-    ),
-    'module' => 'menu',
-    'hidden' => 0,
-    'external' => 0,
-    'has_children' => 0,
-    'expanded' => 0,
-    'weight' => -47,
-    'customized' => 0,
-  );
-  // Exported menu link: menu-my-profile_edit-my-profile:user/3/edit
-  $menu_links['menu-my-profile_edit-my-profile:user/3/edit'] = array(
-    'menu_name' => 'menu-my-profile',
-    'link_path' => 'user/3/edit',
-    'router_path' => 'user/%/edit',
-    'link_title' => 'Edit My profile',
-    'options' => array(
-      'attributes' => array(
-        'title' => '',
-      ),
-      'alter' => FALSE,
-      'menu_token_link_path' => 'user/[current-user:uid]/edit',
-      'menu_token_data' => array(
-        'user' => array(
-          'type' => 'user',
-          'plugin' => 'user_context',
-          'options' => array(),
-        ),
-      ),
-      'menu_token_options' => array(
-        'clear' => 0,
-      ),
-      'identifier' => 'menu-my-profile_edit-my-profile:user/3/edit',
-    ),
-    'module' => 'menu',
-    'hidden' => 1,
-    'external' => 0,
-    'has_children' => 0,
-    'expanded' => 0,
-    'weight' => -50,
-    'customized' => 1,
-  );
-  // Exported menu link: menu-my-profile_edit-my-profile:user/5/edit
-  $menu_links['menu-my-profile_edit-my-profile:user/5/edit'] = array(
-    'menu_name' => 'menu-my-profile',
-    'link_path' => 'user/5/edit',
-    'router_path' => 'user/%/edit',
-    'link_title' => 'Edit My profile',
-    'options' => array(
-      'attributes' => array(
-        'title' => '',
-      ),
-      'alter' => TRUE,
-      'menu_token_link_path' => '[current-user:edit-url]',
-      'menu_token_data' => array(
-        'user' => array(
-          'type' => 'user',
-          'plugin' => 'user_context',
-          'options' => array(),
-        ),
-      ),
-      'menu_token_options' => array(
-        'clear' => 0,
-      ),
-      'purl' => array(
-        'disabled' => 1,
-      ),
-      'identifier' => 'menu-my-profile_edit-my-profile:user/5/edit',
-      'menu_token_link_uuid' => 'user/5/edit',
-    ),
-    'module' => 'menu',
-    'hidden' => 0,
-    'external' => 0,
-    'has_children' => 0,
-    'expanded' => 0,
-    'weight' => -50,
-    'customized' => 1,
-    'parent_identifier' => 'menu-my-profile_welcome-reinier:http://localhost/devtrac/users/reinier',
-  );
-  // Exported menu link: menu-my-profile_my-profile:user/3
-  $menu_links['menu-my-profile_my-profile:user/3'] = array(
-    'menu_name' => 'menu-my-profile',
-    'link_path' => 'user/3',
-    'router_path' => 'user/%',
-    'link_title' => 'My Profile',
-    'options' => array(
-      'menu_token_link_path' => 'user/[current-user:uid]',
-      'menu_token_data' => array(
-        'user' => array(
-          'type' => 'user',
-          'plugin' => 'user_context',
-          'options' => array(),
-        ),
-      ),
-      'menu_token_options' => array(
-        'clear' => 0,
-      ),
-      'attributes' => array(
-        'title' => '',
-      ),
-      'alter' => FALSE,
-      'identifier' => 'menu-my-profile_my-profile:user/3',
-    ),
-    'module' => 'menu',
-    'hidden' => 1,
-    'external' => 0,
-    'has_children' => 0,
-    'expanded' => 0,
-    'weight' => -48,
-    'customized' => 1,
-  );
-*/
+
   // Translatables
   // Included for use with string extractors like potx.
   t('Action Items');
   t('Activities');
-//  t('Add Field Trip');
-//  t('Admin');
   t('Contact');
   t('Contact Us');
   t('Districts');
-//  t('Edit My profile');
   t('Field trips');
   t('Locations');
-//  t('My Profile');
   t('Organisations');
   t('Sign in');
   t('Sign out');
   t('Site Reports');
   t('Statistics');
   t('Users');
-
 
   return $menu_links;
 }

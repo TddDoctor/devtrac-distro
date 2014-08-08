@@ -69,8 +69,8 @@ function devtrac7_node_types_ckeditor_profile_defaults() {
         ),
       ),
       'input_formats' => array(
-        'filtered_html' => 'Filtered HTML',
-        'full_html' => 'Full HTML',
+        '1' => 'Filtered HTML',
+        '2' => 'Full HTML',
       ),
     ),
   );

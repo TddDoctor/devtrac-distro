@@ -28,25 +28,15 @@ function devtrac7_menu_menu_default_menu_custom() {
     'title' => 'My ItemsMenu',
     'description' => 'The menu with all items of a given user eg fieldtrips, site repaorts',
   );
-/*
-  // Exported menu: menu-my-profile.
-  $menus['menu-my-profile'] = array(
-    'menu_name' => 'menu-my-profile',
-    'title' => 'My Profile Menu',
-    'description' => 'The menu in the right part of the toolbar containing links for the logged in user.',
-  );
-*/
+
   // Translatables
   // Included for use with string extractors like potx.
   t('Footer Menu Right');
   t('Main menu');
   t('My ItemsMenu');
-//  t('My Profile Menu');
   t('Primary links are often used at the theme layer to show the major sections of a site. A typical representation for primary links would be tabs along the top.');
-//  t('The menu in the right part of the toolbar containing links for the logged in user.');
   t('The menu with all items of a given user eg fieldtrips, site repaorts');
   t('The right-most footer menu');
-
 
   return $menus;
 }

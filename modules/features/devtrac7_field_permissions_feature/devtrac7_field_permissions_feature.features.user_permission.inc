@@ -48,7 +48,7 @@ function devtrac7_field_permissions_feature_user_default_permissions() {
     'roles' => array(
       'administrator' => 'administrator',
       'authenticated user' => 'authenticated user',
-      'unicef user' => 'unicef user',
+      'field worker' => 'field worker',
     ),
     'module' => 'comment',
   );
@@ -60,7 +60,7 @@ function devtrac7_field_permissions_feature_user_default_permissions() {
       'administrator' => 'administrator',
       'anonymous user' => 'anonymous user',
       'authenticated user' => 'authenticated user',
-      'unicef user' => 'unicef user',
+      'field worker' => 'field worker',
     ),
     'module' => 'node',
   );
@@ -81,7 +81,7 @@ function devtrac7_field_permissions_feature_user_default_permissions() {
     'roles' => array(
       'administrator' => 'administrator',
       'authenticated user' => 'authenticated user',
-      'unicef user' => 'unicef user',
+      'field worker' => 'field worker',
     ),
     'module' => 'proxy',
   );
@@ -111,7 +111,7 @@ function devtrac7_field_permissions_feature_user_default_permissions() {
     'roles' => array(
       'administrator' => 'administrator',
       'authenticated user' => 'authenticated user',
-      'unicef user' => 'unicef user',
+      'field worker' => 'field worker',
     ),
     'module' => 'user',
   );
@@ -134,6 +134,16 @@ function devtrac7_field_permissions_feature_user_default_permissions() {
     'module' => 'context_ui',
   );
 
+  // Exported permission: 'administer devtrac'.
+  $permissions['administer devtrac'] = array(
+    'name' => 'administer devtrac',
+    'roles' => array(
+      'administrator' => 'administrator',
+      'editor' => 'editor',
+    ),
+    'module' => 'devtrac7',
+  );
+
   // Exported permission: 'administer hidden comments'.
   $permissions['administer hidden comments'] = array(
     'name' => 'administer hidden comments',
@@ -149,7 +159,7 @@ function devtrac7_field_permissions_feature_user_default_permissions() {
     'roles' => array(
       'administrator' => 'administrator',
       'authenticated user' => 'authenticated user',
-      'unicef user' => 'unicef user',
+      'field worker' => 'field worker',
     ),
     'module' => 'hidden_comment',
   );
@@ -197,7 +207,7 @@ function devtrac7_field_permissions_feature_user_default_permissions() {
     'roles' => array(
       'administrator' => 'administrator',
       'authenticated user' => 'authenticated user',
-      'unicef user' => 'unicef user',
+      'field worker' => 'field worker',
     ),
     'module' => 'node',
   );
@@ -208,7 +218,7 @@ function devtrac7_field_permissions_feature_user_default_permissions() {
     'roles' => array(
       'administrator' => 'administrator',
       'authenticated user' => 'authenticated user',
-      'unicef user' => 'unicef user',
+      'field worker' => 'field worker',
     ),
     'module' => 'field_permissions',
   );
@@ -219,7 +229,7 @@ function devtrac7_field_permissions_feature_user_default_permissions() {
     'roles' => array(
       'administrator' => 'administrator',
       'authenticated user' => 'authenticated user',
-      'unicef user' => 'unicef user',
+      'field worker' => 'field worker',
     ),
     'module' => 'field_permissions',
   );
@@ -257,7 +267,7 @@ function devtrac7_field_permissions_feature_user_default_permissions() {
     'roles' => array(
       'administrator' => 'administrator',
       'authenticated user' => 'authenticated user',
-      'unicef user' => 'unicef user',
+      'field worker' => 'field worker',
     ),
     'module' => 'field_permissions',
   );
@@ -268,7 +278,7 @@ function devtrac7_field_permissions_feature_user_default_permissions() {
     'roles' => array(
       'administrator' => 'administrator',
       'authenticated user' => 'authenticated user',
-      'unicef user' => 'unicef user',
+      'field worker' => 'field worker',
     ),
     'module' => 'field_permissions',
   );
@@ -279,7 +289,7 @@ function devtrac7_field_permissions_feature_user_default_permissions() {
     'roles' => array(
       'administrator' => 'administrator',
       'authenticated user' => 'authenticated user',
-      'unicef user' => 'unicef user',
+      'field worker' => 'field worker',
     ),
     'module' => 'field_permissions',
   );
@@ -290,7 +300,7 @@ function devtrac7_field_permissions_feature_user_default_permissions() {
     'roles' => array(
       'administrator' => 'administrator',
       'authenticated user' => 'authenticated user',
-      'unicef user' => 'unicef user',
+      'field worker' => 'field worker',
     ),
     'module' => 'field_permissions',
   );
@@ -301,7 +311,7 @@ function devtrac7_field_permissions_feature_user_default_permissions() {
     'roles' => array(
       'administrator' => 'administrator',
       'authenticated user' => 'authenticated user',
-      'unicef user' => 'unicef user',
+      'field worker' => 'field worker',
     ),
     'module' => 'field_permissions',
   );
@@ -312,7 +322,7 @@ function devtrac7_field_permissions_feature_user_default_permissions() {
     'roles' => array(
       'administrator' => 'administrator',
       'authenticated user' => 'authenticated user',
-      'unicef user' => 'unicef user',
+      'field worker' => 'field worker',
     ),
     'module' => 'field_permissions',
   );
@@ -323,7 +333,7 @@ function devtrac7_field_permissions_feature_user_default_permissions() {
     'roles' => array(
       'administrator' => 'administrator',
       'authenticated user' => 'authenticated user',
-      'unicef user' => 'unicef user',
+      'field worker' => 'field worker',
     ),
     'module' => 'field_permissions',
   );
@@ -334,7 +344,7 @@ function devtrac7_field_permissions_feature_user_default_permissions() {
     'roles' => array(
       'administrator' => 'administrator',
       'authenticated user' => 'authenticated user',
-      'unicef user' => 'unicef user',
+      'field worker' => 'field worker',
     ),
     'module' => 'field_permissions',
   );
@@ -370,7 +380,7 @@ function devtrac7_field_permissions_feature_user_default_permissions() {
     'roles' => array(
       'administrator' => 'administrator',
       'authenticated user' => 'authenticated user',
-      'unicef user' => 'unicef user',
+      'field worker' => 'field worker',
     ),
     'module' => 'field_permissions',
   );
@@ -381,18 +391,18 @@ function devtrac7_field_permissions_feature_user_default_permissions() {
     'roles' => array(
       'administrator' => 'administrator',
       'authenticated user' => 'authenticated user',
-      'unicef user' => 'unicef user',
+      'field worker' => 'field worker',
     ),
     'module' => 'field_permissions',
   );
 
-  // Exported permission: 'create field_fieldtrip_proms_ta_id'.
-  $permissions['create field_fieldtrip_proms_ta_id'] = array(
-    'name' => 'create field_fieldtrip_proms_ta_id',
+  // Exported permission: 'create field_fieldtrip_internal_id'.
+  $permissions['create field_fieldtrip_internal_id'] = array(
+    'name' => 'create field_fieldtrip_internal_id',
     'roles' => array(
       'administrator' => 'administrator',
       'authenticated user' => 'authenticated user',
-      'unicef user' => 'unicef user',
+      'field worker' => 'field worker',
     ),
     'module' => 'field_permissions',
   );
@@ -403,7 +413,7 @@ function devtrac7_field_permissions_feature_user_default_permissions() {
     'roles' => array(
       'administrator' => 'administrator',
       'authenticated user' => 'authenticated user',
-      'unicef user' => 'unicef user',
+      'field worker' => 'field worker',
     ),
     'module' => 'field_permissions',
   );
@@ -414,7 +424,7 @@ function devtrac7_field_permissions_feature_user_default_permissions() {
     'roles' => array(
       'administrator' => 'administrator',
       'authenticated user' => 'authenticated user',
-      'unicef user' => 'unicef user',
+      'field worker' => 'field worker',
     ),
     'module' => 'field_permissions',
   );
@@ -434,7 +444,7 @@ function devtrac7_field_permissions_feature_user_default_permissions() {
     'roles' => array(
       'administrator' => 'administrator',
       'authenticated user' => 'authenticated user',
-      'unicef user' => 'unicef user',
+      'field worker' => 'field worker',
     ),
     'module' => 'field_permissions',
   );
@@ -455,7 +465,7 @@ function devtrac7_field_permissions_feature_user_default_permissions() {
     'roles' => array(
       'administrator' => 'administrator',
       'authenticated user' => 'authenticated user',
-      'unicef user' => 'unicef user',
+      'field worker' => 'field worker',
     ),
     'module' => 'field_permissions',
   );
@@ -475,7 +485,7 @@ function devtrac7_field_permissions_feature_user_default_permissions() {
     'roles' => array(
       'administrator' => 'administrator',
       'authenticated user' => 'authenticated user',
-      'unicef user' => 'unicef user',
+      'field worker' => 'field worker',
     ),
     'module' => 'field_permissions',
   );
@@ -486,7 +496,7 @@ function devtrac7_field_permissions_feature_user_default_permissions() {
     'roles' => array(
       'administrator' => 'administrator',
       'authenticated user' => 'authenticated user',
-      'unicef user' => 'unicef user',
+      'field worker' => 'field worker',
     ),
     'module' => 'field_permissions',
   );
@@ -497,7 +507,7 @@ function devtrac7_field_permissions_feature_user_default_permissions() {
     'roles' => array(
       'administrator' => 'administrator',
       'authenticated user' => 'authenticated user',
-      'unicef user' => 'unicef user',
+      'field worker' => 'field worker',
     ),
     'module' => 'field_permissions',
   );
@@ -517,7 +527,7 @@ function devtrac7_field_permissions_feature_user_default_permissions() {
     'roles' => array(
       'administrator' => 'administrator',
       'authenticated user' => 'authenticated user',
-      'unicef user' => 'unicef user',
+      'field worker' => 'field worker',
     ),
     'module' => 'field_permissions',
   );
@@ -564,7 +574,7 @@ function devtrac7_field_permissions_feature_user_default_permissions() {
     'roles' => array(
       'administrator' => 'administrator',
       'authenticated user' => 'authenticated user',
-      'unicef user' => 'unicef user',
+      'field worker' => 'field worker',
     ),
     'module' => 'field_permissions',
   );
@@ -575,7 +585,7 @@ function devtrac7_field_permissions_feature_user_default_permissions() {
     'roles' => array(
       'administrator' => 'administrator',
       'authenticated user' => 'authenticated user',
-      'unicef user' => 'unicef user',
+      'field worker' => 'field worker',
     ),
     'module' => 'field_permissions',
   );
@@ -586,7 +596,7 @@ function devtrac7_field_permissions_feature_user_default_permissions() {
     'roles' => array(
       'administrator' => 'administrator',
       'authenticated user' => 'authenticated user',
-      'unicef user' => 'unicef user',
+      'field worker' => 'field worker',
     ),
     'module' => 'field_permissions',
   );
@@ -597,7 +607,7 @@ function devtrac7_field_permissions_feature_user_default_permissions() {
     'roles' => array(
       'administrator' => 'administrator',
       'authenticated user' => 'authenticated user',
-      'unicef user' => 'unicef user',
+      'field worker' => 'field worker',
     ),
     'module' => 'field_permissions',
   );
@@ -608,7 +618,7 @@ function devtrac7_field_permissions_feature_user_default_permissions() {
     'roles' => array(
       'administrator' => 'administrator',
       'authenticated user' => 'authenticated user',
-      'unicef user' => 'unicef user',
+      'field worker' => 'field worker',
     ),
     'module' => 'field_permissions',
   );
@@ -637,7 +647,7 @@ function devtrac7_field_permissions_feature_user_default_permissions() {
     'roles' => array(
       'administrator' => 'administrator',
       'authenticated user' => 'authenticated user',
-      'unicef user' => 'unicef user',
+      'field worker' => 'field worker',
     ),
     'module' => 'field_permissions',
   );
@@ -648,7 +658,7 @@ function devtrac7_field_permissions_feature_user_default_permissions() {
     'roles' => array(
       'administrator' => 'administrator',
       'authenticated user' => 'authenticated user',
-      'unicef user' => 'unicef user',
+      'field worker' => 'field worker',
     ),
     'module' => 'field_permissions',
   );
@@ -659,7 +669,7 @@ function devtrac7_field_permissions_feature_user_default_permissions() {
     'roles' => array(
       'administrator' => 'administrator',
       'authenticated user' => 'authenticated user',
-      'unicef user' => 'unicef user',
+      'field worker' => 'field worker',
     ),
     'module' => 'node',
   );
@@ -670,7 +680,7 @@ function devtrac7_field_permissions_feature_user_default_permissions() {
     'roles' => array(
       'administrator' => 'administrator',
       'authenticated user' => 'authenticated user',
-      'unicef user' => 'unicef user',
+      'field worker' => 'field worker',
     ),
     'module' => 'node',
   );
@@ -693,13 +703,34 @@ function devtrac7_field_permissions_feature_user_default_permissions() {
     'module' => 'node',
   );
 
+  // Exported permission: 'create place content'.
+  $permissions['create place content'] = array(
+    'name' => 'create place content',
+    'roles' => array(
+      'administrator' => 'administrator',
+      'authenticated user' => 'authenticated user',
+      'field worker' => 'field worker',
+    ),
+    'module' => 'node',
+  );
+
+  // Exported permission: 'create questionnaire_question'.
+  $permissions['create questionnaire_question'] = array(
+    'name' => 'create questionnaire_question',
+    'roles' => array(
+      'administrator' => 'administrator',
+      'editor' => 'editor',
+    ),
+    'module' => 'questionnaire_question',
+  );
+
   // Exported permission: 'create questionnaire_question content'.
   $permissions['create questionnaire_question content'] = array(
     'name' => 'create questionnaire_question content',
     'roles' => array(
       'administrator' => 'administrator',
     ),
-    'module' => 'questionnaire_question',
+    'module' => 'node',
   );
 
   // Exported permission: 'create relations'.
@@ -718,7 +749,7 @@ function devtrac7_field_permissions_feature_user_default_permissions() {
     'roles' => array(
       'administrator' => 'administrator',
       'authenticated user' => 'authenticated user',
-      'unicef user' => 'unicef user',
+      'field worker' => 'field worker',
     ),
     'module' => 'field_permissions',
   );
@@ -730,7 +761,7 @@ function devtrac7_field_permissions_feature_user_default_permissions() {
     'roles' => array(
       'administrator' => 'administrator',
       'authenticated user' => 'authenticated user',
-      'unicef user' => 'unicef user',
+      'field worker' => 'field worker',
     ),
     'module' => 'field_permissions',
   );
@@ -751,7 +782,7 @@ function devtrac7_field_permissions_feature_user_default_permissions() {
     'roles' => array(
       'administrator' => 'administrator',
       'authenticated user' => 'authenticated user',
-      'unicef user' => 'unicef user',
+      'field worker' => 'field worker',
     ),
     'module' => 'field_permissions',
   );
@@ -799,6 +830,24 @@ function devtrac7_field_permissions_feature_user_default_permissions() {
       'administrator' => 'administrator',
     ),
     'module' => 'node',
+  );
+
+  // Exported permission: 'delete any place content'.
+  $permissions['delete any place content'] = array(
+    'name' => 'delete any place content',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'node',
+  );
+
+  // Exported permission: 'delete any questionnaire_question'.
+  $permissions['delete any questionnaire_question'] = array(
+    'name' => 'delete any questionnaire_question',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'questionnaire_question',
   );
 
   // Exported permission: 'delete any questionnaire_question content'.
@@ -849,6 +898,15 @@ function devtrac7_field_permissions_feature_user_default_permissions() {
   // Exported permission: 'delete own iati_organisation content'.
   $permissions['delete own iati_organisation content'] = array(
     'name' => 'delete own iati_organisation content',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'node',
+  );
+
+  // Exported permission: 'delete own place content'.
+  $permissions['delete own place content'] = array(
+    'name' => 'delete own place content',
     'roles' => array(
       'administrator' => 'administrator',
     ),
@@ -920,6 +978,27 @@ function devtrac7_field_permissions_feature_user_default_permissions() {
     'module' => 'node',
   );
 
+  // Exported permission: 'edit any place content'.
+  $permissions['edit any place content'] = array(
+    'name' => 'edit any place content',
+    'roles' => array(
+      'administrator' => 'administrator',
+      'authenticated user' => 'authenticated user',
+      'field worker' => 'field worker',
+    ),
+    'module' => 'node',
+  );
+
+  // Exported permission: 'edit any questionnaire_question'.
+  $permissions['edit any questionnaire_question'] = array(
+    'name' => 'edit any questionnaire_question',
+    'roles' => array(
+      'administrator' => 'administrator',
+      'editor' => 'editor',
+    ),
+    'module' => 'questionnaire_question',
+  );
+
   // Exported permission: 'edit any questionnaire_question content'.
   $permissions['edit any questionnaire_question content'] = array(
     'name' => 'edit any questionnaire_question content',
@@ -935,7 +1014,7 @@ function devtrac7_field_permissions_feature_user_default_permissions() {
     'roles' => array(
       'administrator' => 'administrator',
       'authenticated user' => 'authenticated user',
-      'unicef user' => 'unicef user',
+      'field worker' => 'field worker',
     ),
     'module' => 'field_permissions',
   );
@@ -946,7 +1025,7 @@ function devtrac7_field_permissions_feature_user_default_permissions() {
     'roles' => array(
       'administrator' => 'administrator',
       'authenticated user' => 'authenticated user',
-      'unicef user' => 'unicef user',
+      'field worker' => 'field worker',
     ),
     'module' => 'field_permissions',
   );
@@ -984,7 +1063,7 @@ function devtrac7_field_permissions_feature_user_default_permissions() {
     'roles' => array(
       'administrator' => 'administrator',
       'authenticated user' => 'authenticated user',
-      'unicef user' => 'unicef user',
+      'field worker' => 'field worker',
     ),
     'module' => 'field_permissions',
   );
@@ -995,7 +1074,7 @@ function devtrac7_field_permissions_feature_user_default_permissions() {
     'roles' => array(
       'administrator' => 'administrator',
       'authenticated user' => 'authenticated user',
-      'unicef user' => 'unicef user',
+      'field worker' => 'field worker',
     ),
     'module' => 'field_permissions',
   );
@@ -1006,7 +1085,7 @@ function devtrac7_field_permissions_feature_user_default_permissions() {
     'roles' => array(
       'administrator' => 'administrator',
       'authenticated user' => 'authenticated user',
-      'unicef user' => 'unicef user',
+      'field worker' => 'field worker',
     ),
     'module' => 'field_permissions',
   );
@@ -1017,7 +1096,7 @@ function devtrac7_field_permissions_feature_user_default_permissions() {
     'roles' => array(
       'administrator' => 'administrator',
       'authenticated user' => 'authenticated user',
-      'unicef user' => 'unicef user',
+      'field worker' => 'field worker',
     ),
     'module' => 'field_permissions',
   );
@@ -1028,7 +1107,7 @@ function devtrac7_field_permissions_feature_user_default_permissions() {
     'roles' => array(
       'administrator' => 'administrator',
       'authenticated user' => 'authenticated user',
-      'unicef user' => 'unicef user',
+      'field worker' => 'field worker',
     ),
     'module' => 'field_permissions',
   );
@@ -1039,7 +1118,7 @@ function devtrac7_field_permissions_feature_user_default_permissions() {
     'roles' => array(
       'administrator' => 'administrator',
       'authenticated user' => 'authenticated user',
-      'unicef user' => 'unicef user',
+      'field worker' => 'field worker',
     ),
     'module' => 'field_permissions',
   );
@@ -1050,7 +1129,7 @@ function devtrac7_field_permissions_feature_user_default_permissions() {
     'roles' => array(
       'administrator' => 'administrator',
       'authenticated user' => 'authenticated user',
-      'unicef user' => 'unicef user',
+      'field worker' => 'field worker',
     ),
     'module' => 'field_permissions',
   );
@@ -1061,7 +1140,7 @@ function devtrac7_field_permissions_feature_user_default_permissions() {
     'roles' => array(
       'administrator' => 'administrator',
       'authenticated user' => 'authenticated user',
-      'unicef user' => 'unicef user',
+      'field worker' => 'field worker',
     ),
     'module' => 'field_permissions',
   );
@@ -1097,7 +1176,7 @@ function devtrac7_field_permissions_feature_user_default_permissions() {
     'roles' => array(
       'administrator' => 'administrator',
       'authenticated user' => 'authenticated user',
-      'unicef user' => 'unicef user',
+      'field worker' => 'field worker',
     ),
     'module' => 'field_permissions',
   );
@@ -1108,18 +1187,18 @@ function devtrac7_field_permissions_feature_user_default_permissions() {
     'roles' => array(
       'administrator' => 'administrator',
       'authenticated user' => 'authenticated user',
-      'unicef user' => 'unicef user',
+      'field worker' => 'field worker',
     ),
     'module' => 'field_permissions',
   );
 
-  // Exported permission: 'edit field_fieldtrip_proms_ta_id'.
-  $permissions['edit field_fieldtrip_proms_ta_id'] = array(
-    'name' => 'edit field_fieldtrip_proms_ta_id',
+  // Exported permission: 'edit field_fieldtrip_internal_id'.
+  $permissions['edit field_fieldtrip_internal_id'] = array(
+    'name' => 'edit field_fieldtrip_internal_id',
     'roles' => array(
       'administrator' => 'administrator',
       'authenticated user' => 'authenticated user',
-      'unicef user' => 'unicef user',
+      'field worker' => 'field worker',
     ),
     'module' => 'field_permissions',
   );
@@ -1130,7 +1209,7 @@ function devtrac7_field_permissions_feature_user_default_permissions() {
     'roles' => array(
       'administrator' => 'administrator',
       'authenticated user' => 'authenticated user',
-      'unicef user' => 'unicef user',
+      'field worker' => 'field worker',
     ),
     'module' => 'field_permissions',
   );
@@ -1141,7 +1220,7 @@ function devtrac7_field_permissions_feature_user_default_permissions() {
     'roles' => array(
       'administrator' => 'administrator',
       'authenticated user' => 'authenticated user',
-      'unicef user' => 'unicef user',
+      'field worker' => 'field worker',
     ),
     'module' => 'field_permissions',
   );
@@ -1152,7 +1231,7 @@ function devtrac7_field_permissions_feature_user_default_permissions() {
     'roles' => array(
       'administrator' => 'administrator',
       'authenticated user' => 'authenticated user',
-      'unicef user' => 'unicef user',
+      'field worker' => 'field worker',
     ),
     'module' => 'field_permissions',
   );
@@ -1163,7 +1242,7 @@ function devtrac7_field_permissions_feature_user_default_permissions() {
     'roles' => array(
       'administrator' => 'administrator',
       'authenticated user' => 'authenticated user',
-      'unicef user' => 'unicef user',
+      'field worker' => 'field worker',
     ),
     'module' => 'field_permissions',
   );
@@ -1283,7 +1362,7 @@ function devtrac7_field_permissions_feature_user_default_permissions() {
     'roles' => array(
       'administrator' => 'administrator',
       'authenticated user' => 'authenticated user',
-      'unicef user' => 'unicef user',
+      'field worker' => 'field worker',
     ),
     'module' => 'field_permissions',
   );
@@ -1294,7 +1373,7 @@ function devtrac7_field_permissions_feature_user_default_permissions() {
     'roles' => array(
       'administrator' => 'administrator',
       'authenticated user' => 'authenticated user',
-      'unicef user' => 'unicef user',
+      'field worker' => 'field worker',
     ),
     'module' => 'field_permissions',
   );
@@ -1305,7 +1384,7 @@ function devtrac7_field_permissions_feature_user_default_permissions() {
     'roles' => array(
       'administrator' => 'administrator',
       'authenticated user' => 'authenticated user',
-      'unicef user' => 'unicef user',
+      'field worker' => 'field worker',
     ),
     'module' => 'field_permissions',
   );
@@ -1316,7 +1395,7 @@ function devtrac7_field_permissions_feature_user_default_permissions() {
     'roles' => array(
       'administrator' => 'administrator',
       'authenticated user' => 'authenticated user',
-      'unicef user' => 'unicef user',
+      'field worker' => 'field worker',
     ),
     'module' => 'field_permissions',
   );
@@ -1327,7 +1406,7 @@ function devtrac7_field_permissions_feature_user_default_permissions() {
     'roles' => array(
       'administrator' => 'administrator',
       'authenticated user' => 'authenticated user',
-      'unicef user' => 'unicef user',
+      'field worker' => 'field worker',
     ),
     'module' => 'field_permissions',
   );
@@ -1356,7 +1435,7 @@ function devtrac7_field_permissions_feature_user_default_permissions() {
     'roles' => array(
       'administrator' => 'administrator',
       'authenticated user' => 'authenticated user',
-      'unicef user' => 'unicef user',
+      'field worker' => 'field worker',
     ),
     'module' => 'field_permissions',
   );
@@ -1367,7 +1446,7 @@ function devtrac7_field_permissions_feature_user_default_permissions() {
     'roles' => array(
       'administrator' => 'administrator',
       'authenticated user' => 'authenticated user',
-      'unicef user' => 'unicef user',
+      'field worker' => 'field worker',
     ),
     'module' => 'field_permissions',
   );
@@ -1378,7 +1457,7 @@ function devtrac7_field_permissions_feature_user_default_permissions() {
     'roles' => array(
       'administrator' => 'administrator',
       'authenticated user' => 'authenticated user',
-      'unicef user' => 'unicef user',
+      'field worker' => 'field worker',
     ),
     'module' => 'node',
   );
@@ -1543,9 +1622,9 @@ function devtrac7_field_permissions_feature_user_default_permissions() {
     'module' => 'field_permissions',
   );
 
-  // Exported permission: 'edit own field_fieldtrip_proms_ta_id'.
-  $permissions['edit own field_fieldtrip_proms_ta_id'] = array(
-    'name' => 'edit own field_fieldtrip_proms_ta_id',
+  // Exported permission: 'edit own field_fieldtrip_internal_id'.
+  $permissions['edit own field_fieldtrip_internal_id'] = array(
+    'name' => 'edit own field_fieldtrip_internal_id',
     'roles' => array(
       'administrator' => 'administrator',
     ),
@@ -1603,7 +1682,7 @@ function devtrac7_field_permissions_feature_user_default_permissions() {
     'roles' => array(
       'administrator' => 'administrator',
       'authenticated user' => 'authenticated user',
-      'unicef user' => 'unicef user',
+      'field worker' => 'field worker',
     ),
     'module' => 'field_permissions',
   );
@@ -1614,7 +1693,7 @@ function devtrac7_field_permissions_feature_user_default_permissions() {
     'roles' => array(
       'administrator' => 'administrator',
       'authenticated user' => 'authenticated user',
-      'unicef user' => 'unicef user',
+      'field worker' => 'field worker',
     ),
     'module' => 'field_permissions',
   );
@@ -1625,7 +1704,7 @@ function devtrac7_field_permissions_feature_user_default_permissions() {
     'roles' => array(
       'administrator' => 'administrator',
       'authenticated user' => 'authenticated user',
-      'unicef user' => 'unicef user',
+      'field worker' => 'field worker',
     ),
     'module' => 'field_permissions',
   );
@@ -1636,7 +1715,7 @@ function devtrac7_field_permissions_feature_user_default_permissions() {
     'roles' => array(
       'administrator' => 'administrator',
       'authenticated user' => 'authenticated user',
-      'unicef user' => 'unicef user',
+      'field worker' => 'field worker',
     ),
     'module' => 'field_permissions',
   );
@@ -1647,7 +1726,7 @@ function devtrac7_field_permissions_feature_user_default_permissions() {
     'roles' => array(
       'administrator' => 'administrator',
       'authenticated user' => 'authenticated user',
-      'unicef user' => 'unicef user',
+      'field worker' => 'field worker',
     ),
     'module' => 'field_permissions',
   );
@@ -1658,7 +1737,7 @@ function devtrac7_field_permissions_feature_user_default_permissions() {
     'roles' => array(
       'administrator' => 'administrator',
       'authenticated user' => 'authenticated user',
-      'unicef user' => 'unicef user',
+      'field worker' => 'field worker',
     ),
     'module' => 'field_permissions',
   );
@@ -1669,7 +1748,7 @@ function devtrac7_field_permissions_feature_user_default_permissions() {
     'roles' => array(
       'administrator' => 'administrator',
       'authenticated user' => 'authenticated user',
-      'unicef user' => 'unicef user',
+      'field worker' => 'field worker',
     ),
     'module' => 'field_permissions',
   );
@@ -1825,6 +1904,15 @@ function devtrac7_field_permissions_feature_user_default_permissions() {
     'module' => 'node',
   );
 
+  // Exported permission: 'edit own place content'.
+  $permissions['edit own place content'] = array(
+    'name' => 'edit own place content',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'node',
+  );
+
   // Exported permission: 'edit own questionnaire_question content'.
   $permissions['edit own questionnaire_question content'] = array(
     'name' => 'edit own questionnaire_question content',
@@ -1886,7 +1974,7 @@ function devtrac7_field_permissions_feature_user_default_permissions() {
     'roles' => array(
       'administrator' => 'administrator',
       'authenticated user' => 'authenticated user',
-      'unicef user' => 'unicef user',
+      'field worker' => 'field worker',
     ),
     'module' => 'field_permissions',
   );
@@ -1897,7 +1985,7 @@ function devtrac7_field_permissions_feature_user_default_permissions() {
     'roles' => array(
       'administrator' => 'administrator',
       'authenticated user' => 'authenticated user',
-      'unicef user' => 'unicef user',
+      'field worker' => 'field worker',
     ),
     'module' => 'field_permissions',
   );
@@ -1917,7 +2005,7 @@ function devtrac7_field_permissions_feature_user_default_permissions() {
     'roles' => array(
       'administrator' => 'administrator',
       'authenticated user' => 'authenticated user',
-      'unicef user' => 'unicef user',
+      'field worker' => 'field worker',
     ),
     'module' => 'field_permissions',
   );
@@ -1928,7 +2016,7 @@ function devtrac7_field_permissions_feature_user_default_permissions() {
     'roles' => array(
       'administrator' => 'administrator',
       'authenticated user' => 'authenticated user',
-      'unicef user' => 'unicef user',
+      'field worker' => 'field worker',
     ),
     'module' => 'services',
   );
@@ -1939,7 +2027,7 @@ function devtrac7_field_permissions_feature_user_default_permissions() {
     'roles' => array(
       'administrator' => 'administrator',
       'authenticated user' => 'authenticated user',
-      'unicef user' => 'unicef user',
+      'field worker' => 'field worker',
     ),
     'module' => 'services',
   );
@@ -1959,7 +2047,7 @@ function devtrac7_field_permissions_feature_user_default_permissions() {
     'roles' => array(
       'administrator' => 'administrator',
       'authenticated user' => 'authenticated user',
-      'unicef user' => 'unicef user',
+      'field worker' => 'field worker',
     ),
     'module' => 'hidden_comment',
   );
@@ -1979,7 +2067,7 @@ function devtrac7_field_permissions_feature_user_default_permissions() {
     'roles' => array(
       'administrator' => 'administrator',
       'authenticated user' => 'authenticated user',
-      'unicef user' => 'unicef user',
+      'field worker' => 'field worker',
     ),
     'module' => 'comment',
   );
@@ -1990,7 +2078,7 @@ function devtrac7_field_permissions_feature_user_default_permissions() {
     'roles' => array(
       'administrator' => 'administrator',
       'authenticated user' => 'authenticated user',
-      'unicef user' => 'unicef user',
+      'field worker' => 'field worker',
     ),
     'module' => 'services',
   );
@@ -2001,9 +2089,19 @@ function devtrac7_field_permissions_feature_user_default_permissions() {
     'roles' => array(
       'administrator' => 'administrator',
       'authenticated user' => 'authenticated user',
-      'unicef user' => 'unicef user',
+      'field worker' => 'field worker',
     ),
     'module' => 'comment',
+  );
+
+  // Exported permission: 'submit questions'.
+  $permissions['submit questions'] = array(
+    'name' => 'submit questions',
+    'roles' => array(
+      'administrator' => 'administrator',
+      'authenticated user' => 'authenticated user',
+    ),
+    'module' => 'questionnaire_question',
   );
 
   // Exported permission: 'view field_actionitem_due_date'.
@@ -2012,7 +2110,7 @@ function devtrac7_field_permissions_feature_user_default_permissions() {
     'roles' => array(
       'administrator' => 'administrator',
       'authenticated user' => 'authenticated user',
-      'unicef user' => 'unicef user',
+      'field worker' => 'field worker',
     ),
     'module' => 'field_permissions',
   );
@@ -2023,7 +2121,7 @@ function devtrac7_field_permissions_feature_user_default_permissions() {
     'roles' => array(
       'administrator' => 'administrator',
       'authenticated user' => 'authenticated user',
-      'unicef user' => 'unicef user',
+      'field worker' => 'field worker',
     ),
     'module' => 'field_permissions',
   );
@@ -2034,7 +2132,7 @@ function devtrac7_field_permissions_feature_user_default_permissions() {
     'roles' => array(
       'administrator' => 'administrator',
       'authenticated user' => 'authenticated user',
-      'unicef user' => 'unicef user',
+      'field worker' => 'field worker',
     ),
     'module' => 'field_permissions',
   );
@@ -2054,7 +2152,7 @@ function devtrac7_field_permissions_feature_user_default_permissions() {
     'roles' => array(
       'administrator' => 'administrator',
       'authenticated user' => 'authenticated user',
-      'unicef user' => 'unicef user',
+      'field worker' => 'field worker',
     ),
     'module' => 'field_permissions',
   );
@@ -2065,7 +2163,7 @@ function devtrac7_field_permissions_feature_user_default_permissions() {
     'roles' => array(
       'administrator' => 'administrator',
       'authenticated user' => 'authenticated user',
-      'unicef user' => 'unicef user',
+      'field worker' => 'field worker',
     ),
     'module' => 'field_permissions',
   );
@@ -2076,7 +2174,7 @@ function devtrac7_field_permissions_feature_user_default_permissions() {
     'roles' => array(
       'administrator' => 'administrator',
       'authenticated user' => 'authenticated user',
-      'unicef user' => 'unicef user',
+      'field worker' => 'field worker',
     ),
     'module' => 'field_permissions',
   );
@@ -2087,7 +2185,7 @@ function devtrac7_field_permissions_feature_user_default_permissions() {
     'roles' => array(
       'administrator' => 'administrator',
       'authenticated user' => 'authenticated user',
-      'unicef user' => 'unicef user',
+      'field worker' => 'field worker',
     ),
     'module' => 'field_permissions',
   );
@@ -2098,7 +2196,7 @@ function devtrac7_field_permissions_feature_user_default_permissions() {
     'roles' => array(
       'administrator' => 'administrator',
       'authenticated user' => 'authenticated user',
-      'unicef user' => 'unicef user',
+      'field worker' => 'field worker',
     ),
     'module' => 'field_permissions',
   );
@@ -2109,7 +2207,7 @@ function devtrac7_field_permissions_feature_user_default_permissions() {
     'roles' => array(
       'administrator' => 'administrator',
       'authenticated user' => 'authenticated user',
-      'unicef user' => 'unicef user',
+      'field worker' => 'field worker',
     ),
     'module' => 'field_permissions',
   );
@@ -2120,7 +2218,7 @@ function devtrac7_field_permissions_feature_user_default_permissions() {
     'roles' => array(
       'administrator' => 'administrator',
       'authenticated user' => 'authenticated user',
-      'unicef user' => 'unicef user',
+      'field worker' => 'field worker',
     ),
     'module' => 'field_permissions',
   );
@@ -2131,7 +2229,7 @@ function devtrac7_field_permissions_feature_user_default_permissions() {
     'roles' => array(
       'administrator' => 'administrator',
       'authenticated user' => 'authenticated user',
-      'unicef user' => 'unicef user',
+      'field worker' => 'field worker',
     ),
     'module' => 'field_permissions',
   );
@@ -2142,7 +2240,7 @@ function devtrac7_field_permissions_feature_user_default_permissions() {
     'roles' => array(
       'administrator' => 'administrator',
       'authenticated user' => 'authenticated user',
-      'unicef user' => 'unicef user',
+      'field worker' => 'field worker',
     ),
     'module' => 'field_permissions',
   );
@@ -2161,7 +2259,7 @@ function devtrac7_field_permissions_feature_user_default_permissions() {
       'administrator' => 'administrator',
       'anonymous user' => 'anonymous user',
       'authenticated user' => 'authenticated user',
-      'unicef user' => 'unicef user',
+      'field worker' => 'field worker',
     ),
     'module' => 'field_permissions',
   );
@@ -2173,7 +2271,7 @@ function devtrac7_field_permissions_feature_user_default_permissions() {
       'administrator' => 'administrator',
       'anonymous user' => 'anonymous user',
       'authenticated user' => 'authenticated user',
-      'unicef user' => 'unicef user',
+      'field worker' => 'field worker',
     ),
     'module' => 'field_permissions',
   );
@@ -2185,7 +2283,7 @@ function devtrac7_field_permissions_feature_user_default_permissions() {
       'administrator' => 'administrator',
       'anonymous user' => 'anonymous user',
       'authenticated user' => 'authenticated user',
-      'unicef user' => 'unicef user',
+      'field worker' => 'field worker',
     ),
     'module' => 'field_permissions',
   );
@@ -2196,18 +2294,18 @@ function devtrac7_field_permissions_feature_user_default_permissions() {
     'roles' => array(
       'administrator' => 'administrator',
       'authenticated user' => 'authenticated user',
-      'unicef user' => 'unicef user',
+      'field worker' => 'field worker',
     ),
     'module' => 'field_permissions',
   );
 
-  // Exported permission: 'view field_fieldtrip_proms_ta_id'.
-  $permissions['view field_fieldtrip_proms_ta_id'] = array(
-    'name' => 'view field_fieldtrip_proms_ta_id',
+  // Exported permission: 'view field_fieldtrip_internal_id'.
+  $permissions['view field_fieldtrip_internal_id'] = array(
+    'name' => 'view field_fieldtrip_internal_id',
     'roles' => array(
       'administrator' => 'administrator',
       'authenticated user' => 'authenticated user',
-      'unicef user' => 'unicef user',
+      'field worker' => 'field worker',
     ),
     'module' => 'field_permissions',
   );
@@ -2219,7 +2317,7 @@ function devtrac7_field_permissions_feature_user_default_permissions() {
       'administrator' => 'administrator',
       'anonymous user' => 'anonymous user',
       'authenticated user' => 'authenticated user',
-      'unicef user' => 'unicef user',
+      'field worker' => 'field worker',
     ),
     'module' => 'field_permissions',
   );
@@ -2231,7 +2329,7 @@ function devtrac7_field_permissions_feature_user_default_permissions() {
       'administrator' => 'administrator',
       'anonymous user' => 'anonymous user',
       'authenticated user' => 'authenticated user',
-      'unicef user' => 'unicef user',
+      'field worker' => 'field worker',
     ),
     'module' => 'field_permissions',
   );
@@ -2242,7 +2340,7 @@ function devtrac7_field_permissions_feature_user_default_permissions() {
     'roles' => array(
       'administrator' => 'administrator',
       'authenticated user' => 'authenticated user',
-      'unicef user' => 'unicef user',
+      'field worker' => 'field worker',
     ),
     'module' => 'field_permissions',
   );
@@ -2254,7 +2352,7 @@ function devtrac7_field_permissions_feature_user_default_permissions() {
       'administrator' => 'administrator',
       'anonymous user' => 'anonymous user',
       'authenticated user' => 'authenticated user',
-      'unicef user' => 'unicef user',
+      'field worker' => 'field worker',
     ),
     'module' => 'field_permissions',
   );
@@ -2277,7 +2375,7 @@ function devtrac7_field_permissions_feature_user_default_permissions() {
       'administrator' => 'administrator',
       'anonymous user' => 'anonymous user',
       'authenticated user' => 'authenticated user',
-      'unicef user' => 'unicef user',
+      'field worker' => 'field worker',
     ),
     'module' => 'field_permissions',
   );
@@ -2289,7 +2387,7 @@ function devtrac7_field_permissions_feature_user_default_permissions() {
       'administrator' => 'administrator',
       'anonymous user' => 'anonymous user',
       'authenticated user' => 'authenticated user',
-      'unicef user' => 'unicef user',
+      'field worker' => 'field worker',
     ),
     'module' => 'field_permissions',
   );
@@ -2301,7 +2399,7 @@ function devtrac7_field_permissions_feature_user_default_permissions() {
       'administrator' => 'administrator',
       'anonymous user' => 'anonymous user',
       'authenticated user' => 'authenticated user',
-      'unicef user' => 'unicef user',
+      'field worker' => 'field worker',
     ),
     'module' => 'field_permissions',
   );
@@ -2313,7 +2411,7 @@ function devtrac7_field_permissions_feature_user_default_permissions() {
       'administrator' => 'administrator',
       'anonymous user' => 'anonymous user',
       'authenticated user' => 'authenticated user',
-      'unicef user' => 'unicef user',
+      'field worker' => 'field worker',
     ),
     'module' => 'field_permissions',
   );
@@ -2324,7 +2422,7 @@ function devtrac7_field_permissions_feature_user_default_permissions() {
     'roles' => array(
       'administrator' => 'administrator',
       'authenticated user' => 'authenticated user',
-      'unicef user' => 'unicef user',
+      'field worker' => 'field worker',
     ),
     'module' => 'field_permissions',
   );
@@ -2336,7 +2434,7 @@ function devtrac7_field_permissions_feature_user_default_permissions() {
       'administrator' => 'administrator',
       'anonymous user' => 'anonymous user',
       'authenticated user' => 'authenticated user',
-      'unicef user' => 'unicef user',
+      'field worker' => 'field worker',
     ),
     'module' => 'field_permissions',
   );
@@ -2348,7 +2446,7 @@ function devtrac7_field_permissions_feature_user_default_permissions() {
       'administrator' => 'administrator',
       'anonymous user' => 'anonymous user',
       'authenticated user' => 'authenticated user',
-      'unicef user' => 'unicef user',
+      'field worker' => 'field worker',
     ),
     'module' => 'field_permissions',
   );
@@ -2396,7 +2494,7 @@ function devtrac7_field_permissions_feature_user_default_permissions() {
     'roles' => array(
       'administrator' => 'administrator',
       'authenticated user' => 'authenticated user',
-      'unicef user' => 'unicef user',
+      'field worker' => 'field worker',
     ),
     'module' => 'field_permissions',
   );
@@ -2407,7 +2505,7 @@ function devtrac7_field_permissions_feature_user_default_permissions() {
     'roles' => array(
       'administrator' => 'administrator',
       'authenticated user' => 'authenticated user',
-      'unicef user' => 'unicef user',
+      'field worker' => 'field worker',
     ),
     'module' => 'field_permissions',
   );
@@ -2419,7 +2517,7 @@ function devtrac7_field_permissions_feature_user_default_permissions() {
       'administrator' => 'administrator',
       'anonymous user' => 'anonymous user',
       'authenticated user' => 'authenticated user',
-      'unicef user' => 'unicef user',
+      'field worker' => 'field worker',
     ),
     'module' => 'field_permissions',
   );
@@ -2430,7 +2528,7 @@ function devtrac7_field_permissions_feature_user_default_permissions() {
     'roles' => array(
       'administrator' => 'administrator',
       'authenticated user' => 'authenticated user',
-      'unicef user' => 'unicef user',
+      'field worker' => 'field worker',
     ),
     'module' => 'field_permissions',
   );
@@ -2441,7 +2539,7 @@ function devtrac7_field_permissions_feature_user_default_permissions() {
     'roles' => array(
       'administrator' => 'administrator',
       'authenticated user' => 'authenticated user',
-      'unicef user' => 'unicef user',
+      'field worker' => 'field worker',
     ),
     'module' => 'field_permissions',
   );
@@ -2452,7 +2550,7 @@ function devtrac7_field_permissions_feature_user_default_permissions() {
     'roles' => array(
       'administrator' => 'administrator',
       'authenticated user' => 'authenticated user',
-      'unicef user' => 'unicef user',
+      'field worker' => 'field worker',
     ),
     'module' => 'field_permissions',
   );
@@ -2463,7 +2561,7 @@ function devtrac7_field_permissions_feature_user_default_permissions() {
     'roles' => array(
       'administrator' => 'administrator',
       'authenticated user' => 'authenticated user',
-      'unicef user' => 'unicef user',
+      'field worker' => 'field worker',
     ),
     'module' => 'field_permissions',
   );
@@ -2474,7 +2572,7 @@ function devtrac7_field_permissions_feature_user_default_permissions() {
     'roles' => array(
       'administrator' => 'administrator',
       'authenticated user' => 'authenticated user',
-      'unicef user' => 'unicef user',
+      'field worker' => 'field worker',
     ),
     'module' => 'field_permissions',
   );
@@ -2485,7 +2583,7 @@ function devtrac7_field_permissions_feature_user_default_permissions() {
     'roles' => array(
       'administrator' => 'administrator',
       'authenticated user' => 'authenticated user',
-      'unicef user' => 'unicef user',
+      'field worker' => 'field worker',
     ),
     'module' => 'field_permissions',
   );
@@ -2523,7 +2621,7 @@ function devtrac7_field_permissions_feature_user_default_permissions() {
     'roles' => array(
       'administrator' => 'administrator',
       'authenticated user' => 'authenticated user',
-      'unicef user' => 'unicef user',
+      'field worker' => 'field worker',
     ),
     'module' => 'field_permissions',
   );
@@ -2652,9 +2750,9 @@ function devtrac7_field_permissions_feature_user_default_permissions() {
     'module' => 'field_permissions',
   );
 
-  // Exported permission: 'view own field_fieldtrip_proms_ta_id'.
-  $permissions['view own field_fieldtrip_proms_ta_id'] = array(
-    'name' => 'view own field_fieldtrip_proms_ta_id',
+  // Exported permission: 'view own field_fieldtrip_internal_id'.
+  $permissions['view own field_fieldtrip_internal_id'] = array(
+    'name' => 'view own field_fieldtrip_internal_id',
     'roles' => array(
       'administrator' => 'administrator',
     ),
@@ -2931,6 +3029,25 @@ function devtrac7_field_permissions_feature_user_default_permissions() {
     'module' => 'node',
   );
 
+  // Exported permission: 'view questionnaire answers'.
+  $permissions['view questionnaire answers'] = array(
+    'name' => 'view questionnaire answers',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'questionnaire_answer',
+  );
+
+  // Exported permission: 'view questions'.
+  $permissions['view questions'] = array(
+    'name' => 'view questions',
+    'roles' => array(
+      'administrator' => 'administrator',
+      'authenticated user' => 'authenticated user',
+    ),
+    'module' => 'questionnaire_question',
+  );
+
   // Exported permission: 'view revisions'.
   $permissions['view revisions'] = array(
     'name' => 'view revisions',
@@ -2948,7 +3065,7 @@ function devtrac7_field_permissions_feature_user_default_permissions() {
       'administrator' => 'administrator',
       'anonymous user' => 'anonymous user',
       'authenticated user' => 'authenticated user',
-      'unicef user' => 'unicef user',
+      'field worker' => 'field worker',
     ),
     'module' => 'field_permissions',
   );
@@ -2959,7 +3076,7 @@ function devtrac7_field_permissions_feature_user_default_permissions() {
     'roles' => array(
       'administrator' => 'administrator',
       'authenticated user' => 'authenticated user',
-      'unicef user' => 'unicef user',
+      'field worker' => 'field worker',
     ),
     'module' => 'field_permissions',
   );
@@ -2971,7 +3088,7 @@ function devtrac7_field_permissions_feature_user_default_permissions() {
       'administrator' => 'administrator',
       'anonymous user' => 'anonymous user',
       'authenticated user' => 'authenticated user',
-      'unicef user' => 'unicef user',
+      'field worker' => 'field worker',
     ),
     'module' => 'field_permissions',
   );
@@ -2983,7 +3100,7 @@ function devtrac7_field_permissions_feature_user_default_permissions() {
       'administrator' => 'administrator',
       'anonymous user' => 'anonymous user',
       'authenticated user' => 'authenticated user',
-      'unicef user' => 'unicef user',
+      'field worker' => 'field worker',
     ),
     'module' => 'field_permissions',
   );

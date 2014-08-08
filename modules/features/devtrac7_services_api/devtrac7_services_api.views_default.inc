@@ -681,10 +681,12 @@ function devtrac7_services_api_views_default_views() {
 
   /* Display: OECD Codes */
   $handler = $view->new_display('page', 'OECD Codes', 'oecd');
+  $handler->display->display_options['title'] = 'OECD Codes';
   $handler->display->display_options['path'] = 'api/views/vocabulary/oecd';
 
   /* Display: placetypes */
   $handler = $view->new_display('page', 'placetypes', 'placetypes');
+  $handler->display->display_options['title'] = 'Place Types';
   $handler->display->display_options['display_description'] = 'Shows a list of PlaceTypes';
   $handler->display->display_options['defaults']['filter_groups'] = FALSE;
   $handler->display->display_options['defaults']['filters'] = FALSE;
@@ -702,6 +704,13 @@ function devtrac7_services_api_views_default_views() {
   $handler->display->display_options['filters']['field_oecd_code_value']['relationship'] = 'parent';
   $handler->display->display_options['filters']['field_oecd_code_value']['operator'] = 'empty';
   $handler->display->display_options['path'] = 'api/views/vocabulary/placetypes';
+  $export['api_vocabularies'] = $view;
+
+  /* Display: Report Types */
+  $handler = $view->new_display('page', 'Report Types', 'page_1');
+  $handler->display->display_options['title'] = 'Report Types';
+  $handler->display->display_options['display_description'] = 'Displays the list of reports generated';
+  $handler->display->display_options['path'] = 'api/views/vocabulary/reporttypes';
   $export['api_vocabularies'] = $view;
 
   return $export;

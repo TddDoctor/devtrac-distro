@@ -55,9 +55,9 @@ function devtrac7_maps_openlayers_maps() {
         'zoomtolayer_scale' => '1',
       ),
     ),
-    'default_layer' => 'uganda_basemap',
+    'default_layer' => 'osm_mapnik',
     'layers' => array(
-      'uganda_basemap' => 'uganda_basemap',
+      'osm_mapnik' => 'osm_mapnik',
       'dvtrc_maps_openlayers_4' => 'dvtrc_maps_openlayers_4',
     ),
     'layer_weight' => array(
@@ -366,7 +366,7 @@ function devtrac7_maps_openlayers_maps() {
       'findplaces_places_existing_places' => 0,
       'site_reports_recent_site_reports_data' => 0,
     ),
-    'projection' => 'EPSG:900913',
+    'projection' => 'EPSG:3857',
     'displayProjection' => 'EPSG:4326',
     'styles' => array(
       'default' => 'default',
@@ -426,9 +426,9 @@ function devtrac7_maps_openlayers_maps() {
         'zoomtolayer_scale' => '1',
       ),
     ),
-    'default_layer' => 'uganda_basemap',
+    'default_layer' => 'osm_mapnik',
     'layers' => array(
-      'uganda_basemap' => 'uganda_basemap',
+      'osm_mapnik' => 'osm_mapnik',
       'devtrac_organisation_map_openlayers_1' => 'devtrac_organisation_map_openlayers_1',
     ),
     'layer_weight' => array(
@@ -737,7 +737,7 @@ function devtrac7_maps_openlayers_maps() {
       'findplaces_places_existing_places' => 0,
       'site_reports_recent_site_reports_data' => 0,
     ),
-    'projection' => 'EPSG:900913',
+    'projection' => 'EPSG:3857',
     'displayProjection' => 'EPSG:4326',
     'styles' => array(
       'default' => 'default_select',
@@ -797,9 +797,9 @@ function devtrac7_maps_openlayers_maps() {
         'zoomtolayer_scale' => '1',
       ),
     ),
-    'default_layer' => 'uganda_basemap',
+    'default_layer' => 'osm_mapnik',
     'layers' => array(
-      'uganda_basemap' => 'uganda_basemap',
+      'osm_mapnik' => 'osm_mapnik',
       'devtrac_activities_openlayers_1' => 'devtrac_activities_openlayers_1',
     ),
     'layer_weight' => array(
@@ -1108,7 +1108,7 @@ function devtrac7_maps_openlayers_maps() {
       'findplaces_places_existing_places' => 0,
       'site_reports_recent_site_reports_data' => 0,
     ),
-    'projection' => 'EPSG:900913',
+    'projection' => 'EPSG:3857',
     'displayProjection' => 'EPSG:4326',
     'styles' => array(
       'default' => 'default_select',
@@ -1210,10 +1210,9 @@ function devtrac7_maps_openlayers_maps() {
       'openlayers_behavior_scaleline' => array(),
       'openlayers_behavior_zoompanel' => array(),
     ),
-    'default_layer' => 'uganda_basemap',
+    'default_layer' => 'osm_mapnik',
     'layers' => array(
-      'uganda_basemap' => 'uganda_basemap',
-      'uganda_basemap_streets' => 'uganda_basemap_streets',
+      'osm_mapnik' => 'osm_mapnik',
       'devtrac_solr_view_locations_json' => 'devtrac_solr_view_locations_json',
       'geofield_formatter' => 'geofield_formatter',
       'openlayers_searchresult_layer' => 'openlayers_searchresult_layer',
@@ -1597,10 +1596,9 @@ function devtrac7_maps_openlayers_maps() {
         'anchor' => 0,
       ),
     ),
-    'default_layer' => 'uganda_basemap',
+    'default_layer' => 'osm_mapnik',
     'layers' => array(
-      'uganda_basemap' => 'uganda_basemap',
-      'uganda_basemap_streets' => 'uganda_basemap_streets',
+      'osm_mapnik' => 'osm_mapnik',
       'geofield_formatter' => 'geofield_formatter',
       'openlayers_searchresult_layer' => 'openlayers_searchresult_layer',
       'u_map_it_health' => 'u_map_it_health',
@@ -2052,10 +2050,9 @@ function devtrac7_maps_openlayers_maps() {
         'zoomtolayer_scale' => '1',
       ),
     ),
-    'default_layer' => 'uganda_basemap',
+    'default_layer' => 'osm_mapnik',
     'layers' => array(
-      'uganda_basemap' => 'uganda_basemap',
-      'uganda_basemap_streets' => 'uganda_basemap_streets',
+      'osm_mapnik' => 'osm_mapnik',
       'openlayers_searchresult_layer' => 'openlayers_searchresult_layer',
       'devtrac_solr_view_locations_json' => 'devtrac_solr_view_locations_json',
       'u_map_it_health' => 'u_map_it_health',
@@ -2414,9 +2411,9 @@ function devtrac7_maps_openlayers_maps() {
         'zoomtolayer_scale' => '1',
       ),
     ),
-    'default_layer' => 'uganda_basemap',
+    'default_layer' => 'osm_mapnik',
     'layers' => array(
-      'uganda_basemap' => 'uganda_basemap',
+      'osm_mapnik' => 'osm_mapnik',
       'devtrac_zoom_distict_edit_pages_zoom_district_edit' => 'devtrac_zoom_distict_edit_pages_zoom_district_edit',
     ),
     'layer_weight' => array(
@@ -2624,7 +2621,7 @@ function devtrac7_maps_openlayers_maps() {
       'dvtrc_maps_openlayers_5' => 0,
       'site_reports_recent_site_reports_data' => 0,
     ),
-    'projection' => 'EPSG:900913',
+    'projection' => 'EPSG:3857',
     'displayProjection' => 'EPSG:4326',
     'styles' => array(
       'default' => 'default',
@@ -2787,10 +2784,9 @@ function devtrac7_maps_openlayers_maps() {
         'zoomtolayer_scale' => '1',
       ),
     ),
-    'default_layer' => 'uganda_basemap',
+    'default_layer' => 'osm_mapnik',
     'layers' => array(
-      'uganda_basemap' => 'uganda_basemap',
-      'uganda_basemap_streets' => 'uganda_basemap_streets',
+      'osm_mapnik' => 'osm_mapnik',
       'openlayers_searchresult_layer' => 'openlayers_searchresult_layer',
       'devtrac_solr_view_districts_json' => 'devtrac_solr_view_districts_json',
       'devtrac_solr_view_districts_openlayers_1' => 'devtrac_solr_view_districts_openlayers_1',
@@ -3151,9 +3147,9 @@ function devtrac7_maps_openlayers_maps() {
         'zoomtolayer_scale' => '1',
       ),
     ),
-    'default_layer' => 'uganda_basemap',
+    'default_layer' => 'osm_mapnik',
     'layers' => array(
-      'uganda_basemap' => 'uganda_basemap',
+      'osm_mapnik' => 'osm_mapnik',
       'dvtrc_maps_openlayers_6' => 'dvtrc_maps_openlayers_6',
     ),
     'layer_weight' => array(
@@ -3462,7 +3458,7 @@ function devtrac7_maps_openlayers_maps() {
       'findplaces_places_existing_places' => 0,
       'site_reports_recent_site_reports_data' => 0,
     ),
-    'projection' => 'EPSG:900913',
+    'projection' => 'EPSG:3857',
     'displayProjection' => 'EPSG:4326',
     'styles' => array(
       'default' => 'devtrac_mapstyle_placetype_default',
@@ -3517,9 +3513,9 @@ function devtrac7_maps_openlayers_maps() {
         'zoomtolayer_scale' => '1',
       ),
     ),
-    'default_layer' => 'uganda_basemap',
+    'default_layer' => 'osm_mapnik',
     'layers' => array(
-      'uganda_basemap' => 'uganda_basemap',
+      'osm_mapnik' => 'osm_mapnik',
       'dvtrc_maps_openlayers_2' => 'dvtrc_maps_openlayers_2',
     ),
     'layer_weight' => array(
@@ -3828,7 +3824,7 @@ function devtrac7_maps_openlayers_maps() {
       'findplaces_places_existing_places' => 0,
       'site_reports_recent_site_reports_data' => 0,
     ),
-    'projection' => 'EPSG:900913',
+    'projection' => 'EPSG:3857',
     'displayProjection' => 'EPSG:4326',
     'styles' => array(
       'default' => 'devtrac_mapstyle_placetype_default',
@@ -3996,10 +3992,9 @@ function devtrac7_maps_openlayers_maps() {
         'zoomtolayer_scale' => '1',
       ),
     ),
-    'default_layer' => 'uganda_basemap_streets',
+    'default_layer' => 'osm_mapnik',
     'layers' => array(
-      'uganda_basemap' => 'uganda_basemap',
-      'uganda_basemap_streets' => 'uganda_basemap_streets',
+      'osm_mapnik' => 'osm_mapnik',
       'openlayers_searchresult_layer' => 'openlayers_searchresult_layer',
       'devtrac_solr_find_locations_geojson' => 'devtrac_solr_find_locations_geojson',
       'devtrac_solr_find_locations_mapdata' => 'devtrac_solr_find_locations_mapdata',
@@ -4350,9 +4345,9 @@ function devtrac7_maps_openlayers_maps() {
         'zoomtolayer_scale' => '1',
       ),
     ),
-    'default_layer' => 'uganda_basemap',
+    'default_layer' => 'osm_mapnik',
     'layers' => array(
-      'uganda_basemap' => 'uganda_basemap',
+      'osm_mapnik' => 'osm_mapnik',
       'dvtrc_field_trip_openlayers_1' => 'dvtrc_field_trip_openlayers_1',
     ),
     'layer_weight' => array(
@@ -4649,7 +4644,7 @@ function devtrac7_maps_openlayers_maps() {
       'dvtrc_user_openlayers_1' => 0,
       'site_reports_recent_site_reports_data' => 0,
     ),
-    'projection' => 'EPSG:900913',
+    'projection' => 'EPSG:3857',
     'displayProjection' => 'EPSG:4326',
     'styles' => array(
       'default' => 'devtrac_mapstyle_placetype_active',
@@ -4704,9 +4699,9 @@ function devtrac7_maps_openlayers_maps() {
         'zoomtolayer_scale' => '1',
       ),
     ),
-    'default_layer' => 'uganda_basemap',
+    'default_layer' => 'osm_mapnik',
     'layers' => array(
-      'uganda_basemap' => 'uganda_basemap',
+      'osm_mapnik' => 'osm_mapnik',
       'dvtrc_maps_openlayers_3' => 'dvtrc_maps_openlayers_3',
     ),
     'layer_weight' => array(
@@ -5015,7 +5010,7 @@ function devtrac7_maps_openlayers_maps() {
       'findplaces_places_existing_places' => 0,
       'site_reports_recent_site_reports_data' => 0,
     ),
-    'projection' => 'EPSG:900913',
+    'projection' => 'EPSG:3857',
     'displayProjection' => 'EPSG:4326',
     'styles' => array(
       'default' => 'default',
@@ -5063,7 +5058,7 @@ function devtrac7_maps_openlayers_maps() {
       'openlayers_behavior_zoompanel' => array(),
       'openlayers_behavior_zoomtolayer' => array(
         'zoomtolayer' => array(
-          'uganda_basemap' => 'uganda_basemap',
+          'osm_mapnik' => 'osm_mapnik',
           'osm_mapnik' => 0,
           'dvtrc_maps_openlayers_5' => 0,
         ),
@@ -5071,9 +5066,9 @@ function devtrac7_maps_openlayers_maps() {
         'zoomtolayer_scale' => '1',
       ),
     ),
-    'default_layer' => 'uganda_basemap',
+    'default_layer' => 'osm_mapnik',
     'layers' => array(
-      'uganda_basemap' => 'uganda_basemap',
+      'osm_mapnik' => 'osm_mapnik',
       'dvtrc_maps_openlayers_5' => 'dvtrc_maps_openlayers_5',
     ),
     'layer_weight' => array(
@@ -5370,7 +5365,7 @@ function devtrac7_maps_openlayers_maps() {
       'dvtrc_user_openlayers_1' => 0,
       'site_reports_recent_site_reports_data' => 0,
     ),
-    'projection' => 'EPSG:900913',
+    'projection' => 'EPSG:3857',
     'displayProjection' => 'EPSG:4326',
     'styles' => array(
       'default' => 'devtrac_mapstyle_placetype_default',
@@ -5428,9 +5423,9 @@ function devtrac7_maps_openlayers_maps() {
         'position' => 'se',
       ),
     ),
-    'default_layer' => 'uganda_basemap',
+    'default_layer' => 'osm_mapnik',
     'layers' => array(
-      'uganda_basemap' => 'uganda_basemap',
+      'osm_mapnik' => 'osm_mapnik',
       'dvtrc_maps_openlayers_1' => 'dvtrc_maps_openlayers_1',
     ),
     'layer_weight' => array(
@@ -5715,7 +5710,7 @@ function devtrac7_maps_openlayers_maps() {
       'dvtrc_user_openlayers_1' => 0,
       'site_reports_recent_site_reports_data' => 0,
     ),
-    'projection' => 'EPSG:900913',
+    'projection' => 'EPSG:3857',
     'displayProjection' => 'EPSG:4326',
     'styles' => array(
       'default' => 'devtrac_mapstyle_placetype_default',
@@ -5770,9 +5765,9 @@ function devtrac7_maps_openlayers_maps() {
         'zoomtolayer_scale' => '1',
       ),
     ),
-    'default_layer' => 'uganda_basemap',
+    'default_layer' => 'osm_mapnik',
     'layers' => array(
-      'uganda_basemap' => 'uganda_basemap',
+      'osm_mapnik' => 'osm_mapnik',
       'u_map_it_health' => 'u_map_it_health',
       'u_map_it_schools' => 'u_map_it_schools',
       'u_map_it_wash' => 'u_map_it_wash',
@@ -5983,7 +5978,7 @@ function devtrac7_maps_openlayers_maps() {
       'findplaces_districts_hidden_district' => 0,
       'site_reports_recent_site_reports_data' => 0,
     ),
-    'projection' => 'EPSG:900913',
+    'projection' => 'EPSG:3857',
     'displayProjection' => 'EPSG:4326',
     'styles' => array(
       'default' => 'default',
@@ -6038,9 +6033,9 @@ function devtrac7_maps_openlayers_maps() {
         'zoomtolayer_scale' => '1',
       ),
     ),
-    'default_layer' => 'uganda_basemap',
+    'default_layer' => 'osm_mapnik',
     'layers' => array(
-      'uganda_basemap' => 'uganda_basemap',
+      'osm_mapnik' => 'osm_mapnik',
       'dvtrc_user_openlayers_1' => 'dvtrc_user_openlayers_1',
     ),
     'layer_weight' => array(
@@ -6349,7 +6344,7 @@ function devtrac7_maps_openlayers_maps() {
       'findplaces_places_existing_places' => 0,
       'site_reports_recent_site_reports_data' => 0,
     ),
-    'projection' => 'EPSG:900913',
+    'projection' => 'EPSG:3857',
     'displayProjection' => 'EPSG:4326',
     'styles' => array(
       'default' => 'devtrac_mapstyle_placetype_default',
