@@ -37,8 +37,8 @@ before_script:
   - drush --yes make build-devtrac_distro.make build
   # removed the testing module
   #- chmod 777 -R test/solrtest/
-  - cp profiles/devtrac/modules/contrib/search_api_solr/solr-conf/3.x/* /home/travis/build/TddDoctor/devtrac-distro/apache-solr-3.5.0/example/solr/conf/
   - cd build
+  - cp profiles/devtrac/modules/contrib/search_api_solr/solr-conf/3.x/* /home/travis/build/TddDoctor/devtrac-distro/apache-solr-3.5.0/example/solr/conf/
   - drush --yes site-install devtrac --db-url="mysql://travis@127.0.0.1/devtrac_distro" --account-name="admin" --account-pass="admin" --account-mail="ishmael@mountbatten.net" --site-mail="ishmael@mountbatten.net" --site-name="Devtrac Development" --clean-url install_configure_form.site_default_country="UG" install_configure_form.date_default_timezone="Africa/Kampala" devtrac_install_statistics_select_form.module="none" devtrac_username_geonames_form.username="reinier"
   #- drush --yes dl search_api_solr
   #- drush --yes dl search_api
