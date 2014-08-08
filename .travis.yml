@@ -37,19 +37,19 @@ before_script:
   - drush --yes make build-devtrac_distro.make build
   # removed the testing module
   #- chmod 777 -R test/solrtest/
+  - cp profiles/devtrac/modules/contrib/search_api_solr/solr-conf/3.x/* /home/travis/build/TddDoctor/devtrac-distro/apache-solr-3.5.0/example/solr/conf/
   - cd build
   - drush --yes site-install devtrac --db-url="mysql://travis@127.0.0.1/devtrac_distro" --account-name="admin" --account-pass="admin" --account-mail="ishmael@mountbatten.net" --site-mail="ishmael@mountbatten.net" --site-name="Devtrac Development" --clean-url install_configure_form.site_default_country="UG" install_configure_form.date_default_timezone="Africa/Kampala" devtrac_install_statistics_select_form.module="none" devtrac_username_geonames_form.username="reinier"
-    - cp profiles/devtrac/modules/contrib/search_api_solr/solr-conf/3.x/* /home/travis/build/TddDoctor/devtrac-distro/apache-solr-3.5.0/example/solr/conf/
   #- drush --yes dl search_api_solr
   #- drush --yes dl search_api
   #- drush --yes en search_api
   #- drush --yes en search_api_solr
-  - drush --yes en solrtest
+  #- drush --yes en solrtest
   #- cp sites/all/modules/search_api_solr/solr-conf/4.x/* /home/travis/build/TddDoctor/devtrac-distro/solr-4.4.0/example/solr/collection1/conf/
   - sudo chmod 777 sites/default/
-  - cp -R /home/travis/build/TddDoctor/devtrac-distro/modules/ sites/default/
-  - sudo chmod 777 sites/default/settings.php 
-  - sudo echo " " >> sites/default/settings.php
+  #- cp -R /home/travis/build/TddDoctor/devtrac-distro/modules/ sites/default/
+  #- sudo chmod 777 sites/default/settings.php 
+  #- sudo echo " " >> sites/default/settings.php
   #- echo "  'travis_solr_server' => array(" >> sites/default/settings.php
   #- echo "    'options' => array(" >> sites/default/settings.php
   #- echo "      'host' => 'localhost'," >> sites/default/settings.php
