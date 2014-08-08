@@ -17,7 +17,9 @@ before_install:
   - sleep 3
 
 install:
-  - pear install drush/drush
+  #- pear install drush/drush
+  - pear channel-discover pear.drush.org
+  - pear install drush/drush-${DRUSH_VERSION}.0
   - phpenv rehash
 
 before_script:
@@ -38,7 +40,15 @@ before_script:
   # removed the testing module
   #- chmod 777 -R test/solrtest/
   - cd build
+  - php -d sendmail_path=/dev/null `which drush` si ${PROJECT_NAME} \
+  --db-url=mysql://root:@127.0.0.1/${PROJECT_NAME} \
+  --account-name=admin \
+  --account-pass=admin \
+  --site-mail=admin@example.com \
+  --site-name=${PROJECT_NAME} \
+  --yes
   - cp profiles/devtrac/modules/contrib/search_api_solr/solr-conf/3.x/* /home/travis/build/TddDoctor/devtrac-distro/apache-solr-3.5.0/example/solr/conf/
+  - drush cc all --yes
   - drush --yes site-install minimal --db-url="mysql://travis@127.0.0.1/devtrac_distro"
   #- drush --yes dl search_api_solr
   #- drush --yes dl search_api
