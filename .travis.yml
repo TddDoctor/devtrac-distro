@@ -44,9 +44,18 @@ before_script:
       --account-name=admin \
       --account-pass=admin \
       --site-mail=admin@example.com \
+      --account-mail=admin@mydevtrac.com \
       --site-name=${PROJECT_NAME} \
+      --clean-url \
+      --install_configure_form.site_default_country=UG \
+      --install_configure_form.date_default_timezone=Africa/Kampala \
+      --devtrac_install_statistics_select_form.module=none \
+      --devtrac_solr_configure_form.host=localhost \
+      --devtrac_solr_configure_form.port=8080 \
+      --devtrac_solr_configure_form.path=/solr \
+      --devtrac_username_geonames_form.username=devtrac \
       --yes
-  - drush --yes site-install minimal --db-url="mysql://travis@127.0.0.1/devtrac_distro"
+  #- drush --yes site-install minimal --db-url="mysql://travis@127.0.0.1/devtrac_distro"
   - drush cc all --yes
   #- drush --yes dl search_api_solr
   #- drush --yes dl search_api
