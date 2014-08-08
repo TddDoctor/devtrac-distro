@@ -243,7 +243,7 @@ function devtrac_install() {
   variable_set('user_picture_style', 'thumbnail');
 
   // Allow visitor account creation with administrative approval.
-  variable_set('user_register', USER_REGISTER_VISITORS_ADMINISTRATIVE_APPROVAL);
+  variable_set('user_register', USER_REGISTER_ADMINISTRATORS_ONLY);
 
   // Create a default vocabulary named "Tags", enabled for the 'article' content type.
   $description = st('Use tags to group articles on similar topics into categories.');
@@ -447,6 +447,10 @@ function devtrac_install_tasks(&$install_state) {
   $tasks['devtrac_username_geonames_form'] = array(
     'display_name' => st('Configure Geonames Data'),
     'type' => 'form',
+  );
+  $tasks['devtrac_enable_custom_currentsearch'] = array(
+    'display_name' => st('Enable Custom Current Search Blocks'),
+    'type' => 'normal',
   );
   return $tasks;
 }
@@ -943,4 +947,40 @@ function devtrac_username_geonames_form() {
  */
 function devtrac_username_geonames_form_submit($form, &$form_state) {
   variable_set('geonames_username',$form_state['values']['username']);
+}
+
+/**
+ * Enables custom current search blocks. Unfortunately in code
+ */
+function devtrac_enable_custom_currentsearch() {
+  // One day, far far away, we will be able to remove this code, as we will have fixed the
+  // cause of this issue https://drupal.org/node/1469002
+  $block_searcher = array(
+    'devtrac7_actionitems_standard' => 'search_api@devtrac_solr_action_items_index',
+    'devtrac7_actionitem_activefacets' => 'search_api@devtrac_solr_action_items_index',
+    'devtrac7_activities_activefacets' => 'search_api@devtrac_solr_activity_index',
+    'devtrac7_activities_standard' => 'search_api@devtrac_solr_activity_index',
+    'devtrac7_answers_activefacets' => 'search_api@answers',
+    'devtrac7_answers_mainpage' => 'search_api@answers',
+    'devtrac7_answers_standard' => 'search_api@answers',
+    'devtrac7_districts_activefacets' => 'search_api@devtrac_solr_district_index',
+    'devtrac7_districts_standard' => 'search_api@devtrac_solr_district_index',
+    'devtrac7_fieldtrips_activefacets' => 'search_api@devtrac_solr_field_trip_index',
+    'devtrac7_fieldtrips_standard' => 'search_api@devtrac_solr_field_trip_index',
+    'devtrac7_images_activefacets' => 'search_api@devtrac_solr_image_index',
+    'devtrac7_images_standard' => 'search_api@devtrac_solr_image_index',
+    'devtrac7_locations_activefacets' => 'search_api@devtrac_solr_locations_index',
+    'devtrac7_locations_standard' => 'search_api@devtrac_solr_locations_index',
+    'devtrac7_organisations_standard' => 'search_api@devtrac_solr_organisation_index',
+    'devtrac7_organisati_activefacets' => 'search_api@devtrac_solr_organisation_index',
+    'devtrac7_questions_activefacets' => 'search_api@questions',
+    'devtrac7_questions_standard' => 'search_api@questions',
+    'devtrac7_sitevisits_activefacets' => 'search_api@devtrac_solr_site_visits_index',
+    'devtrac7_sitevisits_standard' => 'search_api@devtrac_solr_site_visits_index',
+    'devtrac7_users_activefacets' => 'search_api@devtrac7_user_index',
+    'devtrac7_users_standard' => 'search_api@devtrac7_user_index',
+  );
+  foreach ($block_searcher as $block => $searcher) {
+    current_search_set_block_searcher($block, $searcher);
+  }
 }
