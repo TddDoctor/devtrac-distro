@@ -75,14 +75,12 @@ before_script:
   #- echo "    )," >> sites/default/settings.php
   #- echo "  )," >> sites/default/settings.php
   #- echo ");" >> sites/default/settings.php
+   - /home/travis/build/TddDoctor/devtrac-distro/build/
+   - drush --yes en simpletest
+   - cd
 script:
-  - drush --yes en simpletest  
-  - drush cache-clear all
-  - sudo find / -name "simpletest" -type d -print
-  - chmod -R 777 /home/travis/build/TddDoctor/devtrac-distro/test/solrtest/
-  - chmod 777 /home/travis/build/TddDoctor/devtrac-distro/test/solrtest/testsuite-1.xml
   - ant run-tests
-  - /bin/behat /home/travis/build/TddDoctor/devtrac-distro/test/
+  - /bin/behat -dl
   #- drush test-run Profile  --debug --verbose --uri=localhost/devtrac_distro  --xml=/home/travis/build/TddDoctor/devtrac-distro/test/solrtest
   #- value=`cat test.txt`
   #- echo "$value"
