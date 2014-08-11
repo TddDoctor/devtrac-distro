@@ -75,7 +75,7 @@ before_script:
   #- echo "    )," >> sites/default/settings.php
   #- echo "  )," >> sites/default/settings.php
   #- echo ");" >> sites/default/settings.php
-  - cd --/
+  - cd ../
 script:
   - ant run-tests
   #- /bin/behat -dl
