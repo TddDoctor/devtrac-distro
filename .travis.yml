@@ -78,7 +78,7 @@ before_script:
   - cd ../
 script:
   - ant run-tests
-  #- /bin/behat -dl
+  - ./behat -dl
   #- drush test-run Profile  --debug --verbose --uri=localhost/devtrac_distro  --xml=/home/travis/build/TddDoctor/devtrac-distro/test/solrtest
   #- value=`cat test.txt`
   #- echo "$value"
