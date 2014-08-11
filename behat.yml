@@ -22,7 +22,6 @@ default:
   extensions:
     Behat\MinkExtension\Extension:
       default_session: 'selenium2'
-      goutte: ~
       selenium2:
         capabilities: {"browser": "firefox", "version": "21"}
       base_url: http://jenkinsge.mountbatten.net/devtracmanual
