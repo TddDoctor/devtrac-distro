@@ -43,8 +43,8 @@ before_script:
       --db-url=mysql://root:@127.0.0.1/devtrac_distro \
       --account-name=admin \
       --account-pass=admin \
-      --site-mail=admin@example.com \
-      --account-mail=admin@mydevtrac.com \
+      --site-mail=ishmael@mountbatten.net \
+      --account-mail=ishmael@mountbatten.net \
       --site-name=${PROJECT_NAME} \
       --clean-url \
       -install_configure_form.site_default_country=UG \
