@@ -21,11 +21,12 @@ default:
     features: 'features'
   extensions:
     Behat\MinkExtension\Extension:
-      javascript_session:  'selenium'
+      default_session: selenium2
+      base_url: 'http://jenkinsge.mountbatten.net/devtracmanual'
+      javascript_session:  selenium
       browser_name: 'firefox'
-      selenium2: ~
-      goutte: ~
-      base_url: http://jenkinsge.mountbatten.net/devtracmanual
+      selenium2: 
+        capabilities: { "browser": "firefox", "version": "14"}
     Drupal\DrupalExtension\Extension:
       blackbox: ~
       drush:
