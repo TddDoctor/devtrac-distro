@@ -75,7 +75,7 @@ before_script:
   #- echo "    )," >> sites/default/settings.php
   #- echo "  )," >> sites/default/settings.php
   #- echo ");" >> sites/default/settings.php
-   - /home/travis/build/TddDoctor/devtrac-distro/build/
+   -cd /home/travis/build/TddDoctor/devtrac-distro/build/
    - drush --yes en simpletest
    - cd
 script:
