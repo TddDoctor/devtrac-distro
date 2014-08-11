@@ -78,13 +78,14 @@ before_script:
   
   #- drush --yes en simpletest  
   #- drush cache-clear all
-  #- sudo find / -name "default" -type d -print
+  - sudo find / -name "simpletest" -type d -print
   - chmod -R 777 /home/travis/build/TddDoctor/devtrac-distro/test/solrtest/
   - chmod 777 /home/travis/build/TddDoctor/devtrac-distro/test/solrtest/testsuite-1.xml
   - cd ../
   
 script:
    - ant run-tests
+   - ./bin/behat /home/travis/build/TddDoctor/devtrac-distro/test/
   #- drush test-run Profile  --debug --verbose --uri=localhost/devtrac_distro  --xml=/home/travis/build/TddDoctor/devtrac-distro/test/solrtest
   #- value=`cat test.txt`
   #- echo "$value"
