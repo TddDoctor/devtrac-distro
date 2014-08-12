@@ -39,22 +39,6 @@ before_script:
   #- chmod 777 -R test/solrtest/
   - cd build
   - cp profiles/devtrac/modules/contrib/search_api_solr/solr-conf/3.x/* /home/travis/build/TddDoctor/devtrac-distro/apache-solr-3.5.0/example/solr/conf/
-  - php -d sendmail_path=/dev/null `which drush` si devtrac \
-      --db-url=mysql://root:@127.0.0.1/devtrac_distro \
-      --account-name=admin \
-      --account-pass=admin \
-      --site-mail=ishmael@mountbatten.net \
-      --account-mail=ishmael@mountbatten.net \
-      --site-name=${PROJECT_NAME} \
-      --clean-url \
-      --install_configure_form.site_default_country=UG \
-      --install_configure_form.date_default_timezone=Africa/Kampala \
-      --devtrac_install_statistics_select_form.module=none \
-      --devtrac_solr_configure_form.host=localhost \
-      --devtrac_solr_configure_form.port=8080 \
-      --devtrac_solr_configure_form.path=/solr \
-      --devtrac_username_geonames_form.username=devtrac \
-      --yes
   #- drush --yes site-install devtrac --db-url="mysql://travis@127.0.0.1/devtrac_distro" --account-name=admin --account-pass=admin --site-name=${PROJECT_NAME} --clean-url install_configure_form.site_default_country=UG install_configure_form.date_default_timezone=Africa/Kampala devtrac_install_statistics_select_form.module=none devtrac_solr_configure_form.host=localhost devtrac_solr_configure_form.port=8080 devtrac_solr_configure_form.path=/solr devtrac_username_geonames_form.username=devtrac
   - drush cc all --yes
   #- drush --yes dl search_api_solr
@@ -78,7 +62,6 @@ before_script:
   - cd ../
 script:
   - ant run-tests
-  - ./behat
   #- drush test-run Profile  --debug --verbose --uri=localhost/devtrac_distro  --xml=/home/travis/build/TddDoctor/devtrac-distro/test/solrtest
   #- value=`cat test.txt`
   #- echo "$value"
