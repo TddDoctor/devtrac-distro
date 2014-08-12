@@ -8,7 +8,7 @@
 
   <property file="build.properties"/>
 
-  <property name="account.mail"     value="test@example.com"/>
+  <property name="account.mail"     value="ishmael@mountbatten.net"/>
   <property name="account.name"     value="admin"/>
   <property name="account.pass"     value="admin"/>
   <property name="base.url"         value="http://localhost"/>
@@ -22,7 +22,7 @@
   <property name="rsync"            value="rsync"/>
   <property name="selenium.version" value="2.37.0"/>
   <property name="selenium.port"    value="4444"/>
-  <property name="site.mail"        value="test@example.com"/>
+  <property name="site.mail"        value="ishmael@mountbatten.net"/>
   <property name="site.name"        value="devtrac distro"/>
   <property name="sites.subdir"     value="default"/>
 
