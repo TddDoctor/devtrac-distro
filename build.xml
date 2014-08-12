@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="devtrac distro" default="build">
 
-  <property name="drupal.profile" value="devtrac"/>
+  <property name="drupal.profile" value="devtrac_distro"/>
 
   <property name="builddir" value="${basedir}/build"/>
   <property name="selenium" value="${builddir}/selenium-server-standalone.jar"/>
