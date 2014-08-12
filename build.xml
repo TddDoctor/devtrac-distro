@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="devtrac distro" default="build">
 
-  <property name="drupal.profile" value="devtrac_distro"/>
+  <property name="drupal.profile" value="devtrac"/>
 
   <property name="builddir" value="${basedir}/build"/>
   <property name="selenium" value="${builddir}/selenium-server-standalone.jar"/>
@@ -12,9 +12,16 @@
   <property name="account.name"     value="admin"/>
   <property name="account.pass"     value="admin"/>
   <property name="base.url"         value="http://localhost"/>
+  <property name="install_configure_form.site_default_country" value="Ug"/>
+  <property name="install_configure_form.date_default_timezone" value="Africa/Kampala"/>
+  <property name="devtrac_install_statistics_select_form.module" value="none"/>
+  <property name="devtrac_solr_configure_form.host" value="localhost"/>
+  <property name="devtrac_solr_configure_form.port" value="8080"/>
+  <property name="devtrac_solr_configure_form.path" value="/solr"/>
+  <property name="devtrac_username_geonames_form.username" value="devtrac"/>
   <property name="behat.params"     value="extensions[Behat\MinkExtension\Extension][base_url]=${base.url}"/>
   <property name="composer"         value="${builddir}/composer.phar"/>
-  <property name="db.url"           value="mysql://username:password@host/db"/>
+  <property name="db.url"           value="mysql://root:@127.0.0.1/devtrac_distro"/>
   <property name="docroot"          value="${basedir}/docroot"/>
   <property name="drush.makefile"   value="build-${drupal.profile}.make"/>
   <property name="drush.args"       value=""/>
