@@ -23,8 +23,8 @@ default:
     Behat\MinkExtension\Extension:
       default_session: selenium2
       base_url: 'http://jenkinsge.mountbatten.net/devtracmanual'
-      javascript_session:  selenium
-      browser_name: 'firefox'
+      javascript_session: selenium
+      browser_name: firefox
       selenium2: 
         capabilities: { "browser": "firefox", "version": "14"}
     Drupal\DrupalExtension\Extension:
