@@ -61,14 +61,14 @@ before_script:
   #- echo ");" >> sites/default/settings.php
   - cd ../
 script:
-  - ant run-tests -i
+  - ant run-tests
+  - export ANT_ARGS='-logger org.apache.tools.ant.listener.AnsiColorLogger'
   #- drush test-run Profile  --debug --verbose --uri=localhost/devtrac_distro  --xml=/home/travis/build/TddDoctor/devtrac-distro/test/solrtest
   #- value=`cat test.txt`
   #- echo "$value"
   #- TEST_EXIT=${PIPESTATUS[0]}
   #- TRAVIS_TEST_RESULT=$(! egrep -i "([0-9]+ fails)|(PHP Fatal error)|([0-9]+ exceptions)" /home/travis/build/TddDoctor/devtrac-distro/test/solrtest/testsuite-1.xml> /dev/null)$?
   #- if [ $TEST_EXIT -eq 0 ] && [ $TEST_SIMPLETEST -eq 0 ]; then exit 0; else exit 1; fi
-
 after_script:
 - echo TRAVIS_TEST_RESULT 
 #- cd /home/travis/build/TddDoctor/devtrac-distro/build/
