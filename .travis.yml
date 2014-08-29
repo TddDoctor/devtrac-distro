@@ -61,7 +61,7 @@ before_script:
   #- echo ");" >> sites/default/settings.php
   - cd ../
 script:
-  - ant run-tests
+  - ant run-tests -i
   #- drush test-run Profile  --debug --verbose --uri=localhost/devtrac_distro  --xml=/home/travis/build/TddDoctor/devtrac-distro/test/solrtest
   #- value=`cat test.txt`
   #- echo "$value"
